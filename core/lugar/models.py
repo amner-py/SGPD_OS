@@ -2,6 +2,7 @@ from tabnanny import verbose
 from unicodedata import name
 from django.db import models
 
+
 class Departamento(models.Model):
     id=models.AutoField(db_column='ID')
     nombre=models.CharField(db_column='NOMBRE',max_length=30)
