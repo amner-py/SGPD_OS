@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DelegacionConfig(AppConfig):
+class AsignacionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'core.delegacion'
+    name = 'asignacion'

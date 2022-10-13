@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Custom Apps
+    'core.delegacion'
 ]
 
 MIDDLEWARE = [
@@ -118,3 +120,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Default Auth_User Custom
+
+AUTH_USER_MODEL='delegacion.Delegacion'
