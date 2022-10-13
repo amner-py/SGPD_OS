@@ -3,7 +3,7 @@ from delegacion.models import Delegacion
 
 
 class Departamento(models.Model):
-    id=models.AutoField(db_column='ID')
+    id=models.AutoField(db_column='ID',primary_key=True)
     nombre=models.CharField(db_column='NOMBRE',max_length=30)
 
     class Meta:
@@ -17,9 +17,9 @@ class Departamento(models.Model):
 
 
 class Municipio(models.Model):
-    id=models.AutoField(db_column='ID')
+    id=models.AutoField(db_column='ID',primary_key=True)
     nombre=models.CharField(db_column='NOMBRE',max_length=40)
-    departamento=models.ForeignKey(Departamento,db_column='DEPARTAMENTO_ID',on_delete=models.SET_NULL)
+    departamento=models.ForeignKey(Departamento,db_column='DEPARTAMENTO_ID',on_delete=models.CASCADE)
 
     class Meta:
         db_table='MUNICIPIO'
@@ -32,7 +32,7 @@ class Municipio(models.Model):
 
 
 class Estado(models.Model):
-    id=models.AutoField(db_column='ID')
+    id=models.AutoField(db_column='ID',primary_key=True)
     nombre=models.CharField(db_column='ESTADO',max_length=25)
 
     class Meta:
@@ -46,7 +46,7 @@ class Estado(models.Model):
 
 
 class Lugar(models.Model):
-    id=models.AutoField(db_column='ID')
+    id=models.AutoField(db_column='ID',primary_key=True)
     direccion=models.CharField(db_column='DIRECCION',max_length=150)
     estado=models.ForeignKey(Estado,db_column='ESTADO_ID',on_delete=models.SET_NULL)
     municipio=models.ForeignKey(Municipio,db_column='MUNICIPIO_ID',on_delete=models.SET_NULL)
