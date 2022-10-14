@@ -4,7 +4,7 @@ from delegacion.models import Delegacion
 
 class Departamento(models.Model):
     id=models.AutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=30)
+    nombre=models.CharField(db_column='NOMBRE',max_length=40)
 
     class Meta:
         db_table='DEPARTAMENTO'
@@ -48,7 +48,6 @@ class Estado(models.Model):
 class Lugar(models.Model):
     id=models.AutoField(db_column='ID',primary_key=True)
     direccion=models.CharField(db_column='DIRECCION',max_length=150)
-    estado=models.ForeignKey(Estado,db_column='ESTADO_ID',on_delete=models.SET_NULL)
     municipio=models.ForeignKey(Municipio,db_column='MUNICIPIO_ID',on_delete=models.SET_NULL)
     delegacion=models.ForeignKey(Delegacion,db_column='DELEGACION_ID',on_delete=models.SET_NULL)
 
@@ -60,4 +59,4 @@ class Lugar(models.Model):
 
     
     def __str__(self):
-        return f'{self.direccion}'
+        return f'{self.direccion}, {self.municipio.nombre}, {self.municipio.departamento.nombre}'
