@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -12,4 +13,4 @@ class Delegacion(AbstractUser):
 
 
     def __str__(self):
-        return f'{self.nombre_delegacion}' if self.nombre else f'Usuario: {self.username}'
+        return f'{self.nombre_delegacion}' if self.nombre_delegacion else f'Usuario: {self.username}'
