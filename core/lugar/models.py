@@ -31,20 +31,6 @@ class Municipio(models.Model):
         return f'{self.nombre}'
 
 
-class Estado(models.Model):
-    id=models.AutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='ESTADO',max_length=25)
-
-    class Meta:
-        db_table='ESTADO'
-        verbose_name='ESTADO'
-        verbose_name_plural='ESTADOS'
-
-
-    def __str__(self):
-        return f'{self.nombre}'
-
-
 class Lugar(models.Model):
     id=models.AutoField(db_column='ID',primary_key=True)
     direccion=models.CharField(db_column='DIRECCION',max_length=150)

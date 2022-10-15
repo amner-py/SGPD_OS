@@ -1,3 +1,7 @@
 from django.contrib import admin
+from core.respuesta.models import Respuesta
 
-# Register your models here.
+
+@admin.register(Respuesta)
+class RespuestaAdmin(admin.ModelAdmin):
+    pass

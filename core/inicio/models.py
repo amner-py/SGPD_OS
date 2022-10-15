@@ -19,7 +19,7 @@ class Seccion(models.Model):
 
 class Img(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
-    src=models.ImageField(db_column='SRC',upload_to='test',null=True)
+    src=models.ImageField(db_column='SRC',upload_to='carrusel_seccion',null=True)
     seccion=models.ForeignKey(Seccion,db_column='SECCION_ID',on_delete=models.CASCADE)
 
     class Meta:
