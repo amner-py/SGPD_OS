@@ -4,8 +4,9 @@ from lugar.models import Lugar
 
 
 class Asignacion(models.Model):
-    delegacion=models.ForeignKey(Delegacion,db_name='DELEGACION_ID',primary_key=True,on_delete=models.CASCADE)
+    delegacion=models.ForeignKey(Delegacion,db_column='DELEGACION_ID',primary_key=True,on_delete=models.CASCADE)
     lugar=models.ForeignKey(Lugar,db_column='LUGAR_ID',primary_key=True,on_delete=models.CASCADE)
+    fecha=models.DateField(db_column='FECHA',blank=False,null=False)
 
     class Meta:
         db_table='ASIGNACION'
