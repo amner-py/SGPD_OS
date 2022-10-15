@@ -1,4 +1,3 @@
-import re
 from django.db import models
 from delegacion.models import Delegacion
 from lugar.models import Lugar
