@@ -7,7 +7,7 @@ class FormularioAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Seccion)
+@admin.register(SeccionFormulario)
 class SeccionAdmin(admin.ModelAdmin):
     pass
 

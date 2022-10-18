@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
-from core.delegacion.models import Delegacion
-from core.formulario.models import Pregunta
+from ..delegacion.models import Delegacion
+from ..formulario.models import Pregunta
 
 
 class Respuesta(models.Model):

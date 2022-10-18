@@ -21,7 +21,7 @@ class Formulario(models.Model):
         return f'{self.titulo}'
 
 
-class Seccion(models.Model):
+class SeccionFormulario(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
     titulo=models.CharField(db_column='TITULO',max_length=40)
     formulario=models.ForeignKey(Formulario,db_column='FORMULARIO_ID',on_delete=models.CASCADE)
@@ -56,8 +56,8 @@ class Pregunta(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
     enunciado=models.CharField(db_column='ENUNCIADO',max_length=350,blank=False,null=False)
     formulario=models.ForeignKey(Formulario,db_column='FORMULARIO_ID',on_delete=models.CASCADE)
-    seccion=models.ForeignKey(Seccion,db_column='SECCION_ID',on_delete=models.SET_NULL)
-    campo=models.ForeignKey(TipoCampo,db_column='TIPOC_ID',on_delete=models.SET_NULL)
+    seccion=models.ForeignKey(SeccionFormulario,db_column='SECCION_ID',on_delete=models.CASCADE)
+    campo=models.ForeignKey(TipoCampo,db_column='TIPOC_ID',on_delete=models.CASCADE)
 
 
     class Meta:

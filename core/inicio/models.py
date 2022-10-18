@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Seccion(models.Model):
+class SeccionInicio(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
     titulo=models.CharField(db_column='TITULO',max_length=50,blank=False,null=False)
     informacion=models.CharField(db_column='INFORMACION',max_length=350,blank=False,null=False)
@@ -17,10 +17,10 @@ class Seccion(models.Model):
         return f'{self.titulo}'
 
 
-class Img(models.Model):
+class ImgInicio(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
     src=models.ImageField(db_column='SRC',upload_to='carrusel_seccion',null=True)
-    seccion=models.ForeignKey(Seccion,db_column='SECCION_ID',on_delete=models.CASCADE)
+    seccion=models.ForeignKey(SeccionInicio,db_column='SECCION_ID',on_delete=models.CASCADE)
 
     class Meta:
         db_table='IMG_INICIO'

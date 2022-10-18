@@ -1,5 +1,4 @@
 from django.db import models
-from delegacion.models import Delegacion
 
 
 class Departamento(models.Model):
@@ -34,8 +33,7 @@ class Municipio(models.Model):
 class Lugar(models.Model):
     id=models.AutoField(db_column='ID',primary_key=True)
     direccion=models.CharField(db_column='DIRECCION',max_length=150)
-    municipio=models.ForeignKey(Municipio,db_column='MUNICIPIO_ID',on_delete=models.SET_NULL)
-    delegacion=models.ForeignKey(Delegacion,db_column='DELEGACION_ID',on_delete=models.SET_NULL)
+    municipio=models.ForeignKey(Municipio,db_column='MUNICIPIO_ID',on_delete=models.CASCADE)
 
     
     class Meta:

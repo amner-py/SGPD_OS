@@ -1,5 +1,6 @@
 from django.db import models
-from delegacion.models import Delegacion
+from ..delegacion.models import Delegacion
+from datetime import date, datetime
 
 
 class Notificacion(models.Model):
@@ -8,6 +9,7 @@ class Notificacion(models.Model):
     mensaje=models.CharField(db_column='MENSAJE',max_length=350)
     emisor=models.ForeignKey(Delegacion,db_column='EMISOR',on_delete=models.CASCADE)
     leido=models.BooleanField(db_column='LEIDO',default=False)
+    fechahora=models.DateTimeField(db_column='FECHA_HORA',blank=False,null=False,default=datetime.now,editable=False)
 
     class Meta:
         db_table='NOTIFICACION'
@@ -20,7 +22,7 @@ class Notificacion(models.Model):
 
 class Destinatario(models.Model):
     id=models.BigAutoField(db_column='ID',primary_key=True)
-    usuario=models.ForeignKey(Delegacion,db_column='USUARIO',on_delete=models.SET_NULL)
+    usuario=models.ForeignKey(Delegacion,db_column='USUARIO',on_delete=models.SET_NULL,null=True)
     notificacion=models.ForeignKey(Notificacion,db_column='NOTIFICACION_ID',on_delete=models.CASCADE)
 
     class Meta:

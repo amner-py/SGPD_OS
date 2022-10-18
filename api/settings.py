@@ -40,7 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #Custom Apps
-    'core.delegacion'
+    'core.delegacion',
+    'core.lugar',
+    'core.asignacion',
+    'core.inicio',
+    'core.notificacion',
+    'core.operacion',
+    'core.formulario',
+    'core.respuesta',
 ]
 
 MIDDLEWARE = [
