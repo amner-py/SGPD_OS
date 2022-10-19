@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Operacion(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,null=False,blank=False)
 
     
     class Meta:
@@ -17,9 +17,9 @@ class Operacion(models.Model):
 
 
 class TipoOperativo(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350,blank=False,null=False)
-    operacion=models.ForeignKey(Operacion,db_column='OPERACION_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,blank=False,null=False)
+    operacion=models.ForeignKey(Operacion,verbose_name='Operación',db_column='OPERACION_ID',on_delete=models.CASCADE)
 
     
     class Meta:
@@ -33,9 +33,9 @@ class TipoOperativo(models.Model):
 
     
 class EjeTrabajo(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350,blank=False,null=False)
-    operacion=models.ForeignKey(Operacion,db_column='OPERACION_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,blank=False,null=False)
+    operacion=models.ForeignKey(Operacion,verbose_name='Operación',db_column='OPERACION_ID',on_delete=models.CASCADE)
 
     
     class Meta:
@@ -49,9 +49,9 @@ class EjeTrabajo(models.Model):
 
     
 class Producto(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350)
-    opearcion=models.ForeignKey(Operacion,db_column='OPERACION_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,null=False,blank=False)
+    operacion=models.ForeignKey(Operacion,verbose_name='Operación',db_column='OPERACION_ID',on_delete=models.CASCADE)
 
     
     class Meta:
@@ -65,9 +65,9 @@ class Producto(models.Model):
 
 
 class Subproducto(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350)
-    producto=models.ForeignKey(Producto,db_column='PRODUCTO_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,null=False,blank=False)
+    producto=models.ForeignKey(Producto,verbose_name='Producto',db_column='PRODUCTO_ID',on_delete=models.CASCADE)
 
     
     class Meta:
@@ -81,9 +81,9 @@ class Subproducto(models.Model):
 
 
 class Plan(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=350)
-    operacion=models.ForeignKey(Operacion,db_column='OPERACION_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=350,null=False,blank=False)
+    operacion=models.ForeignKey(Operacion,verbose_name='Operación',db_column='OPERACION_ID',on_delete=models.CASCADE)
 
 
     class Meta:

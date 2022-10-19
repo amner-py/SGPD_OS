@@ -2,9 +2,9 @@ from django.db import models
 
 
 class SeccionInicio(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    titulo=models.CharField(db_column='TITULO',max_length=50,blank=False,null=False)
-    informacion=models.CharField(db_column='INFORMACION',max_length=350,blank=False,null=False)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    titulo=models.CharField(verbose_name='Título',db_column='TITULO',max_length=50,blank=False,null=False)
+    informacion=models.CharField(verbose_name='Información',db_column='INFORMACION',max_length=350,blank=False,null=False)
 
     
     class Meta:
@@ -18,9 +18,9 @@ class SeccionInicio(models.Model):
 
 
 class ImgInicio(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    src=models.ImageField(db_column='SRC',upload_to='carrusel_seccion',null=True)
-    seccion=models.ForeignKey(SeccionInicio,db_column='SECCION_ID',on_delete=models.CASCADE)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    src=models.ImageField(verbose_name='Ruta',db_column='SRC',upload_to='carrusel_seccion',null=True)
+    seccion=models.ForeignKey(SeccionInicio,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE)
 
     class Meta:
         db_table='IMG_INICIO'
@@ -33,10 +33,10 @@ class ImgInicio(models.Model):
 
 
 class RedSocial(models.Model):
-    id=models.BigAutoField(db_column='ID',primary_key=True)
-    nombre=models.CharField(db_column='NOMBRE',max_length=15,blank=False,null=False)
-    url=models.CharField(db_column='URL',max_length=350,blank=False,null=False)
-    icono=models.ImageField(db_column='ICONO',upload_to='social',null=False)
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=15,blank=False,null=False)
+    url=models.CharField(verbose_name='Enlace URL',db_column='URL',max_length=350,blank=False,null=False)
+    icono=models.ImageField(verbose_name='Icono',db_column='ICONO',upload_to='social',null=False)
 
     
     class Meta:
