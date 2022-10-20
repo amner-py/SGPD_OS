@@ -4,4 +4,8 @@ from .models import Asignacion
 
 @admin.register(Asignacion)
 class AsignacionAdmin(admin.ModelAdmin):
-    pass
+    list_display=['__str__']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=[]

@@ -29,3 +29,7 @@ class Destinatario(models.Model):
         db_table='DESTINATARIO'
         verbose_name='DESTINATARIO'
         verbose_name_plural='DESTINATARIOS'
+
+    
+    def __str__(self):
+        return f'{self.usuario.delegacion}' if f'{self.usuario.delegacion}' else f'{self.usuario.username}'

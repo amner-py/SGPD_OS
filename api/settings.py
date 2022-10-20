@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,3 +133,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Default Auth_User Custom
 AUTH_USER_MODEL='delegacion.Delegacion'
+
+
+JAZZMIN_SETTINGS = {
+    'site_title':'PNC-SGPD',
+    'site_brand':'PNC-SGPD',
+    'site_header':'PNC-SGPD',
+    'site_logo':'img/logo_pnc.png',
+    'site_icon':'img/logo_pnc.ico',
+    'welcome_sign':'¡Bienvenido!',
+
+}

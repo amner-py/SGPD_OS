@@ -56,7 +56,7 @@ class Pregunta(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     enunciado=models.CharField(verbose_name='Enunciado de Pregunta',db_column='ENUNCIADO',max_length=350,blank=False,null=False)
     formulario=models.ForeignKey(Formulario,verbose_name='Formulario',db_column='FORMULARIO_ID',on_delete=models.CASCADE)
-    seccion=models.ForeignKey(SeccionFormulario,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE)
+    seccion=models.ForeignKey(SeccionFormulario,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE,null=True,blank=True)
     campo=models.ForeignKey(TipoCampo,verbose_name='Tipo de Campo',db_column='TIPOC_ID',on_delete=models.CASCADE)
 
 
@@ -68,3 +68,19 @@ class Pregunta(models.Model):
     
     def __str__(self):
         return f'{self.enunciado}'
+
+
+class Opcion(models.Model):
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',null=False,blank=False,max_length=250)
+    pregunta=models.ForeignKey(Pregunta,verbose_name='Pregunta',db_column='PREGUNTA_ID',on_delete=models.CASCADE)
+
+
+    class Meta:
+        db_table='OPCION'
+        verbose_name='OPCION'
+        verbose_name_plural='OPCIONES'
+
+
+    def __str__(self):
+        return f'{self.nombre}'

@@ -4,14 +4,26 @@ from .models import *
 
 @admin.register(Departamento)
 class DepartamentoAdmin(admin.ModelAdmin):
-    pass
+    list_display=['__str__']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=[]
 
 
 @admin.register(Municipio)
 class MunicipioAdmin(admin.ModelAdmin):
-    pass
+    list_display=['__str__']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=[]
 
 
 @admin.register(Lugar)
 class LugarAdmin(admin.ModelAdmin):
-    pass
+    list_display=['__str__']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=[]
