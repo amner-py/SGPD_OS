@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from django.urls import reverse_lazy
 from pathlib import Path
 import os
 import api.db as DB
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'login_example',
     #Custom Apps
     'core.delegacion',
     'core.lugar',
@@ -66,7 +68,7 @@ ROOT_URLCONF = 'api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,6 +137,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='delegacion.Delegacion'
 
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 JAZZMIN_SETTINGS = {
     'site_title':'PNC-SGPD',
     'site_brand':'PNC-SGPD',
@@ -142,5 +147,14 @@ JAZZMIN_SETTINGS = {
     'site_logo':'img/logo_pnc.png',
     'site_icon':'img/logo_pnc.ico',
     'welcome_sign':'¡Bienvenido!',
+    "topmenu_links": [
 
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Inicio",  "url": "/", "permissions": ["auth.view_user"]},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        
+    ]
 }
