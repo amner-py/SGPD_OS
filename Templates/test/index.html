@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form action="">
+        <div class="row">
+            <div class="col-sm-10 overflow-auto ask-side">
+                <div class="card shadow rounded p-3 mb-3">
+                    <input type="text" class="title-in border-bottom border-secondary" placeholder="TITULO DE FORMULARIO" name="enunciado" id='enunciado' required />
+                    
+                    <div class="card-body">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Descripción del formulario"></textarea>
+                    </div>
+                </div>
+                <div class="card shadow rounded p-3 mb-3">
+                    <div class="row p-3">
+                        <div class="col-sm-8">
+                            <input type="text" class="enunciado-in border-bottom border-secondary" placeholder="Enunciado de pregunta" name="enunciado" id='enunciado' required />
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-select">
+                                <option value="1">Texto corto</option>
+                                <option value="2">Texto largo</option>
+                                <option value="3">Numérico</option>
+                                <option value="4">Radial</option>
+                                <option value="3">Casillas</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <p class="form-control">TEXTO LARGO</p>
+                    
+                    <div class="collapse row p-3 align-items-center" id="validate">
+                        <div class="col-sm-3">
+                            <select class="form-select">
+                                <option value="1">Mayor que</option>
+                                <option value="2">Menor que</option>
+                                <option value="3">Mayor o igual que</option>
+                                <option value="4">Menor o igual que</option>
+                                <option value="3">Igual</option>
+                            </select>
+                        </div>
+                        a
+                        
+                        <div class="form-check form-check-inline col-sm-2 align-items-center justify-content-center">
+                            <input class="form-check-input" type="radio" name="validar_con" id="validar_con1">
+                            <label class="form-check-label" for="validar_con1">
+                                <input type="number" class="title-in border-bottom border-secondary" placeholder="Número" name="numero_check" id='numero_check' onchange="getValor()" />
+                            </label>
+                          </div>
+                          <div class="form-check form-check-inline col-sm-6">
+                            <input class="form-check-input" type="radio" name="validar_con" id="validar_con2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Suma de todos los campos numéricos en el grupo</label>
+                        </div>
+
+                    </div>
+                </div>
+                    <div class="card-footer hstack gap-3">
+                        <button type="button" class="btn btn-sm btn-light ms-auto" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Pulsar para agregar nueva pregunta.">
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
+                        <div class="vr"></div>
+                        <div class="form-check form-switch form-check-reverse">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Obligatorio</label>
+                        </div>
+                        <div class="btn-group dropdown">
+                            <button type="button" class="btn btn-sm btn-light"data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-symbols-outlined">
+                                    more_vert
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="btn dropdown-item" data-bs-toggle="collapse" href="#validate" role="button" aria-expanded="false" aria-controls="collapseExample">Validar pregunta</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-2 menu-side">
+                <div class="sticky-top">
+                    <div class="menu">
+                        <button type="button" class="btn btn-sm btn-light card shadow rounded" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Pulsar para agregar nueva pregunta.">
+                            <span class="material-symbols-outlined">
+                                add_box
+                                </span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-light card shadow rounded" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Pulsar para agregar lista de datos.">
+                            <span class="material-symbols-outlined">
+                                library_add
+                                </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="ENVIAR">
+    </form>
+    </div>
+    <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1/dist/es-module-shims.min.js" crossorigin="anonymous"></script>
+    <script src="main.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+</body>
+</html>
