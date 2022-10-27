@@ -1,12 +1,25 @@
-from distutils import core
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from .models import Delegacion
+from .forms import DelegacionCreateForm,DelegacionChangeForm
+
 
 @admin.register(Delegacion)
-class DelegacionAdmin(admin.ModelAdmin):
-    list_display=['__str__']
-    list_filter=[]
-    list_editable=[]
-    list_per_page=15
-    search_fields=[]
-
+class DelegacionAdmin(UserAdmin):
+    form=DelegacionChangeForm
+    add_form=DelegacionCreateForm
+    fieldsets=UserAdmin.fieldsets + (
+        (
+            'Delegación',{
+                'fields':(
+                    'delegacion',
+                )
+            }
+        ),
+    )
+    list_display=[
+        'username',
+        'first_name',
+        'delegacion'
+    ]
+    list_editable=['delegacion']

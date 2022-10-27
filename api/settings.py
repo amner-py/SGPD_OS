@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from json import JSONEncoder
 from django.urls import reverse_lazy
 from pathlib import Path
 import os
 import api.db as DB
+from datetime import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -114,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-gt'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guatemala'
 
 USE_I18N = True
 
@@ -147,13 +149,13 @@ JAZZMIN_SETTINGS = {
     'site_logo':'img/logo_pnc.png',
     'site_icon':'img/logo_pnc.ico',
     'welcome_sign':'¡Bienvenido!',
-    "topmenu_links": [
+    'topmenu_links': [
 
         # Url that gets reversed (Permissions can be added)
-        {"name": "Inicio",  "url": "/", "permissions": ["auth.view_user"]},
+        {'name':'Inicio','url':'/'},
 
         # model admin to link to (Permissions checked against model)
-        {"model": "auth.User"},
+        #{"model": "auth.User"},
 
         
     ]

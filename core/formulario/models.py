@@ -52,12 +52,27 @@ class TipoCampo(models.Model):
         return f'{self.nombre}'
 
 
+class Validacion(models.Model):
+    CONDICION_CHOICE=[
+        ('<','Menor que'),
+        ('>','Mayor que'),
+        ('<=','Menor o igual que'),
+        ('>=','Mayor o igual que'),
+        ('=','Igual que'),
+    ]
+
+    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    condicion=models.CharField(verbose_name='Condición',db_column='CONDICION',max_length=30,choices=CONDICION_CHOICE)
+    numero_a_validar=models.PositiveBigIntegerField(verbose_name='Número a validar',db_column='NUMERO_A_VALIDAR')
+
+
 class Pregunta(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     enunciado=models.CharField(verbose_name='Enunciado de Pregunta',db_column='ENUNCIADO',max_length=350,blank=False,null=False)
     formulario=models.ForeignKey(Formulario,verbose_name='Formulario',db_column='FORMULARIO_ID',on_delete=models.CASCADE)
     seccion=models.ForeignKey(SeccionFormulario,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE,null=True,blank=True)
     campo=models.ForeignKey(TipoCampo,verbose_name='Tipo de Campo',db_column='TIPOC_ID',on_delete=models.CASCADE)
+    validacion=models.ForeignKey()
 
 
     class Meta:
