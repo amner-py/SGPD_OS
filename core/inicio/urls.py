@@ -1,10 +1,6 @@
-'''from django.urls import path
-from .views import InicioView
-
-
-app_name='inicio'
-
+from django.urls import path
+from .views import SeccionView
 
 urlpatterns = [
-    path('/',InicioView.as_view()),
-]'''
+    path('secciones',SeccionView.as_view(),name='secciones'),
+]

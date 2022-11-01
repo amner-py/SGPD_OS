@@ -72,7 +72,7 @@ class Pregunta(models.Model):
     formulario=models.ForeignKey(Formulario,verbose_name='Formulario',db_column='FORMULARIO_ID',on_delete=models.CASCADE)
     seccion=models.ForeignKey(SeccionFormulario,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE,null=True,blank=True)
     campo=models.ForeignKey(TipoCampo,verbose_name='Tipo de Campo',db_column='TIPOC_ID',on_delete=models.CASCADE)
-    validacion=models.ForeignKey()
+    
 
 
     class Meta:

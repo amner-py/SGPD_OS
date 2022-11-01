@@ -1,10 +1,11 @@
 from django.db import models
+from tinymce import models as TinyMCE
 
 
 class SeccionInicio(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     titulo=models.CharField(verbose_name='Título',db_column='TITULO',max_length=50,blank=False,null=False)
-    informacion=models.CharField(verbose_name='Información',db_column='INFORMACION',max_length=350,blank=False,null=False)
+    informacion=TinyMCE.HTMLField(verbose_name='Información',db_column='INFORMACION',max_length=3000,blank=False,null=False)
 
     
     class Meta:
