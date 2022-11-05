@@ -1,6 +1,6 @@
-.MapaGuatemala {
-    width: 40%;
-    margin: auto;
+#mapa-container{
+    width: 10%;
+    height: 10%;
 }
 
 path{

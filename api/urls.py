@@ -5,11 +5,11 @@ from django.conf.urls.static import static
 from core.inicio.views import InicioView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('panel_control/', admin.site.urls),
     path('',InicioView.as_view(), name='inicio'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('lugar/', include('core.lugar.urls')),
-    path('seccion/',include('core.inicio.urls')),
+    path('notificacion/', include('core.notificacion.urls')),
     path('asignacion/',include('core.asignacion.urls')),
 ]
 

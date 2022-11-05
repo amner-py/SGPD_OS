@@ -23,3 +23,17 @@ class Respuesta(models.Model):
     def __str__(self):
         return f'{self.respuesta}'
 
+    '''
+    def save(self, force_insert, force_update, using, update_fields):
+        valor=super().save(force_insert, force_update, using, update_fields)
+
+        respuestas_hechas=len(Respuesta.objects.all())
+        if respuestas_hechas<0:
+            meta_mensual_id=MetaMensual.objects.filter(mes=datetime.month,delegacion=self.delegacion)
+            diferencia_metas=meta_mensual_id-respuestas_hechas
+            if diferencia_metas>0:
+                meta_diaria_alcanzada=MetaDiariaAlcanzada(meta_alcanzada=respuestas_hechas,meta_mensual=meta_mensual_id)
+
+        return valor
+
+'''

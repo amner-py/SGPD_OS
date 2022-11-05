@@ -150,6 +150,10 @@ JAZZMIN_SETTINGS = {
     'site_logo':'img/logo_pnc.png',
     'site_icon':'img/logo_pnc.ico',
     'welcome_sign':'¡Bienvenido!',
+    "usermenu_links": [
+        {"name": "Inicio", "url": "/", "new_window": False},
+    ],
+
     'topmenu_links': [
 
         # Url that gets reversed (Permissions can be added)

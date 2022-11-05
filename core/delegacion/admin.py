@@ -23,3 +23,4 @@ class DelegacionAdmin(UserAdmin):
         'delegacion'
     ]
     list_editable=['delegacion']
+

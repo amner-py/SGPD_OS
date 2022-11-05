@@ -5,8 +5,7 @@
 {% block content %}
 <div class="container">
     <svg
-        width="1080"
-        height="1080"
+        width="50%"
         viewBox="0 0 285.74999 285.75001"
         version="1.1"
         id="svg8"
@@ -43,7 +42,7 @@
         {% for asignacion in asignaciones %}
             {% if asignacion.lugar.municipio.nombre == 'Esquipulas'%}
                 <tr>
-                    <td>{{asignacion.delegacion.delegacion}}</td>
+                    <td><a href="/panel_control/asignacion/asignacion/{{asignacion.id}}/change">{{asignacion.delegacion.delegacion}}</a></td>
                     <td>{{asignacion.fecha}}</td>
                 </tr>
             {% endif %}
@@ -52,5 +51,15 @@
     </table>
 </div>
 {% endif %}
+
+{% if perms.asignacion.can_add_asignacion %}
+<a class="btn btn-sm btn-outline-primary" href="/panel_control/asignacion/asignacion/add/">
+    <span class="material-symbols-outlined">
+        add_box
+    </span>
+    <span>ASIGNAR</span>
+</a>
+{% endif %}
+
 {% endblock content %}
 

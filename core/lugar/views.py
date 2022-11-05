@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..asignacion.models import Asignacion
+
 
 class DepartamentoView(TemplateView):
     template_name='departamentos_view.html'
@@ -15,6 +17,7 @@ class ChiquiSanJoseLaAradaView(TemplateView):
 class EsquipulasView(TemplateView):
     template_name='chiquimula/esquipulas.html'
 
+    
     def get(self, request, *args, **kwargs):
         asignaciones = Asignacion.objects.all()
         

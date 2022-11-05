@@ -24,6 +24,7 @@
     float: right;
 }
 
+
 @media  (max-width:645px){
     #btn-inicio{
         visibility: visible;
