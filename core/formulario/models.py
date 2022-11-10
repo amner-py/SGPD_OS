@@ -9,7 +9,7 @@ class Formulario(models.Model):
     titulo=models.CharField(verbose_name='Título',db_column='TITULO',max_length=40,blank=False,null=False)
     descripcion=models.CharField(verbose_name='Descripción',db_column='DESCRIPCION',max_length=255,blank=True,null=False)
     creado=models.DateTimeField(verbose_name='Fecha de Creación',db_column='FECHA_CREADO',default=datetime.now,editable=False)
-    operacion=models.ForeignKey(Operacion,verbose_name='Plan',db_column='PLAN_ID',on_delete=models.CASCADE)
+    operacion=models.ForeignKey(Operacion,verbose_name='Operación',db_column='PLAN_ID',on_delete=models.CASCADE)
     
 
     class Meta:

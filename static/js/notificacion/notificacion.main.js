@@ -3,12 +3,12 @@ let lista_noti=document.getElementById("menu-notificacion")
 let username=document.getElementById("usuario").value
 
 console.log(username)
-const get_notificaciones= (user) => {
+const get_notificaciones= () => {
     const options={
         method:'GET'
     }
     
-    fetch('/notificacion/notificaciones',options)
+    fetch('/notificacion/notificacion',options)
         .then(response => response.json())
         .then(data =>{
                 set_notificacion(data,username)
@@ -20,7 +20,7 @@ const set_notificacion=(data,user)=>{
     console.log(notificaciones[0])
     let no_leidos=0
     notificaciones[0].forEach(notificacion=>{
-        if(notificacion.leido===false && notificacion.receptor_id==user){
+        if(notificacion.leido==false && notificacion.receptor_id==user){
             no_leidos++
         }
     })

@@ -42,13 +42,13 @@
                 {% endif %}
                 {% if perms.formulario %}
                 <li class="nav-item">
-                    <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="panel_control/formulario/formulario/">FORMULARIOS</a>
+                    <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="/panel_control/formulario/formulario/">FORMULARIOS</a>
                 </li>
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}
             <div style="padding-right:40px;">
-                <a id="notificaciones" class="position-relative" href="">
+                <a id="notificaciones" class="position-relative" href="/notificacion/notificaciones" style="cursor:pointer">
                     <span class="material-symbols-outlined">
                         notifications
                     </span>

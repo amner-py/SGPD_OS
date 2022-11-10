@@ -46,4 +46,4 @@ class RedSocial(models.Model):
         verbose_name_plural='REDES SOCIALES'
 
     def __str__(self):
-        return f'{self.nombre.upper}:{self.url}'
+        return f'{self.nombre}: {self.url}'

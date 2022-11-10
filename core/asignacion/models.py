@@ -39,7 +39,7 @@ class MetaMensual(models.Model):
         ('11','Noviembre'),
         ('12','Diciembre'),
     ]
-    meta=models.PositiveBigIntegerField(verbose_name='Meta diaria',db_column='META_DIARIA')
+    meta=models.PositiveBigIntegerField(verbose_name='Meta mensual',db_column='META_DIARIA')
     mes=models.CharField(verbose_name='Mes',db_column='MES',choices=MES_CHOICE,max_length=15)
     delegacion=models.OneToOneField(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
 
