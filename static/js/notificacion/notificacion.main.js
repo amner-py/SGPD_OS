@@ -8,7 +8,7 @@ const get_notificaciones= () => {
         method:'GET'
     }
     
-    fetch('/notificacion/notificacion',options)
+    fetch('/notificacion/api/notificaciones',options)
         .then(response => response.json())
         .then(data =>{
                 set_notificacion(data,username)

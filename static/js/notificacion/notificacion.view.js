@@ -7,12 +7,13 @@ const view_notificaciones= async() => {
         method:'GET'
     }
     
-    const response = await fetch('/notificacion/notificacion',options)
+    const response = await fetch('/notificacion/api/notificaciones',options)
     const data = await response.json()
     mostrar_notificacion(data,uname)
 }
 
 const mostrar_notificacion=(data,user)=>{
+    let count=0
     const notificaciones = new Array(data.notificaciones)
     console.log(notificaciones[0])
     notificaciones[0].forEach(notificacion=>{
@@ -62,6 +63,9 @@ const mostrar_notificacion=(data,user)=>{
                 body.appendChild(mensaje)
 
                 notificacion_card.appendChild(body)
+                console.log(count++)
+                console.log(notificacion.id)
+                console.log(notificacion.motivo)
             }else{
                 const header=document.createElement('div')
                 header.classList="card-header bg-warning text-white hstack"
@@ -104,6 +108,9 @@ const mostrar_notificacion=(data,user)=>{
                 body.appendChild(mensaje)
 
                 notificacion_card.appendChild(body)
+                console.log(count++)
+                console.log(notificacion.id)
+                console.log(notificacion.motivo)
             }
 
             
@@ -130,7 +137,7 @@ const actualizar=async(id)=>{
         body:JSON.stringify(data)
     }
     
-    const response = await fetch(`/notificacion/notificacion/${id.value}`,options)
+    const response = await fetch(`/notificacion/actualizacion/${id.value}`,options)
 
     location.reload()
 }

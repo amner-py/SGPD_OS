@@ -1,21 +1,38 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from ..asignacion.models import Asignacion
 
 
 class DepartamentoView(TemplateView):
     template_name='departamentos_view.html'
+    
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class DepaChiquimulaView(TemplateView):
     template_name='chiquimula/depa_chiquimula.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 class ChiquiSanJoseLaAradaView(TemplateView):
     template_name='chiquimula/san_jose_la_arada.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 class EsquipulasView(TemplateView):
     template_name='chiquimula/esquipulas.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     
     def get(self, request, *args, **kwargs):

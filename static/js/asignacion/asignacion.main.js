@@ -4,7 +4,7 @@ const ver_asignados= () => {
         method:'GET'
     }
     
-    fetch('/asignacion/asignaciones',options)
+    fetch('/asignacion/api/asignaciones',options)
         .then(response => response.json())
         .then(response => console.log(response))
         .then(err => console.error(err));

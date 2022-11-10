@@ -10,7 +10,6 @@ from .models import Notificacion
 class NotificacionesListView(ListView):
     template_name='notificaciones_view.html'
     model=Notificacion
-    paginate_by=15
 
 
     @method_decorator(login_required)
