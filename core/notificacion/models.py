@@ -19,17 +19,3 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return f'{self.mensaje} \u1F5F8' if self.leido else f'{self.mensaje}'
-
-'''class Destinatario(models.Model):
-    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
-    usuario=models.ForeignKey(Delegacion,verbose_name='Destinatario',db_column='USUARIO',on_delete=models.SET_NULL,null=True)
-    notificacion=models.ForeignKey(Notificacion,verbose_name='Notificación',db_column='NOTIFICACION_ID',on_delete=models.CASCADE)
-
-    class Meta:
-        db_table='DESTINATARIO'
-        verbose_name='DESTINATARIO'
-        verbose_name_plural='DESTINATARIOS'
-
-    
-    def __str__(self):
-        return f'{self.usuario.delegacion}' if f'{self.usuario.delegacion}' else f'{self.usuario.username}'''

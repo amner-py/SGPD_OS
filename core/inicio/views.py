@@ -1,7 +1,15 @@
 from django.shortcuts import render
+from django.views.defaults import page_not_found
 from django.views.generic import TemplateView
 from .models import SeccionInicio,ImgInicio,RedSocial
 from ..operacion.models import Operacion
+
+
+def get_error_404(request,*args,**kwargs):
+    template_name = '404.html'
+ 
+    return page_not_found(request, template_name=template_name)
+
 
 class InicioView(TemplateView):
     template_name='inicio.html'

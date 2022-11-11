@@ -3,5 +3,50 @@
 {% block title %}{% endblock title %}
 
 {% block content %}
+<div class="container pt-3">
+    <button type="button" class="btn btn-outline-primary">
+        <span class="material-symbols-outlined">
+            add
+        </span>
+        Nuevo registro
+    </button>
 
+    <table class="table mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Pregunta
+                </th>
+                <th>
+                    Respuesta
+                </th>
+                <th>
+                    Fecha de Respuesta
+                </th>
+                <th>
+                    Opciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if hay_respuestas %}
+            {% for respuesta in respuestas %}
+            <tr>
+                <td>
+                    {{respuesta.pregunta}}
+                </td>
+                <td>
+                    {{respuesta.respuesta}}
+                </td>
+                <td>
+                    {{respuesta.respondido}}
+                </td>
+                <td></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+</div>
 {% endblock content %}
