@@ -3,12 +3,6 @@ from .models import Formulario,SeccionFormulario,Pregunta,Opcion,PreguntaAuxilia
 
 
 # INLINES
-class PreguntaInline(admin.TabularInline):
-    model=Pregunta
-
-class PreguntaAuxiliarInline(admin.TabularInline):
-    model=PreguntaAuxiliar
-
 class OpcionInline(admin.TabularInline):
     model=Opcion
 
@@ -19,7 +13,6 @@ class ValidacionInline(admin.TabularInline):
 # SITES REGISTERS
 @admin.register(Formulario)
 class FormularioAdmin(admin.ModelAdmin):
-    inlines=[PreguntaInline,PreguntaAuxiliarInline]
     list_display=['__str__']
     list_filter=[]
     list_editable=[]
@@ -29,7 +22,11 @@ class FormularioAdmin(admin.ModelAdmin):
 
 @admin.register(PreguntaAuxiliar)
 class PreguntaAuxiliarAdmin(admin.ModelAdmin):
-    pass
+    list_display=['__str__']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=[]
 
 
 @admin.register(SeccionFormulario)

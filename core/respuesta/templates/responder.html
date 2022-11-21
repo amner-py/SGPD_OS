@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Responder | PNC - SGPD{% endblock title %}
+
+
+{% block content %}
+<div class="container pt-3">
+    <h1>{{formulario.titulo}}</h1>
+    <input type="number" id="formulario-res" value="{{formulario.id}}" hidden>
+    <input type="text" id="respuestas-size" value="{{respuestas}}" hidden>
+    {% if hay_preguntas %}
+
+    {% for pregunta in preguntas %}
+    <table class="table mb-5">
+        <thead class="table-primary ">
+            <tr>
+                <th>
+                    {{pregunta.enunciado}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if pregunta.campo == 'rad' %}
+                {% for opcion in opciones %}
+                    {% if opcion.pregunta.id == pregunta.id %}
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value="{{opcion.nombre}}" name="ch{{pregunta.id}}" id="op{{opcion.id}}">
+                                <label class="form-check-label" for="op{{opcion.id}}">
+                                    {{opcion.nombre}}
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            {% elif pregunta.campo == 'cas' %}
+                {% for opcion in opciones %}
+                    {% if opcion.pregunta.id == pregunta.id %}
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{opcion.nombre}}" name="ch{{pregunta.id}}" id="op{{opcion.id}}">
+                                <label class="form-check-label" for="op{{opcion.id}}">
+                                    {{opcion.nombre}}
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            {% elif pregunta.campo == 'list' %}
+               
+                    <tr>
+                        <td>
+                            <select class="form-select" aria-label="Default select example" name="{{pregunta.id}}" id="{{pregunta.id}}">
+                            {% for opcion in opciones %}
+                            {% if opcion.pregunta.id == pregunta.id %}
+                            
+                                <option value="{{opcion.nombre}}">{{opcion.nombre}}</option>
+                              
+                            {% endif %}
+                            {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+            {% elif pregunta.campo == 'txc' %}
+                <tr>
+                    <td>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="{{pregunta.id}}" id="{{pregunta.id}}" placeholder="Respuesta...">
+                        </div>
+                    </td>
+                </tr>
+            {% elif pregunta.campo == 'txl' %}
+                <tr>
+                    <td>
+                        <div class="mb-3">
+                            <textarea class="form-control" name="{{pregunta.id}}" id="{{pregunta.id}}" rows="3" placeholder="Respuesta..."></textarea>
+                        </div>
+                    </td>
+                </tr>
+            {% elif pregunta.campo == 'num' %}
+                <tr>
+                    <td>
+                        <div class="mb-3">
+                            <input type="number" class="form-control" name="{{pregunta.id}}" id="{{pregunta.id}}" placeholder="Respuesta...">
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            
+        </tbody>
+    </table>
+    {% endfor %}
+    
+
+    <button type="submit" class="btn btn-outline-success" onclick="get_preguntas()">
+        <span class="material-symbols-outlined">
+            send
+        </span>
+        Finalizar
+    </button>
+    
+    {% endif %}
+</div>
+{% endblock content %}
+    
+{% block script %}
+{% load static %}
+<script src="{% static 'js/respuesta/responder.main.js' %}"></script>
+{% endblock script %}

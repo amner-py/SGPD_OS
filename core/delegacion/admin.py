@@ -13,6 +13,7 @@ class DelegacionAdmin(UserAdmin):
             'Delegación',{
                 'fields':(
                     'delegacion',
+                    'fecha_nacimiento'
                 )
             }
         ),

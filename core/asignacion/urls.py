@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import AsignacionView
+from .views import AsignacionView,MetaMensualView
 
 urlpatterns = [
-    path('asignaciones/api/asignaciones',AsignacionView.as_view(),name='asignaciones'),
+    path('api/asignaciones/',AsignacionView.as_view(),name='asignaciones'),
+    path('api/metas/',MetaMensualView.as_view(),name='metas_alcanzadas'),
 ]

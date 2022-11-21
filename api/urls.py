@@ -19,6 +19,7 @@ urlpatterns = [
     path('asignacion/',include('core.asignacion.urls')),
     path('formulario/',include('core.formulario.urls')),
     path('operacion/',include('core.operacion.urls')),
+    path('reporte/',include('core.reporte.urls')),
 ]
 
 

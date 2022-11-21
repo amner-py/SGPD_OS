@@ -1,14 +1,16 @@
 from django.db import models
+from tinymce import models as TinyMCE
 
 
 class Departamento(models.Model):
-    id=models.AutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
     nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=40,null=False,blank=False)
+    path=models.TextField(verbose_name='Path',db_column='PATH',max_length=30000,blank=False,null=False)
 
     class Meta:
         db_table='DEPARTAMENTO'
-        verbose_name='DEPARTAMENTO'
-        verbose_name_plural='DEPARTAMENTOS'
+        verbose_name='Departamento'
+        verbose_name_plural='Departamentos'
 
 
     def __str__(self):
@@ -16,14 +18,14 @@ class Departamento(models.Model):
 
 
 class Municipio(models.Model):
-    id=models.AutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
     nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=40,null=False,blank=False)
     departamento=models.ForeignKey(Departamento,verbose_name='Departamento',db_column='DEPARTAMENTO_ID',on_delete=models.CASCADE)
 
     class Meta:
         db_table='MUNICIPIO'
-        verbose_name='MUNICIPIOS'
-        verbose_name_plural='MUNICIPIOS'
+        verbose_name='Municipio'
+        verbose_name_plural='Municipios'
         
     
     def __str__(self):
@@ -31,15 +33,15 @@ class Municipio(models.Model):
 
 
 class Lugar(models.Model):
-    id=models.AutoField(verbose_name='ID',db_column='ID',primary_key=True)
+    id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
     direccion=models.CharField(verbose_name='Dirección',db_column='DIRECCION',max_length=150,null=False,blank=False)
     municipio=models.ForeignKey(Municipio,verbose_name='Municipio',db_column='MUNICIPIO_ID',on_delete=models.CASCADE)
 
     
     class Meta:
         db_table='LUGAR'
-        verbose_name='LUGAR'
-        verbose_name_plural='LUGARES'
+        verbose_name='Lugar'
+        verbose_name_plural='Lugares'
 
     
     def __str__(self):

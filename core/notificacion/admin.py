@@ -3,8 +3,8 @@ from .models import Notificacion
 
 @admin.register(Notificacion)
 class NotificacionAdmin(admin.ModelAdmin):
-    list_display=['__str__']
-    list_filter=[]
+    list_display=['motivo','mensaje','receptor']
+    list_filter=['receptor']
     list_editable=[]
     list_per_page=15
     search_fields=[]

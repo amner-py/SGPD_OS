@@ -1,8 +1,41 @@
+
+
 let btn_noti=document.getElementById("notificaciones")
 let lista_noti=document.getElementById("menu-notificacion")
 let username=document.getElementById("usuario").value
+let bday=document.getElementById('fnacimiento').value
+let bday_container=document.getElementById('bday')
+const fecha = new Date();
 
-console.log(username)
+const fecha_actual=`${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`
+const fecha_actual_f=`${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`
+
+const get_bday=()=>{
+    if(bday==fecha_actual){
+        const mensaje_bday='<span onclick="get_bday_msn()">&#127874;</span>'
+        bday_container.innerHTML=mensaje_bday
+    }
+}
+
+
+const get_bday_msn=()=>{
+    const nombre=document.getElementById('usuario-name').value
+    swal.fire({
+        title: '¡FELIZ CUMPLEAÑOS!',
+        html:`${nombre}<br><span>&#127881;</span>El día de hoy ${fecha_actual_f}<br>¡Te deseamos felicidades!<span>&#127881;</span><br><span>&#127874;</span><span>&#129395;</span><span>&#128110;</span>`,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      })
+}
+
+get_bday()
+
+console.log(fecha_actual)
+console.log(bday)
 const get_notificaciones= () => {
     const options={
         method:'GET'

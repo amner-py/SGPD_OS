@@ -15,4 +15,4 @@ class Delegacion(AbstractUser):
 
 
     def __str__(self):
-        return f'{self.first_name}' if self.first_name else f'{self.username}'
+        return f'{self.delegacion}' if self.delegacion else f'{self.username}'

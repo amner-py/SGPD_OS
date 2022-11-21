@@ -18,4 +18,4 @@ class Notificacion(models.Model):
 
 
     def __str__(self):
-        return f'{self.mensaje} \u1F5F8' if self.leido else f'{self.mensaje}'
+        return f'{self.mensaje}'

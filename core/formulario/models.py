@@ -20,30 +20,13 @@ class Formulario(models.Model):
 
     def __str__(self):
         return f'{self.titulo}'
-        
-
-class SeccionFormulario(models.Model):
-    id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
-    titulo=models.CharField(verbose_name='Título',db_column='TITULO',max_length=40,null=False,blank=False)
-    formulario=models.ForeignKey(Formulario,verbose_name='Formulario',db_column='FORMULARIO_ID',on_delete=models.CASCADE)
-
-    
-    class Meta:
-        db_table='SECCION_FORMULARIO'
-        verbose_name='SECCION DE FORMULARIO'
-        verbose_name_plural='SECCIONES DE FORMULARIO'
-
-    
-    def __str__(self):
-        return f'{self.titulo}'
 
 
 class Pregunta(models.Model):
     CAMPO_CHOICE=[
         ('txc','Texto corto'),
         ('txl','Texto largo'),
-        ('num','Número entero'),
-        ('dec','Decimal'),
+        ('num','Número'),
         ('rad','Radial'),
         ('cas','Casillas'),
         ('list','Lista'),
@@ -51,7 +34,6 @@ class Pregunta(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     enunciado=models.CharField(verbose_name='Enunciado de Pregunta',db_column='ENUNCIADO',max_length=350,blank=False,null=False)
     formulario=models.ForeignKey(Formulario,verbose_name='Formulario',db_column='FORMULARIO_ID',on_delete=models.CASCADE)
-    seccion=models.ForeignKey(SeccionFormulario,verbose_name='Sección',db_column='SECCION_ID',on_delete=models.CASCADE,null=True,blank=True)
     campo=models.CharField(verbose_name='Tipo de campo',db_column='CAMPO',max_length=15,choices=CAMPO_CHOICE)
     
 
@@ -86,32 +68,70 @@ class PreguntaAuxiliar(models.Model):
         return f'{self.pregunta}'
 
     def clean(self):
-        plan=len(Plan.objects.filter(operacion=self.formulario.operacion))>0
-        eje=len(EjeTrabajo.objects.filter(operacion=self.formulario.operacion))>0
-        producto=len(Producto.objects.filter(operacion=self.formulario.operacion))>0
-        toperativo=len(TipoOperativo.objects.filter(operacion=self.formulario.operacion))>0
+        try:
+            
+            pregunta=Pregunta()
+            pregunta.formulario=self.formulario
+            pregunta.campo='list'
+            print(self.pregunta)
+            planes=Plan.objects.filter(operacion=self.formulario.operacion)
+            ejes=EjeTrabajo.objects.filter(operacion=self.formulario.operacion)
+            productos=Producto.objects.filter(operacion=self.formulario.operacion)
+            toperativos=TipoOperativo.objects.filter(operacion=self.formulario.operacion)
 
-        if self.formulario == '':
-            raise ValidationError('El formulario no puede ir vacío.')
+            hay_plan=len(planes)>0
+            hay_eje=len(ejes)>0
+            hay_producto=len(productos)>0
+            hay_toperativo=len(toperativos)>0
+            
+            if self.formulario == '---------':
+                raise ValidationError('El formulario no puede ir vacío.')
 
-        if not plan and self.pregunta=='plan':
-            raise ValidationError('Plan no esta disponible para este formulario.')
-        else:
-            enunciado_aux='Plan'
-        if not eje and self.pregunta=='eje':
-            raise ValidationError('Eje de Trabajo no esta disponible para este formulario.')
-        else:
-            enunciado_aux='Eje de Trabajo'
-        if not producto and self.pregunta=='producto':
-            raise ValidationError('Producto no esta disponible para este formulario.')
-        else:
-            enunciado_aux='Producto'
-        if not toperativo and self.pregunta=='toperativo':
-            raise ValidationError('Tipo de Operativo no esta disponible para este formulario.')
-        else:
-            enunciado_aux='Tipo de Operativo'
+            if hay_plan and (self.pregunta=='plan'):
+                enunciado_aux='Plan/Orden'
+                pregunta.enunciado=enunciado_aux
+                pregunta.save()
+                print(pregunta.id)
+                for plan in planes:
+                    opcion=Opcion()
+                    opcion.nombre=plan.nombre
+                    opcion.pregunta=Pregunta.objects.get(pk=pregunta.id)
+                    opcion.save()
+            elif hay_eje and (self.pregunta=='eje'):
+                enunciado_aux='Eje de Trabajo'
+                pregunta.enunciado=enunciado_aux
+                pregunta.save()
+                print(pregunta.id)
+                for eje in ejes:
+                    opcion=Opcion()
+                    opcion.nombre=eje.nombre
+                    opcion.pregunta=Pregunta.objects.get(pk=pregunta.id)
+                    opcion.save()
+            elif hay_producto and (self.pregunta=='producto'):
+                enunciado_aux='Producto'
+                pregunta.enunciado=enunciado_aux
+                pregunta.save()
+                print(pregunta.id)
+                for producto in productos:
+                    opcion=Opcion()
+                    opcion.nombre=producto.nombre
+                    opcion.pregunta=Pregunta.objects.get(pk=pregunta.id)
+                    opcion.save()
+            elif hay_toperativo and (self.pregunta=='toperativo'):
+                enunciado_aux='Tipo de Operativo'
+                pregunta.enunciado=enunciado_aux
+                pregunta.save()
+                print(pregunta.id)
+                for toperativo in toperativos:
+                    opcion=Opcion()
+                    opcion.nombre=toperativo.nombre
+                    opcion.pregunta=Pregunta.objects.get(pk=pregunta.id)
+                    opcion.save()
+            else:
+                raise ValidationError('La opcion seleccionada no esta disponible para el formulario')
+        except:
+            raise ValidationError('Debe completar todos los campos.')
         
-        Pregunta.objects.create(enunciado=enunciado_aux,formulario=self.formulario,campo='list')
 
 
 class Validacion(models.Model):
@@ -147,3 +167,9 @@ class Opcion(models.Model):
 
     def __str__(self):
         return f'{self.nombre}'
+
+    def clean(self):
+        if self.pregunta.campo != 'list':
+            if self.pregunta.campo != 'cas':
+                if self.pregunta.campo != 'rad':
+                    raise ValidationError('Para crear opciones debe seleccionar una pregunta de tipo: Radial, Casillas o Lista.')

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock title %}
+
+{% block content %}
+<div class="container pt-3">
+    <a type="button" href="{% url 'respuestas' formulario %}" class="btn btn-outline-primary">
+        <span class="material-symbols-outlined">
+        </span>
+        Regresar
+    </a>
+
+    <table class="table mt-3">
+        <thead class="table-dark ">
+            <tr>
+                <th>
+                    PREGUNTA
+                </th>
+                <th>
+                    RESPUESTA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if hay_detalles %}
+            {% for detalle in detalles %}
+            <tr>
+                <td>
+                    {{detalle.pregunta.enunciado}}
+                </td>
+                <td>
+                    {{detalle.detalle}}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock content %}

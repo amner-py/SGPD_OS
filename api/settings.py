@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'core.operacion',
     'core.formulario',
     'core.respuesta',
+    'core.reporte',
 ]
 
 MIDDLEWARE = [
@@ -130,6 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 #Ruta para archivos estaticos CSS,JS,IMG
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]

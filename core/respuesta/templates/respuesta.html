@@ -4,24 +4,30 @@
 
 {% block content %}
 <div class="container pt-3">
-    <button type="button" class="btn btn-outline-primary">
+    <a type="button" href="{% url 'reports_view' %}" class="btn btn-outline-secondary">
+        <span class="material-symbols-outlined">
+            monitoring
+        </span>
+        Reporte
+    </a>
+    <a type="button" href="{% url 'responder' id=formulario %}" class="btn btn-outline-primary">
         <span class="material-symbols-outlined">
             add
         </span>
         Nuevo registro
-    </button>
+    </a>
 
     <table class="table mt-3">
-        <thead class="table-dark">
+        <thead class="table-dark ">
             <tr>
                 <th>
-                    Pregunta
+                    Fecha de Respuesta
                 </th>
                 <th>
                     Respuesta
                 </th>
                 <th>
-                    Fecha de Respuesta
+                    Ubicacion de Respuesta
                 </th>
                 <th>
                     Opciones
@@ -33,15 +39,17 @@
             {% for respuesta in respuestas %}
             <tr>
                 <td>
-                    {{respuesta.pregunta}}
-                </td>
-                <td>
-                    {{respuesta.respuesta}}
-                </td>
-                <td>
                     {{respuesta.respondido}}
                 </td>
-                <td></td>
+                <td>
+                    {{respuesta}}
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en google maps</a>
+                </td>
+                <td>
+                    <a href="{% url 'detalles_view' fr=formulario id=respuesta.id %}">ver</a>
+                </td>
             </tr>
             {% endfor %}
             {% endif %}
