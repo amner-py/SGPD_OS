@@ -10,8 +10,8 @@ class SeccionInicio(models.Model):
     
     class Meta:
         db_table='SECCION_INICIO'
-        verbose_name='SECCION INICIO'
-        verbose_name_plural='SECCIONES INICIO'
+        verbose_name='Sección de inicio'
+        verbose_name_plural='Secciones de inicio'
 
     
     def __str__(self):
@@ -25,8 +25,8 @@ class ImgInicio(models.Model):
 
     class Meta:
         db_table='IMG_INICIO'
-        verbose_name='IMAGEN INICIO'
-        verbose_name_plural='IMAGENES INCIO'
+        verbose_name='Imagen de inicio'
+        verbose_name_plural='Imágenes de inicio'
 
 
     def __str__(self):
@@ -42,8 +42,8 @@ class RedSocial(models.Model):
     
     class Meta:
         db_table='RED_SOCIAL'
-        verbose_name='RED SOCIAL'
-        verbose_name_plural='REDES SOCIALES'
+        verbose_name='Red social'
+        verbose_name_plural='Redes sociales'
 
     def __str__(self):
         return f'{self.nombre}: {self.url}'

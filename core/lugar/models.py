@@ -5,7 +5,7 @@ from tinymce import models as TinyMCE
 class Departamento(models.Model):
     id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
     nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=40,null=False,blank=False)
-    path=models.TextField(verbose_name='Path',db_column='PATH',max_length=30000,blank=False,null=False)
+    path=models.TextField(verbose_name='Path',db_column='PATH',max_length=30000,blank=True)
 
     class Meta:
         db_table='DEPARTAMENTO'
@@ -34,7 +34,7 @@ class Municipio(models.Model):
 
 class Lugar(models.Model):
     id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
-    direccion=models.CharField(verbose_name='Dirección',db_column='DIRECCION',max_length=150,null=False,blank=False)
+    direccion=models.CharField(verbose_name='Dirección',db_column='DIRECCION',max_length=150,null=False,blank=True)
     municipio=models.ForeignKey(Municipio,verbose_name='Municipio',db_column='MUNICIPIO_ID',on_delete=models.CASCADE)
 
     
@@ -45,4 +45,7 @@ class Lugar(models.Model):
 
     
     def __str__(self):
-        return f'{self.direccion}, {self.municipio.nombre}, {self.municipio.departamento.nombre}'
+        if self.direccion:
+            return f'{self.direccion}, {self.municipio.nombre}, {self.municipio.departamento.nombre}'
+        else:
+            return f'{self.municipio.nombre}, {self.municipio.departamento.nombre}'

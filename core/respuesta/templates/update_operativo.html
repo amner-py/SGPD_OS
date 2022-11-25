@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block title %}Nuevo Registro | PNC - SGPD{% endblock title %}
+{% block content %}
+
+<div class="container mt-3">
+    <input type="number" id="respuesta_id" value="{{res.id}}" hidden>
+    <div class="row"><div class="col-sm-4">
+        <div class="col-sm-2">
+            <a href="{% url 'respuestas_operativo_view' %}" class="btn btn-outline-secondary">Regresar</a>
+        </div>
+    </div><div class="col-sm-4"><h1>AREA OPERATIVA</h1></div><div class="col-sm-4"></div></div><br>
+    <div class="card mb-3 rounded shadow">
+        <h4 class="card-header">INFORMACION GENERAL</h4>
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label for="lugar_asignado" class="col-sm-2 col-form-label">Lugar Asignado</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="lugar_asignado" required>
+                    {% for lugar in lugares_asignados %}
+                        {% if res.asignado.id == lugar.id %}
+                            <option selected value="{{lugar.id}}">{{lugar.lugar}}</option>
+                        {% else %}
+                            <option value="{{lugar.id}}">{{lugar.lugar}}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="lugar_apoyo" class="col-sm-2 col-form-label">Lugar de Apoyo</label>
+                <div class="col-sm-10" id="cont_lug_apo">
+                    <input type="text" value="{{res.lugar_apoyo}}" maxlength="350" class="form-control" id="lugar_apoyo" required>
+                    <p id="aviso_apoyo" style="color:red;font-size:10.5px" hidden>*El campo no puede ir vacío.</p>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="plan" required>
+                    {% for plan in planes %}
+                        {% if res.plan.id == plan.id %}
+                            <option selected value="{{plan.id}}">{{plan.nombre}}</option>
+                        {% else %}
+                            <option value="{{plan.id}}">{{plan.nombre}}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="operativo" class="col-sm-2 col-form-label">Tipo de Operativo</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="operativo" required>
+                    {% for operativo in operativos %}
+                        {% if res.operativo.id == operativo.id %}
+                            <option selected value="{{operativo.id}}">{{operativo.nombre}}</option>
+                        {% else %}
+                        <option value="{{operativo.id}}">{{operativo.nombre}}</option>
+                            {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="observaciones" rows="3" maxlength="450">{{res.observaciones}}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="card mb-3 rounded shadow">
+    <h4 class="card-header">IDENTIFICADOS</h4>
+    <div class="card-body">
+        <p id="aviso_identificados" style="color:red;font-size:10.5px" hidden>*Debe haber más de una persona identificada.</p>
+        <div class="mb-3 row">
+            <label for="hombres_identificados" class="col-sm-2 col-form-label">Hombres</label>
+            <div class="col-sm-10" id="con_cant_pers">
+                <input type="number" value="{{res.hombres_identificados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="hombres_identificados" required>
+                <p id="avisome_hombres" style="color:red;font-size:10.5px" hidden>*La cantidad de hombres identificados no puede ser mayor al resto</p>
+                <p id="avisoma_hombres" style="color:red;font-size:10.5px" hidden>*La cantidad de hombres identificados no puede ser menor al resto</p>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="mujeres_identificadas" class="col-sm-2 col-form-label">Mujeres</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.mujeres_identificadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="mujeres_identificadas" required>
+                <p id="avisome_mujeres" style="color:red;font-size:10.5px" hidden>*La cantidad de mujeres identificadas no puede ser mayor al resto</p>
+                <p id="avisoma_mujeres" style="color:red;font-size:10.5px" hidden>*La cantidad de mujeres identificadas no puede ser menor al resto</p>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="autos_identificados" class="col-sm-2 col-form-label">Autos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.autos_identificados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="autos_identificados" required>
+                <p id="avisome_autos" style="color:red;font-size:10.5px" hidden>*La cantidad de autos identificados no puede ser mayor al resto</p>
+                <p id="avisoma_autos" style="color:red;font-size:10.5px" hidden>*La cantidad de autos identificados no puede ser menor al resto</p>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="motos_identificadas" class="col-sm-2 col-form-label">Motos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.motos_identificadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="motos_identificadas" required>
+                <p id="avisome_motos" style="color:red;font-size:10.5px" hidden>*La cantidad de motos identificadas no puede ser mayor al resto</p>
+                <p id="avisoma_motos" style="color:red;font-size:10.5px" hidden>*La cantidad de motos identificadas no puede ser menor al resto</p>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="armas_identificadas" class="col-sm-2 col-form-label">Armas</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.armas_identificadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="armas_identificadas" required>
+                <p id="avisome_armas" style="color:red;font-size:10.5px" hidden>*La cantidad de armas identificadas no puede ser mayor al resto</p>
+                <p id="avisoma_armas" style="color:red;font-size:10.5px" hidden>*La cantidad de armas identificadas no puede ser menor al resto</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 rounded shadow">
+    <h4 class="card-header">CONSIGNADOS</h4>
+    <div class="card-body">
+        <div class="mb-3 row">
+            <label for="hombres_consignados" class="col-sm-2 col-form-label">Hombres</label>
+            <div class="col-sm-10" id="con_cant_pers">
+                <input type="number" value="{{res.hombres_consignados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="hombres_consignados" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="mujeres_consignadas" class="col-sm-2 col-form-label">Mujeres</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.mujeres_consignadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="mujeres_consignadas" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="autos_consignados" class="col-sm-2 col-form-label">Autos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.autos_consignados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="autos_consignados" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="motos_consignadas" class="col-sm-2 col-form-label">Motos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.motos_consignadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="motos_consignadas" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="armas_consignadas" class="col-sm-2 col-form-label">Armas</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.armas_consignadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="armas_consignadas" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 rounded shadow">
+    <h4 class="card-header">CONDUCIDOS</h4>
+    <div class="card-body">
+        <div class="mb-3 row">
+            <label for="hombres_conducidos" class="col-sm-2 col-form-label">Hombres</label>
+            <div class="col-sm-10" id="con_cant_pers">
+                <input type="number" value="{{res.hombres_conducidos}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="hombres_conducidos" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="mujeres_conducidas" class="col-sm-2 col-form-label">Mujeres</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.mujeres_conducidas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="mujeres_conducidas" required>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 rounded shadow">
+    <h4 class="card-header">SOLVENTES</h4>
+    <div class="card-body">
+        <div class="mb-3 row">
+            <label for="hombres_solventes" class="col-sm-2 col-form-label">Hombres</label>
+            <div class="col-sm-10" id="con_cant_pers">
+                <input type="number" value="{{res.hombres_solventes}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="hombres_solventes" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="mujeres_solventes" class="col-sm-2 col-form-label">Mujeres</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.mujeres_solventes}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="mujeres_solventes" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="autos_solventes" class="col-sm-2 col-form-label">Autos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.autos_solventes}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="autos_solventes" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="motos_solventes" class="col-sm-2 col-form-label">Motos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.motos_solventes}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="motos_solventes" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="armas_solventes" class="col-sm-2 col-form-label">Armas</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.armas_solventes}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="armas_solventes" required>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 rounded shadow">
+    <h4 class="card-header">RECUPERADOS</h4>
+    <div class="card-body">
+        <div class="mb-3 row">
+            <label for="hombres_recuperados" class="col-sm-2 col-form-label">Hombres</label>
+            <div class="col-sm-10" id="con_cant_pers">
+                <input type="number" value="{{res.hombres_recuperados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="hombres_recuperados" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="mujeres_recuperadas" class="col-sm-2 col-form-label">Mujeres</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.mujeres_recuperadas}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="mujeres_recuperadas" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="menores_recuperados" class="col-sm-2 col-form-label">Menores</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.menores_recuperados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="menores_recuperados" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="autos_recuperados" class="col-sm-2 col-form-label">Autos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.autos_recuperados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="autos_recuperados" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="motos_recuperadas" class="col-sm-2 col-form-label">Motos</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.motos_recuperados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="motos_recuperadas" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="armas_recuperadas" class="col-sm-2 col-form-label">Armas</label>
+            <div class="col-sm-10">
+                <input type="number" value="{{res.armas_recuperados}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="armas_recuperadas" required>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button" onclick="validation()" class="btn btn-outline-success col-sm-12 mb-3">Guardar</button>
+        </div>
+    </div>   
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+{% load static %}
+<script src="{% static 'js/respuesta/update.operativo.js' %}" ></script>
+{% endblock script %}
+    

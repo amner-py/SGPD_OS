@@ -10,8 +10,8 @@ class Delegacion(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         db_table='DELEGACION'
-        verbose_name='DELEGACION'
-        verbose_name_plural='DELEGACIONES'
+        verbose_name='Delegación'
+        verbose_name_plural='Delegaciones'
 
 
     def __str__(self):

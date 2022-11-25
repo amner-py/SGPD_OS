@@ -1,23 +1,18 @@
 from django.contrib import admin
-from .models import Respuesta,DetalleRespuesta
+from .models import EPRespuesta,AORespuesta
 
-
-@admin.register(Respuesta)
-class RespuestaAdmin(admin.ModelAdmin):
-    list_display=['__str__']
-    list_filter=['formulario','respondido','delegacion']
+@admin.register(EPRespuesta)
+class EPRespuestaAdmin(admin.ModelAdmin):
+    list_display=['respondido','delegacion','plan','eje']
+    list_filter=[]
     list_editable=[]
     list_per_page=15
     search_fields=[]
 
-    def delete_queryset(self, request, queryset):
-        for item in queryset:
-            item.delete()
-
-@admin.register(DetalleRespuesta)
-class DetalleRespuestaAdmin(admin.ModelAdmin):
-    list_display=['__str__']
-    list_filter=['respuesta']
+@admin.register(AORespuesta)
+class AORespuestaAdmin(admin.ModelAdmin):
+    list_display=['respondido','delegacion','plan','operativo']
+    list_filter=[]
     list_editable=[]
     list_per_page=15
-    search_fields=['detalle']
+    search_fields=[]

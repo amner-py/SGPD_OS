@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Respuestas Eje de Prevención | PNC - SGPD{% endblock title %}
+
+
+{% block stylesheet %}
+{% load static %}
+<link href="{% static 'css/respuestas.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+    
+
+{% block content %}
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <h1 style="width: 100%; marigin:auto">AREA OPERATIVA RESPUESTAS</h1>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <a type="button" href="{% url 'responder_operativo' %}" class="btn btn-sm btn-outline-primary">
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                Nuevo registro
+            </a>
+            <!--
+            <a type="button" href="" class="btn btn-sm btn-outline-secondary">
+                <span class="material-symbols-outlined">
+                    monitoring
+                </span>
+                Reporte
+            </a>-->
+        </div>
+        <div class="col-sm-12">
+            <table id="respuestas" class="table mt-3">
+                <thead class="table-dark ">
+                    <tr>
+                        <th>
+                            Fecha de Respuesta
+                        </th>
+                        <th>
+                            Plan/Orden
+                        </th>
+                        <th>
+                            Tipo de Operativo
+                        </th>
+                        <th>
+                            Ubicación de Respuesta
+                        </th>
+                        <th>
+                            Opciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if hay_respuestas %}
+                    {% for respuesta in respuestas %}
+                    <tr>
+                        <td>
+                            {{respuesta.respondido}}
+                        </td>
+                        <td>
+                            {{respuesta.plan}}
+                        </td>
+                        <td>
+                            {{respuesta.operativo}}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en google maps</a>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <a href="{% url 'respuesta_operativo_inf' id=respuesta.id %}" class="text-info" style="text-decoration:none">
+                                    <span class="material-symbols-outlined">
+                                        visibility
+                                    </span>
+                                </a>
+                                </div>
+                                <div class="col-sm-3">
+                                <a href="{% url 'actualizar_operativo' id=respuesta.id %}" class="text-warning" style="text-decoration:none">
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                    </span>
+                                </a>
+                                </div>
+                                <div class="col-sm-3">
+                                <a onclick="confirm_eliminar({{respuesta.id|safe}})" class="text-danger" style="text-decoration:none;cursor:pointer">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+{% load static %}
+<script src="{% static 'js/respuesta/delete.operativo.js' %}" ></script>
+{% endblock script %}

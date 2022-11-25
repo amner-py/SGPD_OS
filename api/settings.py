@@ -53,9 +53,8 @@ INSTALLED_APPS = [
     'core.inicio',
     'core.notificacion',
     'core.operacion',
-    'core.formulario',
-    'core.respuesta',
     'core.reporte',
+    'core.respuesta'
 ]
 
 MIDDLEWARE = [

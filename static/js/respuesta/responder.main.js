@@ -110,12 +110,10 @@ const set_respuesta=async(data)=>{
           popup: 'animate__animated animate__fadeOutUp'
         }
         
-    }).then(
-        function(isConfirm) {
+    }).then((isConfirm)=>{
             if(isConfirm){
               location.reload()
             }
-        }
-    )
+        })
 }
 

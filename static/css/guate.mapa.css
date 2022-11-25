@@ -1,0 +1,9 @@
+.etiqueta{
+    text-decoration:none !important;
+    cursor:pointer !important;
+    color:black;
+}
+
+.etiqueta:hover{
+    color:blue;
+}

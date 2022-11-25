@@ -19,16 +19,23 @@ const set_operaciones=(data)=>{
     if(data.hay_operacion){
         const menu=document.createElement('ul')
         menu.classList="dropdown-menu dropdown-menu-dark"
-        operaciones[0].forEach(operacion=>{
-            item=document.createElement('li')
-            enlace=document.createElement('a')
-            enlace.className="dropdown-item"
-            enlace.href="/formulario/formularios/"+operacion.id
-            enlace.innerText=operacion.nombre
-            item.appendChild(enlace)
-            menu.appendChild(item)
-            contenedor_operaciones.appendChild(menu)
-        })
+        eje=document.createElement('li')
+        enlace_eje=document.createElement('a')
+        enlace_eje.className="dropdown-item"
+        enlace_eje.href="/respuesta/respuestas/eje_prevencion/"
+        enlace_eje.innerText="Eje de Prevención"
+        eje.appendChild(enlace_eje)
+        menu.appendChild(eje)
+
+        operativa=document.createElement('li')
+        enlace_operativa=document.createElement('a')
+        enlace_operativa.className="dropdown-item"
+        enlace_operativa.href="/respuesta/respuestas/area_operativa/"
+        enlace_operativa.innerText="Área Operativa"
+        operativa.appendChild(enlace_operativa)
+        menu.appendChild(operativa)
+        contenedor_operaciones.appendChild(menu)
+        
     }
 }
 

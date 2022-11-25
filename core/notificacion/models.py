@@ -13,8 +13,8 @@ class Notificacion(models.Model):
 
     class Meta:
         db_table='NOTIFICACION'
-        verbose_name='NOTIFICACION'
-        verbose_name_plural='NOTIFICACIONES'
+        verbose_name='Notificación'
+        verbose_name_plural='Notificaciones'
 
 
     def __str__(self):

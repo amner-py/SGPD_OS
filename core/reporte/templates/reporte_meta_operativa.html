@@ -8,7 +8,11 @@
 {% block content %}
     <div class="container-fluid pt-3">
         <div class="row">
-
+            <div class="col-sm-5"></div>
+                <div class="col-sm-3">
+                   <h1>AREA OPERATIVA</h1>
+                </div>
+                <div class="col-sm-4"></div>
             <div class="col-sm-4 mt-3">
                 <select class="form-select" id="filtro">
                     <option value="0">Elige un año</option>
@@ -33,6 +37,5 @@
     <script src="{% static 'highcharts-8.1.2/modules/exporting.js' %}"></script>
     <script src="{% static 'highcharts-8.1.2/modules/export-data.js' %}"></script>
     <script src="{% static 'highcharts-8.1.2/modules/accessibility.js' %}"></script>
-    <script src="{% static 'js/reporte/reporte.meta.js' %}"></script>
+    <script src="{% static 'js/reporte/reporte.meta.operativa.js' %}"></script>
 {% endblock script %}
-    

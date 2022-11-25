@@ -38,17 +38,17 @@
                     <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="/">INICIO</a>
                 </li>
                 {% if user.is_authenticated %}
+                
                 {% if perms.asignacion %}
                 <li class="nav-item">
                     <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="{% url 'departamentos' %}">ASIGNACIONES</a>
                 </li>
                 {% endif %}
-                {% if perms.formulario %}
-                <li class="nav-item">
-                    <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="/panel_control/formulario/formulario/">FORMULARIOS</a>
-                </li>
                 
                 
+                
+                {% if perms.respuesta  %}
+                    
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown" id="lista_operaciones">
                     <a class="nav-link dropdown-toggle" style="text-decoration: none;color: gray;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,19 +57,19 @@
                         
                     </li>
                 </ul>
+                {% endif %}
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown" id="lista_reportes">
                     <a class="nav-link dropdown-toggle" style="text-decoration: none;color: gray;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        REPORTES
+                        REPORTES METAS
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" href="{% url 'meta_report_view' %}">Metas mensuales</a></li>
-                        <li><a class="dropdown-item">Respuestas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'metas_eje_report_view' %}">Metas de Eje de Prevención</a></li>
+                        <li><a class="dropdown-item" href="{% url 'metas_operativa_report_view' %}">Metas de Área Operativa</a></li>
                     </ul>
                     </li>
                 </ul>
                 
-                {% endif %}
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}

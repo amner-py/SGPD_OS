@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+
+{% block title %}Informe | PNC - SGPD{% endblock title %}
+
+{% block stylesheet  %}
+{% load static %}
+<link href="{% static 'highcharts-8.1.2/css/highcharts.css' %}" rel="stylesheet">
+<link href="{% static 'css/informe.eje.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-sm-2">
+            <a href="{% url 'respuestas_operativo_view' %}" class="btn btn-sm btn-outline-secondary">Regresar</a>
+        </div>
+        <!--
+        <div class="col-sm-2">
+            <a onclick="imprimir()" class="btn btn-sm btn-outline-secondary">Imprimir</a>
+        </div>-->
+    </div>
+</div>
+<div class="container mt-3" id="informe">
+    <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><h1>AREA OPERATIVA</h1></div><div class="col-sm-4" style="float:right">{{respuesta.respondido}}</div></div><br>
+    <div class="mb-3 row">
+        <label for="lugar_asignado" class="col-sm-2 col-form-label">Delegación</label>
+        <div class="col-sm-10">
+            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.delegacion.delegacion}}" disabled>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="lugar_asignado" class="col-sm-2 col-form-label">Lugar Asignado</label>
+        <div class="col-sm-10">
+            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.asignado}}" disabled>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar Apoyo</label>
+        <div class="col-sm-10" id="cont_lug_espe">
+            <input type="text" maxlength="350" class="form-control" id="lugar_apoyo" value="{{respuesta.lugar_apoyo}}" disabled>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
+        <div class="col-sm-10">
+            <input type="text" maxlength="350" class="form-control" id="plan" value="{{respuesta.plan}}" disabled>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="eje" class="col-sm-2 col-form-label">Tipo de Operativo</label>
+        <div class="col-sm-10">
+            <input type="text" maxlength="350" class="form-control" id="eje" value="{{respuesta.operativo}}" disabled>
+        </div>
+    </div>
+    
+    <div class="mb-3 row">
+        <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" id="observaciones" rows="3" maxlength="450" disabled>{{respuesta.observaciones}}</textarea>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="lugar_asignado" class="col-sm-2 col-form-label">Personas identificadas</label>
+        <div class="col-sm-10">
+            <input type="text" maxlength="350" class="form-control" id="total_identificados" value="{{respuesta.total_identificados}}" disabled>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-6" id="reportes">
+            <div id="identificados"></div>
+        </div>
+        <div class="col-sm-6" id="reportes">
+            <div id="consignados"></div>
+        </div>
+        <div class="col-sm-6" id="reportes">
+            <div id="conducidos"></div>
+        </div>
+        <div class="col-sm-6" id="reportes">
+            <div id="solventes"></div>
+        </div>
+        <div class="col-sm-12" id="reportes">
+            <div id="recuperados"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+{% load static %}
+<script src="{% static 'highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/accessibility.js' %}"></script>
+<script type="text/javascript">
+    Highcharts.chart('identificados', {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Identificados'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Registro No. {{respuesta.id|safe}}'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          pointFormat: '<b>{point.y}</b> de {{respuesta.total_identificados|safe}}'
+        },
+        series: [{
+          name: 'Identificados',
+          data: [
+            ['Hombres', {{respuesta.hombres_identificados|safe}}],
+            ['Mujeres', {{respuesta.mujeres_identificadas|safe}}],//
+            ['Autos', {{respuesta.autos_identificados|safe}}],
+            ['Motos', {{respuesta.motos_identificadas|safe}}],
+            ['Armas', {{respuesta.armas_identificadas|safe}}],
+          ],
+          dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }]
+      });
+
+      Highcharts.chart('consignados', {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Consignados'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Registro No. {{respuesta.id|safe}}'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          pointFormat: '<b>{point.y}</b> de {{respuesta.total_consignados|safe}}'
+        },
+        series: [{
+          name: 'Consignados',
+          data: [
+            ['Hombres', {{respuesta.hombres_consignados|safe}}],
+            ['Mujeres', {{respuesta.mujeres_consignadas|safe}}],//
+            ['Autos', {{respuesta.autos_consignados|safe}}],
+            ['Motos', {{respuesta.motos_consignadas|safe}}],
+            ['Armas', {{respuesta.armas_consignadas|safe}}],
+          ],
+          dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }]
+      });
+
+      Highcharts.chart('conducidos', {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Conducidos'
+        },
+        subtitle: {
+          text: ''
+        },
+      
+        accessibility: {
+          announceNewData: {
+            enabled: true
+          },
+          point: {
+            valueSuffix: '%'
+          }
+        },
+      
+        plotOptions: {
+          series: {
+            dataLabels: {
+              enabled: true,
+              format: '{point.name}: {point.y:.1f}%'
+            }
+          }
+        },
+      
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> de {{respuesta.total_conducidos|safe}}<br/>'
+        },
+      
+        series: [
+          {
+            name: "Consignados",
+            colorByPoint: true,
+            data: [
+              {
+                name: "Mujeres",
+                y: ({{respuesta.mujeres_conducidas|safe}}/{{respuesta.total_conducidos|safe}})*100,
+                drilldown: "Mujeres"
+              },
+              {
+                name: "Hombres",
+                y: ({{respuesta.hombres_conducidos|safe}}/{{respuesta.total_conducidos|safe}})*100,
+                drilldown: "Hombres"
+              },
+            ]
+          }
+        ],
+        drilldown: {
+          series: [
+            {
+                name: "Mujeres",
+                y: ({{respuesta.mujeres_conducidas|safe}}/{{respuesta.total_conducidos|safe}})*100,
+                drilldown: "Mujeres"
+              },
+              {
+                name: "Hombres",
+                y: ({{respuesta.hombres_conducidos|safe}}/{{respuesta.total_conducidos|safe}})*100,
+                drilldown: "Hombres"
+              },
+          ]
+        }
+      });
+
+      Highcharts.chart('solventes', {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Solventes'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Registro No. {{respuesta.id|safe}}'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          pointFormat: '<b>{point.y}</b> de {{respuesta.total_solventes|safe}}'
+        },
+        series: [{
+          name: 'Solventes',
+          data: [
+            ['Hombres', {{respuesta.hombres_solventes|safe}}],
+            ['Mujeres', {{respuesta.mujeres_solventes|safe}}],//
+            ['Autos', {{respuesta.autos_solventes|safe}}],
+            ['Motos', {{respuesta.motos_solventes|safe}}],
+            ['Armas', {{respuesta.armas_solventes|safe}}],
+          ],
+          dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }]
+      });
+      Highcharts.chart('recuperados', {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Recuperados'
+        },
+        subtitle: {
+          text: ''
+        },
+        xAxis: {
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Registro No. {{respuesta.id|safe}}'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          pointFormat: '<b>{point.y}</b> de {{respuesta.total_recuperados|safe}}'
+        },
+        series: [{
+          name: 'Recuperados',
+          data: [
+            ['Hombres', {{respuesta.hombres_recuperados|safe}}],
+            ['Mujeres', {{respuesta.mujeres_recuperadas|safe}}],
+            ['Menores', {{respuesta.menores_recuperados|safe}}],
+            ['Autos', {{respuesta.autos_recuperados|safe}}],
+            ['Motos', {{respuesta.motos_recuperados|safe}}],
+            ['Armas', {{respuesta.armas_recuperados|safe}}],
+          ],
+          dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }]
+      });
+</script>
+{% endblock script %}
+    

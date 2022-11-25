@@ -10,8 +10,15 @@ class ReporteTemplateView(TemplateView):
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-class ReporteMetaTemplateView(TemplateView):
-    template_name='reporte_meta.html'
+class ReporteMetaEPTemplateView(TemplateView):
+    template_name='reporte_meta_eje.html'
+    
+    @method_decorator(login_required)
+    def dispatch(self, request,*args,**kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+class ReporteMetaAOTemplateView(TemplateView):
+    template_name='reporte_meta_operativa.html'
     
     @method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):

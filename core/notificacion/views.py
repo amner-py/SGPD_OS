@@ -24,7 +24,11 @@ class NotificacionView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        notificaciones=list(Notificacion.objects.values())
+        notis=Notificacion.objects.values()
+        notificaciones=[]
+        for noti in reversed(notis):
+            notificaciones.append(noti)
+        #notificaciones=list(Notificacion.objects.values())
         if len(notificaciones)>0:
             datos={'message':'success','hay_notificacion':True,'notificaciones':notificaciones}
         else:

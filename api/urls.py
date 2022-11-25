@@ -15,9 +15,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('lugar/', include('core.lugar.urls')),
     path('notificacion/', include('core.notificacion.urls')),
-    path('respuesta/', include('core.respuesta.urls')),
     path('asignacion/',include('core.asignacion.urls')),
-    path('formulario/',include('core.formulario.urls')),
+    path('respuesta/',include('core.respuesta.urls')),
     path('operacion/',include('core.operacion.urls')),
     path('reporte/',include('core.reporte.urls')),
 ]

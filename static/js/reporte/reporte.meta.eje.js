@@ -7,7 +7,7 @@ const get_metas=() => {
         method:'GET'
     }
     
-    fetch('/asignacion/api/metas/',options)
+    fetch('/asignacion/api/metas_eje/',options)
         .then(response => response.json())
         .then(data =>{
             set_metas(data)
@@ -17,20 +17,24 @@ const get_metas=() => {
 const set_metas=(data) => {
     this.data=data
     const delegaciones = data.delegaciones
+    let temp=[]
+    let anios=[]
+    let anios_tmp=[]
     delegaciones.forEach(delegacion => {
         const m=delegacion.metas
-        let anios_tmp=[]
+        
         m.forEach(meta =>{
             anios_tmp.push(meta.anio)
         })
-        const temp = new Set(anios_tmp)
-        const anios = [...temp]
-        anios.forEach(anio=>{
-            const opciones_filtro=document.createElement('option')
-            opciones_filtro.value=anio
-            opciones_filtro.innerText=anio
-            filtro.appendChild(opciones_filtro)
-        })
+        temp = new Set(anios_tmp)
+        anios = [...temp]
+        
+    })
+    anios.forEach(anio=>{
+        const opciones_filtro=document.createElement('option')
+        opciones_filtro.value=anio
+        opciones_filtro.innerText=anio
+        filtro.appendChild(opciones_filtro)
     })
 }
 
@@ -40,7 +44,7 @@ const grafica=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
             type: 'column'
         },
         title: {
-            text: `METAS DE ${nombre_delegacion.toUpperCase()}`
+            text: `METAS PARA EJE DE PREVENCION DE ${nombre_delegacion.toUpperCase()}`
         },
         subtitle: {
             text: ''
@@ -65,7 +69,7 @@ const grafica=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
         yAxis: {
             title: {
                 useHTML: true,
-                text: `METAS DEL ${anio}`
+                text: `METAS PARA EJE DE PREVENCION DEL AÑO ${anio}`
             }
         },
         tooltip: {
@@ -94,37 +98,107 @@ const grafica=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
     })
 }
 
+const grafica2=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
+    Highcharts.chart(`contenedor${id_delegacion}`, {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: `METAS PARA EJE DE PREVENCION DE ${nombre_delegacion.toUpperCase()}`
+        },
+        xAxis: {
+            categories: [
+                'ENE',
+                'FEB',
+                'MAR',
+                'ABR',
+                'MAY',
+                'JUN',
+                'JUL',
+                'AGO',
+                'SEP',
+                'OCT',
+                'NOV',
+                'DIC'
+            ],
+        },
+        yAxis: [{
+          min: 0,
+          title: {
+            text: `METAS PARA EJE DE PREVENCION DEL AÑO ${anio}`
+          }
+        }, {
+          title: {
+            text: `METAS PARA EJE DE PREVENCION DEL AÑO ${anio}`
+          },
+          opposite: true
+        }],
+        legend: {
+          shadow: false
+        },
+        tooltip: {
+          shared: true
+        },
+        plotOptions: {
+          column: {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+          }
+        },
+        series: [{
+          name: 'Meta Asignada',
+          color: 'rgba(165,170,217,1)',
+          data: metas,
+          pointPadding: 0.3,
+          pointPlacement: -0.2
+        }, {
+          name: 'Meta Alcanzada',
+          color: 'rgba(126,86,134,.9)',
+          data: alcanzadas,
+          pointPadding: 0.4,
+          pointPlacement: -0.2
+        }]
+      });
+}
+
 const buscar=()=>{
     const filtro_anio=filtro.value
     if(filtro_anio>0){
         const consulta=this.data.hay_metas
         if(consulta){
-            let metas=[0,0,0,0,0,0,0,0,0,0,0,0]
-            let alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
+            
             const delegaciones=this.data.delegaciones
             delegaciones.forEach(delegacion => {
-                console.log(delegacion)
+                let metas=[0,0,0,0,0,0,0,0,0,0,0,0]
+                let alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
+                console.log(delegacion.nombre)
                 const cont = document.createElement('div')
                 cont.id=`contenedor${delegacion.id}`
                 reportes.appendChild(cont)
-                const m=delegacion.metas
-                var index=0
+                var m=delegacion.metas
+                
                 m.forEach(meta =>{
+                    console.log(meta)
                     console.log(`ANIO META: ${meta.anio}`)
                     console.log(`ANIO SELECT: ${parseInt(filtro_anio)}`)
                         if(meta.anio==parseInt(filtro_anio)){
-                            for(;index<12;){
+                            let index=0
+                            for(;index<12;index++){
                                 if(meta.mes==index+1){
                                     console.log(metas[index])
                                     metas[index]=meta.meta
+                                    console.log(meta.meta)
                                     console.log(metas[index])
                                     alcanzadas[index]=meta.alcanzado
                                 }
-                                index++
+                                
                             } 
                         
                     }
-                    grafica(delegacion.id,delegacion.nombre,filtro_anio,metas,alcanzadas)
+                    console.log(metas)
+                    console.log(alcanzadas)
+                    grafica2(delegacion.id,delegacion.nombre,filtro_anio,metas,alcanzadas)
                 })
                 
             })
