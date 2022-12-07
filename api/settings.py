@@ -15,8 +15,10 @@ from django.urls import reverse_lazy
 from pathlib import Path
 import os
 import api.db as DB
-from datetime import datetime
+import mimetypes
 
+
+mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-il7je)+vi237wmn5+&+edf9iqk_1h(8c)c2dtp&4sg3*etq467'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.1', '*']
@@ -134,6 +136,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

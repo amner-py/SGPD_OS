@@ -1,105 +1,11 @@
-let reportes=document.getElementById('reportes')
-let filtro=document.getElementById('filtro')
-let btn_filtro=document.getElementById('btn-filtro')
-var data=[]
-const get_metas=() => {
-    const options={
-        method:'GET'
-    }
-    
-    fetch('/asignacion/api/metas_eje/',options)
-        .then(response => response.json())
-        .then(data =>{
-            set_metas(data)
-        })
-}
+let reportes_container=document.querySelector('#reportes')
+let anio_option=document.querySelector('#anio')
+let delegacion_option=document.querySelector('#delegacion')
+let aviso=document.querySelector('#aviso')
 
-const set_metas=(data) => {
-    this.data=data
-    const delegaciones = data.delegaciones
-    let temp=[]
-    let anios=[]
-    let anios_tmp=[]
-    delegaciones.forEach(delegacion => {
-        const m=delegacion.metas
-        
-        m.forEach(meta =>{
-            anios_tmp.push(meta.anio)
-        })
-        temp = new Set(anios_tmp)
-        anios = [...temp]
-        
-    })
-    anios.forEach(anio=>{
-        const opciones_filtro=document.createElement('option')
-        opciones_filtro.value=anio
-        opciones_filtro.innerText=anio
-        filtro.appendChild(opciones_filtro)
-    })
-}
 
-const grafica=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
-    Highcharts.chart(`contenedor${id_delegacion}`, {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: `METAS PARA EJE DE PREVENCION DE ${nombre_delegacion.toUpperCase()}`
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            categories: [
-                'ENE',
-                'FEB',
-                'MAR',
-                'ABR',
-                'MAY',
-                'JUN',
-                'JUL',
-                'AGO',
-                'SEP',
-                'OCT',
-                'NOV',
-                'DIC'
-            ],
-            crosshair: true
-        },
-        yAxis: {
-            title: {
-                useHTML: true,
-                text: `METAS PARA EJE DE PREVENCION DEL AÑO ${anio}`
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Meta asignada',
-            data: metas
-    
-        }, {
-            name: 'Meta alcanzada',
-            data: alcanzadas
-    
-        }]
-    })
-}
-
-const grafica2=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
-    Highcharts.chart(`contenedor${id_delegacion}`, {
+const graficar=({nombre_delegacion,anio,metas,alcanzadas})=>{
+    Highcharts.chart(`contenedor`, {
         chart: {
           type: 'column'
         },
@@ -150,62 +56,49 @@ const grafica2=(id_delegacion,nombre_delegacion,anio,metas,alcanzadas)=>{
           name: 'Meta Asignada',
           color: 'rgba(165,170,217,1)',
           data: metas,
-          pointPadding: 0.3,
-          pointPlacement: -0.2
+          pointPadding: 0,
+          pointPlacement: 0
         }, {
           name: 'Meta Alcanzada',
           color: 'rgba(126,86,134,.9)',
           data: alcanzadas,
-          pointPadding: 0.4,
-          pointPlacement: -0.2
+          pointPadding: 0,
+          pointPlacement: 0
         }]
       });
 }
 
-const buscar=()=>{
-    const filtro_anio=filtro.value
-    if(filtro_anio>0){
-        const consulta=this.data.hay_metas
-        if(consulta){
-            
-            const delegaciones=this.data.delegaciones
-            delegaciones.forEach(delegacion => {
-                let metas=[0,0,0,0,0,0,0,0,0,0,0,0]
-                let alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
-                console.log(delegacion.nombre)
-                const cont = document.createElement('div')
-                cont.id=`contenedor${delegacion.id}`
-                reportes.appendChild(cont)
-                var m=delegacion.metas
-                
-                m.forEach(meta =>{
-                    console.log(meta)
-                    console.log(`ANIO META: ${meta.anio}`)
-                    console.log(`ANIO SELECT: ${parseInt(filtro_anio)}`)
-                        if(meta.anio==parseInt(filtro_anio)){
-                            let index=0
-                            for(;index<12;index++){
-                                if(meta.mes==index+1){
-                                    console.log(metas[index])
-                                    metas[index]=meta.meta
-                                    console.log(meta.meta)
-                                    console.log(metas[index])
-                                    alcanzadas[index]=meta.alcanzado
-                                }
-                                
-                            } 
-                        
-                    }
-                    console.log(metas)
-                    console.log(alcanzadas)
-                    grafica2(delegacion.id,delegacion.nombre,filtro_anio,metas,alcanzadas)
-                })
-                
-            })
-        }
+const get_metas=({anio,delegacion})=>{
+    const options={
+        method:'GET'
     }
+    fetch(`/asignacion/api/metas_eje/anio/${anio}/dele/${delegacion}`,options)
+        .then(response => response.json())
+        .then(data =>{
+            console.log(data)
+            set_metas(data)
+        })
 }
 
-get_metas()
+const set_metas=(data)=>{
+    const contenedor_grafica=document.createElement('div')
+    contenedor_grafica.id=`contenedor`
+    reportes_container.appendChild(contenedor_grafica)
+    graficar({
+        nombre_delegacion:data.delegacion,
+        metas:data.metas,
+        alcanzadas:data.alcanzadas,
+        anio:data.anio
+    })  
+}
 
-    
+const search=()=>{
+    const anio=parseInt(anio_option.options[anio_option.selectedIndex].value)
+    const delegacion=parseInt(delegacion_option.options[delegacion_option.selectedIndex].value)
+    if(anio>0 && delegacion>0){
+        aviso.setAttribute('hidden',true)
+        get_metas({anio:anio,delegacion:delegacion})
+    }else{
+        aviso.removeAttribute('hidden')
+    }
+}

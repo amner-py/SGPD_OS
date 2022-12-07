@@ -17,7 +17,7 @@
             <h1 style="width: 100%; marigin:auto">EJE DE PREVENCION RESPUESTAS</h1>
         </div>
         <div class="col-sm-2"></div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <a type="button" href="{% url 'responder_eje' %}" class="btn btn-sm btn-outline-primary">
                 <span class="material-symbols-outlined">
                     add
@@ -31,6 +31,22 @@
                 </span>
                 Reporte
             </a>-->
+        </div>
+        <div class="col-sm-4">
+                <label for="fecha_inicio" class="form-label">Fecha inicio</label>
+                <input type="date" class="form-control" id="fecha_inicio">
+        </div>
+        <div class="col-sm-4">
+            <label for="fecha_fin" class="form-label">Fecha fin</label>
+            <input type="date" class="form-control" id="fecha_fin">
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-sm btn-outline-primary">
+                <span class="material-symbols-outlined">
+                    search
+                </span>
+                Buscar
+            </button>
         </div>
         <div class="col-sm-12">
             <table id="respuestas" class="table mt-3">

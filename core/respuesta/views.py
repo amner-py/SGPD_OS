@@ -8,7 +8,8 @@ from django.views.generic import TemplateView
 from django.http.response import JsonResponse
 from .models import EPRespuesta,AORespuesta
 from ..asignacion.models import Asignacion,MetaMensualEP,MetaMensualAO
-from ..operacion.models import *
+from ..area_operativa.models import PlanArea,TipoOperativo
+from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
 
 class RespuestasEPTemplateView(TemplateView):
@@ -45,9 +46,9 @@ class ActualizarEPTemplateView(TemplateView):
         if id>0:
             lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
             res=EPRespuesta.objects.get(pk=id)
-            planes=Plan.objects.filter(operacion=1)
-            ejes=EjeTrabajo.objects.filter(operacion=1)
-            productos=Producto.objects.filter(operacion=1)
+            planes=PlanEje.objects.all()
+            ejes=EjeTrabajo.objects.all()
+            productos=Producto.objects.all()
         return render(request,self.template_name,{
             'res':res,
             'planes':planes,
@@ -69,9 +70,9 @@ class ResponderEPTemplateView(TemplateView):
         hay_meta=False
         if meta:
             hay_meta=True
-        planes=Plan.objects.filter(operacion=1)
-        ejes=EjeTrabajo.objects.filter(operacion=1)
-        productos=Producto.objects.filter(operacion=1)
+        planes=PlanEje.objects.all()
+        ejes=EjeTrabajo.objects.all()
+        productos=Producto.objects.all()
         hay_datos=len(lugares_asignados)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
         return render(request,self.template_name,{
             'lugares_asignados':lugares_asignados,
@@ -119,7 +120,7 @@ class RespuestasEPView(View):
         respuesta.delegacion=self.request.user
         respuesta.asignado=Asignacion.objects.get(pk=jd['lugar_asignado'])
         respuesta.lugar_especifico=jd['lugar_especifico']
-        respuesta.plan=Plan.objects.get(pk=jd['plan'])
+        respuesta.plan=PlanEje.objects.get(pk=jd['plan'])
         respuesta.eje=EjeTrabajo.objects.get(pk=jd['eje'])
         respuesta.producto=Producto.objects.get(pk=jd['producto'])
         respuesta.subproducto=Subproducto.objects.get(pk=jd['subproducto'])
@@ -151,7 +152,7 @@ class RespuestasEPView(View):
         respuesta.delegacion=self.request.user
         respuesta.asignado=Asignacion.objects.get(pk=jd['lugar_asignado'])
         respuesta.lugar_especifico=jd['lugar_especifico']
-        respuesta.plan=Plan.objects.get(pk=jd['plan'])
+        respuesta.plan=PlanEje.objects.get(pk=jd['plan'])
         respuesta.eje=EjeTrabajo.objects.get(pk=jd['eje'])
         respuesta.producto=Producto.objects.get(pk=jd['producto'])
         respuesta.subproducto=Subproducto.objects.get(pk=jd['subproducto'])
@@ -222,8 +223,8 @@ class ResponderAOTemplateView(TemplateView):
         hay_meta=False
         if meta:
             hay_meta=True
-        planes=Plan.objects.filter(operacion=2)
-        operativos=TipoOperativo.objects.filter(operacion=2)
+        planes=PlanArea.objects.all()
+        operativos=TipoOperativo.objects.all()
         hay_datos=len(lugares_asignados)>0 and len(planes)>0 and len(operativos)>0 and hay_meta
         return render(request,self.template_name,{
             'lugares_asignados':lugares_asignados,
@@ -254,7 +255,7 @@ class RespuestasAOView(View):
         respuesta.delegacion=self.request.user
         respuesta.asignado=Asignacion.objects.get(pk=jd['asignado'])
         respuesta.lugar_apoyo=jd['lugar_apoyo']
-        respuesta.plan=Plan.objects.get(pk=jd['plan'])
+        respuesta.plan=PlanArea.objects.get(pk=jd['plan'])
         respuesta.operativo=TipoOperativo.objects.get(pk=jd['operativo'])
         respuesta.observaciones=jd['observaciones']
         respuesta.total_identificados=jd['total_identificados']
@@ -297,7 +298,7 @@ class RespuestasAOView(View):
         respuesta.delegacion=self.request.user
         respuesta.asignado=Asignacion.objects.get(pk=jd['asignado'])
         respuesta.lugar_apoyo=jd['lugar_apoyo']
-        respuesta.plan=Plan.objects.get(pk=jd['plan'])
+        respuesta.plan=PlanArea.objects.get(pk=jd['plan'])
         respuesta.operativo=TipoOperativo.objects.get(pk=jd['operativo'])
         respuesta.observaciones=jd['observaciones']
         respuesta.total_identificados=jd['total_identificados']
@@ -365,8 +366,8 @@ class ActualizarAOTemplateView(TemplateView):
         if id>0:
             lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
             res=AORespuesta.objects.get(pk=id)
-            planes=Plan.objects.filter(operacion=2)
-            operativos=TipoOperativo.objects.filter(operacion=2)
+            planes=PlanArea.objects.all()
+            operativos=TipoOperativo.objects.all()
         return render(request,self.template_name,{
             'res':res,
             'planes':planes,

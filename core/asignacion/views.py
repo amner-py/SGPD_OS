@@ -18,50 +18,40 @@ class AsignacionView(View):
 
 class MetaMensualEPView(View):
     
-    def get(self,request):
-        des=Delegacion.objects.all()
-        delegaciones=[]
-        for delegacion in des:
-            ms=MetaMensualEP.objects.filter(delegacion=delegacion.pk)
-            metas=[]
-            for m in ms:
-                metas.append({
-                    'meta':m.meta,
-                    'alcanzado':m.meta_alcanzada,
-                    'mes':m.asignado.month,
-                    'anio':m.asignado.year
-                })
-            delegaciones.append({
-                'id':delegacion.pk,
-                'nombre':delegacion.delegacion,
-                'metas':metas,
-            })
-            print(delegaciones)
-        datos={'message':'success','hay_metas':True,'delegaciones':delegaciones}
-        
-        return JsonResponse(datos)
+    def get(self,request,dele=0,anio=0):
+        if dele>0 and anio>0:
+            metas=MetaMensualEP.objects.filter(asignado__year=f'{anio}',delegacion=dele)
+            metas_mes=[0,0,0,0,0,0,0,0,0,0,0,0]
+            metas_alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
+            delegacion=Delegacion.objects.get(pk=dele)
+            for meta in metas:
+                metas_mes[meta.asignado.month-1]=meta.meta
+                metas_alcanzadas[meta.asignado.month-1]=meta.meta_alcanzada
+            delegaciones={
+                'id':dele,
+                'delegacion':delegacion.delegacion,
+                'metas':metas_mes,
+                'alcanzadas':metas_alcanzadas,
+                'anio':anio
+            }
+        return JsonResponse(delegaciones)
 
 class MetaMensualAOView(View):
     
-    def get(self,request):
-        des=Delegacion.objects.all()
-        delegaciones=[]
-        for delegacion in des:
-            ms=MetaMensualAO.objects.filter(delegacion=delegacion.pk)
-            metas=[]
-            for m in ms:
-                metas.append({
-                    'meta':m.meta,
-                    'alcanzado':m.meta_alcanzada,
-                    'mes':m.asignado.month,
-                    'anio':m.asignado.year
-                })
-            delegaciones.append({
-                'id':delegacion.pk,
-                'nombre':delegacion.delegacion,
-                'metas':metas,
-            })
-            print(delegaciones)
-        datos={'message':'success','hay_metas':True,'delegaciones':delegaciones}
-        
-        return JsonResponse(datos)
+    def get(self,request,dele=0,anio=0):
+        if dele>0 and anio>0:
+            metas=MetaMensualAO.objects.filter(asignado__year=f'{anio}',delegacion=dele)
+            metas_mes=[0,0,0,0,0,0,0,0,0,0,0,0]
+            metas_alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
+            delegacion=Delegacion.objects.get(pk=dele)
+            for meta in metas:
+                metas_mes[meta.asignado.month-1]=meta.meta
+                metas_alcanzadas[meta.asignado.month-1]=meta.meta_alcanzada
+            delegaciones={
+                'id':dele,
+                'delegacion':delegacion.delegacion,
+                'metas':metas_mes,
+                'alcanzadas':metas_alcanzadas,
+                'anio':anio
+            }
+        return JsonResponse(delegaciones)

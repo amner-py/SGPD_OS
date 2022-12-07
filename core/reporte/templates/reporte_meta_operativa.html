@@ -8,25 +8,37 @@
 {% block content %}
     <div class="container-fluid pt-3">
         <div class="row">
-            <div class="col-sm-5"></div>
-                <div class="col-sm-3">
-                   <h1>AREA OPERATIVA</h1>
+            <div class="col-sm-3"></div>
+                <div class="col-sm-5">
+                   <h1>METAS PARA AREA OPERATIVA</h1>
                 </div>
                 <div class="col-sm-4"></div>
-            <div class="col-sm-4 mt-3">
-                <select class="form-select" id="filtro">
+            <p id="aviso" style="color:red;font-size:10.5px" hidden>*Debe seleccionar un año y delegacion.</p>
+            <div class="col-sm-2 mt-3">
+                <select class="form-select" id="anio">
                     <option value="0">Elige un año</option>
+                    {% for anio in anios %}
+                        <option value="{{anio}}">{{anio}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-3 mt-3">
+                <select class="form-select" id="delegacion">
+                    <option value="0">Elige una delegacion</option>
+                    {% for delegacion in delegaciones %}
+                        <option value="{{delegacion.id}}">{{delegacion.nombre}}</option>
+                    {% endfor %} 
                 </select>
             </div>
             <div class="col-sm-4 mt-3">
-                <button type="button" id="btn-filtro" onclick="buscar()" class="btn btn-sm btn-outline-primary">
+                <button type="button" id="btn-filtro" onclick="search()" class="btn btn-sm btn-outline-primary">
                     <span class="material-symbols-outlined">
                         search
                     </span>
                     Buscar
                 </button>
             </div>
-            <div class="col-sm-12" id="reportes"></div>
+            <div class="col-sm-12 mt-3" id="reportes"></div>
         </div>
     </div>
 {% endblock content %}
