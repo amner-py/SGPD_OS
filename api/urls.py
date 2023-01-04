@@ -21,8 +21,8 @@ urlpatterns = [
     path('lugar/', include('core.lugar.urls')),
     path('notificacion/', include('core.notificacion.urls')),
     path('asignacion/',include('core.asignacion.urls')),
+    path('eje_prevencion/',include('core.eje_prevencion.urls')),
     path('respuesta/',include('core.respuesta.urls')),
-    path('operacion/',include('core.operacion.urls')),
     path('reporte/',include('core.reporte.urls')),
 ]
 

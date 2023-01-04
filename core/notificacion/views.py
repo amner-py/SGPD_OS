@@ -1,20 +1,40 @@
 from django.views import View
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView
+from django.views.generic import ListView,TemplateView
 from django.http.response import JsonResponse
+from django.core.paginator import Paginator
 import json
 from .models import Notificacion
 
-class NotificacionesListView(ListView):
+class NotificacionesTemplateView(TemplateView):
     template_name='notificaciones_view.html'
-    model=Notificacion
-
 
     @method_decorator(login_required)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    def get(self,request):
+        page=request.GET.get('page',1)
+        noti= Notificacion.objects.filter(receptor=self.request.user)
+        notificaciones=[]
+        for noti in reversed(noti):
+            noti.leido=True
+            noti.save()
+            notificaciones.append(noti)
+        hay_notificacion=len(notificaciones)>0
+        try:
+            paginator=Paginator(notificaciones,5)
+            notificaciones= paginator.page(page)
+        except:
+            print('error1')
+        return render(request,self.template_name,{
+            'hay_notificacion':hay_notificacion,
+            'entity':notificaciones,
+            'paginator':paginator
+        })
 
 
 class NotificacionView(View):

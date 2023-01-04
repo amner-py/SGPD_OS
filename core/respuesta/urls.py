@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path('respuestas/eje_prevencion/',RespuestasEPTemplateView.as_view(),name='respuestas_eje_view'),
+    path('respuestas/eje_prevencion/pagina/<int:pagina>',RespuestasEPTemplateView.as_view(),name='respuestas_eje_view_page'),
     path('respuestas/eje_prevencion/responder',ResponderEPTemplateView.as_view(),name='responder_eje'),
     path('respuestas/eje_prevencion/actualizar/<int:id>',ActualizarEPTemplateView.as_view(),name='actualizar_eje'),
     path('api/respuestas/eje_prevencion/',RespuestasEPView.as_view(),name='respuesta_eje_api'),

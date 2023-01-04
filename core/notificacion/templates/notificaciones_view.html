@@ -3,14 +3,22 @@
 
 {% block content %}
 <div class="container mt-3">
-    <div id="notificaciones-contenedor" class="row">
-    
-    </div>
-</div>
+    <ul class="list-group">
+        
+        {% for notificacion in entity %}
+        <li class="list-group-item row">
+            <div class="col-md-12">{{notificacion.motivo}}</div>
+            <div class="col-md-12">{{notificacion.mensaje}}</div>
+            <div class="text-end" style="font-size:12px;color:blue">{{notificacion.fechahora}}</div>
+        </li>
+        {% endfor %}
+        
+        </ul>
+</div><br>
+{% include 'paginator_noti.html' %}
 {% endblock content %}
 
 
 {% block script %}
-{% load static %}
-<script src="{% static 'js/notificacion/notificacion.view.js' %}"></script>
+
 {% endblock script %}

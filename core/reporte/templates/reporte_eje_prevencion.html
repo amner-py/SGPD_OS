@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-gt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+    <title class="title-up">PDF EJE | PNC - SGPD</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+        *{
+            font-family: Times-Roman;
+        }
+        img{
+            width:40px;
+            height:40px;
+        }
+        #logo{
+            text-align:left;
+            width:33%;
+        }
+        #titulo{
+            text-align:left;
+            font-size:18px;
+            font-weight:bold;
+        }
+        #informe{
+            border: 1px solid #000;
+            padding: 2px;
+            border-collapse:collapse;
+            -pdf-keep-in-frame-mode: shrink !important;
+        }
+        .encabezado{
+            background-color:#9ad0ff;
+            padding:2px;
+        }
+        .text-break{
+            inline-size: 150px;overflow-wrap: break-word;hyphens: manual;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th id="logo">
+                    <img src="{% static '/img/logo_pnc.png' %}" alt="logo_pnc">
+                </th>
+                <th id="titulo">
+                    <h4>EJE DE PREVENCION INFORME</h4>
+                </th>
+            </tr>
+        </thead>
+    </table><br>
+
+    <table id="informe">
+        <thead>
+            <tr>
+                <th class="encabezado">
+                    Fecha
+                </th>
+                <th class="encabezado">
+                    Delegacion
+                </th>
+                <th class="encabezado">
+                    Priorizado
+                </th>
+                <th class="encabezado">
+                    Especifico
+                </th>
+                <th class="encabezado">
+                    Plan/Orden
+                </th>
+                <th class="encabezado">
+                    Eje de Trabajo
+                </th>
+                <th class="encabezado">
+                    Producto
+                </th>
+                <th class="encabezado">
+                    Subproducto
+                </th>
+                <th class="encabezado">
+                    Observaciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if hay_respuestas %}
+            {% for respuesta in entity %}
+            <tr>
+                <td>
+                    {{respuesta.respondido}}
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.delegacion}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.asignado}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.lugar_especifico}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.plan}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.eje}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.producto}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.subproducto}}</p>
+                </td>
+                <td>
+                    <p style="overflow-wrap: break-word;">{{respuesta.observaciones}}</p>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table> 
+</body>

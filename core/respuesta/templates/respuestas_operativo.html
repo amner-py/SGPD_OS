@@ -31,7 +31,39 @@
                 </span>
                 Reporte
             </a>-->
+            <a type="button" href="" class="btn btn-sm btn-outline-secondary">
+                <span class="material-symbols-outlined">
+                    picture_as_pdf
+                </span>
+                Reporte
+            </a>
         </div>
+        <form class="row" method="GET">
+            <div class="col-sm-4">
+                    <label for="fecha_inicio" class="form-label">Fecha inicio</label>
+                    {% if iniciob %}
+                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{inicio}}">
+                    {% else %}
+                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                    {% endif %}
+            </div>
+            <div class="col-sm-4">
+                <label for="fecha_fin" class="form-label">Fecha fin</label>
+                {% if finb %}
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{fin}}">
+                {% else %}
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+                {% endif %}
+            </div>
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-sm btn-outline-primary">
+                    <span class="material-symbols-outlined">
+                        search
+                    </span>
+                    Buscar
+                </button>
+            </div>
+        </form>
         <div class="col-sm-12">
             <table id="respuestas" class="table mt-3">
                 <thead class="table-dark ">
@@ -55,7 +87,7 @@
                 </thead>
                 <tbody>
                     {% if hay_respuestas %}
-                    {% for respuesta in respuestas %}
+                    {% for respuesta in entity %}
                     <tr>
                         <td>
                             {{respuesta.respondido}}
@@ -98,7 +130,8 @@
                     {% endfor %}
                     {% endif %}
                 </tbody>
-            </table>
+            </table><br>
+            {% include 'paginator_respuesta.html' %}
         </div>
     </div>
 </div>
@@ -106,5 +139,13 @@
 
 {% block script %}
 {% load static %}
+<script type="text/javascript" >
+    const page=(pag)=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        console.log(`?page=${pag}&fecha_inicio=${inicio}&fecha_fin=${fin}`)
+        location.href=`?page=${pag}&fecha_inicio=${inicio}&fecha_fin=${fin}`
+    }
+</script>
 <script src="{% static 'js/respuesta/delete.operativo.js' %}" ></script>
 {% endblock script %}

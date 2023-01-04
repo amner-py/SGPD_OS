@@ -15,7 +15,7 @@ MySQL = {
         'NAME': 'sgpd',
         'USER': 'devopy',
         'PASSWORD': 'amnerpy1',
-        'HOST': '192.168.8.146',
+        'HOST': '192.168.10.107',
         'PORT': '3306',
     }
 }

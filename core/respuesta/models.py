@@ -4,7 +4,8 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from ..delegacion.models import Delegacion
 from ..asignacion.models import Asignacion,MetaMensualEP,MetaMensualAO
-from ..operacion.models import *
+from ..area_operativa.models import PlanArea,TipoOperativo
+from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
 class EPRespuesta(models.Model):
     _ACTUALIZAR=False
@@ -16,7 +17,7 @@ class EPRespuesta(models.Model):
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
     asignado=models.ForeignKey(Asignacion,verbose_name='Lugar asignado',db_column='ASIGNADO_ID',on_delete=models.CASCADE)
     lugar_especifico=models.CharField(verbose_name='Lugar específico',db_column='LUGAR_ESPECIFICO',max_length=350)
-    plan=models.ForeignKey(Plan,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
+    plan=models.ForeignKey(PlanEje,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
     eje=models.ForeignKey(EjeTrabajo,verbose_name='Eje de Trabajo',db_column='EJE_TRABAJO',on_delete=models.CASCADE)
     producto=models.ForeignKey(Producto,verbose_name='Producto',db_column='PRODUCTO',on_delete=models.CASCADE)
     subproducto=models.ForeignKey(Subproducto,verbose_name='Subproducto',db_column='SUBPRODUCTO',on_delete=models.CASCADE)
@@ -89,7 +90,7 @@ class AORespuesta(models.Model):
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
     asignado=models.ForeignKey(Asignacion,verbose_name='Lugar asignado',db_column='ASIGNADO_ID',on_delete=models.CASCADE)
     lugar_apoyo=models.CharField(verbose_name='Lugar de apoyo',db_column='LUGAR_APOYO',max_length=350)
-    plan=models.ForeignKey(Plan,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
+    plan=models.ForeignKey(PlanArea,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
     operativo=models.ForeignKey(TipoOperativo,verbose_name='Tipo de Operativo',db_column='TIPO_OPERATIVO',on_delete=models.CASCADE)
     observaciones=models.TextField(verbose_name='Observaciones',db_column='OBSERVACIONES',max_length=450,blank=True)
     

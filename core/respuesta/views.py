@@ -4,8 +4,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,ListView
 from django.http.response import JsonResponse
+from django.core.paginator import Paginator
+from django.http import Http404
+from datetime import datetime
 from .models import EPRespuesta,AORespuesta
 from ..asignacion.models import Asignacion,MetaMensualEP,MetaMensualAO
 from ..area_operativa.models import PlanArea,TipoOperativo
@@ -15,13 +18,45 @@ from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 class RespuestasEPTemplateView(TemplateView):
     template_name='respuestas_eje.html'
 
-    @method_decorator(login_required)
+    @method_decorator(login_required,csrf_exempt)
     def dispatch(self, request,*args,**kwargs):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        res= EPRespuesta.objects.all()
+        fecha_inicio=request.GET.get('fecha_inicio')
+        fecha_fin=request.GET.get('fecha_fin')
+        page=request.GET.get('page',1)
         respuestas=[]
+
+        try:
+            es_fecha=datetime.strptime(fecha_inicio,'%Y-%m-%d').date()
+        except:
+            fecha_inicio=False
+        iniciob=False
+        finb=False
+
+        if fecha_inicio and fecha_fin:
+            print('ambos')
+            if self.request.user.is_superuser:
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
+            else:
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+            iniciob=True
+            finb=True
+        elif fecha_inicio and not fecha_fin:
+            print('inicio')
+            if self.request.user.is_superuser:
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
+            else:
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+            iniciob=True
+            finb=False
+        else:
+            print('ninguno')
+            if self.request.user.is_superuser:
+                res= EPRespuesta.objects.all()
+            else:
+                res= EPRespuesta.objects.filter(delegacion=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
@@ -29,10 +64,20 @@ class RespuestasEPTemplateView(TemplateView):
         hay_meta=False
         if meta:
             hay_meta=True
+        try:
+            paginator=Paginator(respuestas,5)
+            respuestas= paginator.page(page)
+        except:
+            print('error1')
         return render(request,self.template_name,{
             'hay_respuestas':hay_respuestas,
-            'respuestas':respuestas,
-            'hay_meta':hay_meta
+            'entity':respuestas,
+            'hay_meta':hay_meta,
+            'paginator':paginator,
+            'inicio':fecha_inicio,
+            'fin':fecha_fin,
+            'iniciob':iniciob,
+            'finb':finb
         })
 
 class ActualizarEPTemplateView(TemplateView):
@@ -195,8 +240,36 @@ class RespuestasAOTemplateView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        res= AORespuesta.objects.all()
+        fecha_inicio=request.GET.get('fecha_inicio')
+        fecha_fin=request.GET.get('fecha_fin')
+        page=request.GET.get('page',1)
         respuestas=[]
+
+        iniciob=False
+        finb=False
+
+        if fecha_inicio and fecha_fin:
+            print('ambos')
+            if self.request.user.is_superuser:
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
+            else:
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+            iniciob=True
+            finb=True
+        elif fecha_inicio and not fecha_fin:
+            print('inicio')
+            if self.request.user.is_superuser:
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
+            else:
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+            iniciob=True
+            finb=False
+        else:
+            print('ninguno')
+            if self.request.user.is_superuser:
+                res= AORespuesta.objects.all()
+            else:
+                res= AORespuesta.objects.filter(delegacion=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
@@ -204,10 +277,20 @@ class RespuestasAOTemplateView(TemplateView):
         hay_meta=False
         if meta:
             hay_meta=True
+        try:
+            paginator=Paginator(respuestas,5)
+            respuestas= paginator.page(page)
+        except:
+            print('error1')
         return render(request,self.template_name,{
             'hay_respuestas':hay_respuestas,
-            'respuestas':respuestas,
-            'hay_meta':hay_meta
+            'entity':respuestas,
+            'hay_meta':hay_meta,
+            'paginator':paginator,
+            'inicio':fecha_inicio,
+            'fin':fecha_fin,
+            'iniciob':iniciob,
+            'finb':finb
         })
 
 class ResponderAOTemplateView(TemplateView):

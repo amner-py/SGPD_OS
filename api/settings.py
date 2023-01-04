@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-il7je)+vi237wmn5+&+edf9iqk_1h(8c)c2dtp&4sg3*etq467'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.1', '*']
@@ -51,10 +51,12 @@ INSTALLED_APPS = [
     #Custom Apps
     'core.delegacion',
     'core.lugar',
+    'core.area_operativa',
+    'core.eje_prevencion',
     'core.asignacion',
     'core.inicio',
     'core.notificacion',
-    'core.operacion',
+    #'core.operacion',
     'core.reporte',
     'core.respuesta'
 ]

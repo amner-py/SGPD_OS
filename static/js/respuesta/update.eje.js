@@ -48,7 +48,7 @@ const list_sub=()=>{
         method:'GET'
     }
     
-    fetch(`/operacion/api/subproductos/${producto.value}`,options)
+    fetch(`/eje_prevencion/api/subproductos/${producto.value}`,options)
         .then(response => response.json())
         .then(data =>{
             set_subproductos(data)

@@ -10,14 +10,14 @@
     
 
 {% block content %}
-<div class="container pt-3">
+<div class="container-fluid pt-3" style="font-size:12px">
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <h1 style="width: 100%; marigin:auto">EJE DE PREVENCION RESPUESTAS</h1>
         </div>
         <div class="col-sm-2"></div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             <a type="button" href="{% url 'responder_eje' %}" class="btn btn-sm btn-outline-primary">
                 <span class="material-symbols-outlined">
                     add
@@ -31,29 +31,48 @@
                 </span>
                 Reporte
             </a>-->
+            <a type="button" onclick="report()" class="btn btn-sm btn-outline-secondary">
+                <span class="material-symbols-outlined">
+                    picture_as_pdf
+                </span>
+                Reporte
+            </a>
         </div>
+        <form class="row" method="GET">
         <div class="col-sm-4">
                 <label for="fecha_inicio" class="form-label">Fecha inicio</label>
-                <input type="date" class="form-control" id="fecha_inicio">
+                {% if iniciob %}
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{inicio}}">
+                {% else %}
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                {% endif %}
         </div>
         <div class="col-sm-4">
             <label for="fecha_fin" class="form-label">Fecha fin</label>
-            <input type="date" class="form-control" id="fecha_fin">
+            {% if finb %}
+            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{fin}}">
+            {% else %}
+            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+            {% endif %}
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn btn-sm btn-outline-primary">
+            <button type="submit" class="btn btn-sm btn-outline-primary">
                 <span class="material-symbols-outlined">
                     search
                 </span>
                 Buscar
             </button>
         </div>
+        </form>
         <div class="col-sm-12">
             <table id="respuestas" class="table mt-3">
                 <thead class="table-dark ">
                     <tr>
                         <th>
                             Fecha de Respuesta
+                        </th>
+                        <th>
+                            Delegacion
                         </th>
                         <th>
                             Plan/Orden
@@ -71,19 +90,22 @@
                 </thead>
                 <tbody>
                     {% if hay_respuestas %}
-                    {% for respuesta in respuestas %}
+                    {% for respuesta in entity %}
                     <tr>
                         <td>
                             {{respuesta.respondido}}
                         </td>
-                        <td>
+                        <td class='text-break'>
+                            {{respuesta.delegacion}}
+                        </td>
+                        <td class='text-break'>
                             {{respuesta.plan}}
                         </td>
-                        <td>
+                        <td style="width:10%;overflow-wrap: break-word;" class='text-break'>
                             {{respuesta.eje}}
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-outline-secondary" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en google maps</a>
+                            <a class="btn btn-sm btn-outline-secondary" style="font-size:11px" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en maps</a>
                         </td>
                         <td>
                             <div class="row">
@@ -101,6 +123,9 @@
                                     </span>
                                 </a>
                                 </div>
+                                
+                                {% if perms.respuesta.can_delete_respuesta_de_eje_de_prevencion %}
+                                    
                                 <div class="col-sm-3">
                                 <a onclick="confirm_eliminar({{respuesta.id|safe}})" class="text-danger" style="text-decoration:none;cursor:pointer">
                                     <span class="material-symbols-outlined">
@@ -108,13 +133,15 @@
                                     </span>
                                 </a>
                                 </div>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
                     {% endfor %}
                     {% endif %}
                 </tbody>
-            </table>
+            </table><br>
+            {% include 'paginator_respuesta.html' %}
         </div>
     </div>
 </div>
@@ -122,5 +149,18 @@
 
 {% block script %}
 {% load static %}
+<script type="text/javascript" >
+    const report=()=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        location.href=`/reporte/reportes/eje_prevencion/pdf/?fecha_inicio=${inicio}&fecha_fin=${fin}`
+        
+    }
+    const page=(pag)=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        location.href=`?page=${pag}&fecha_inicio=${inicio}&fecha_fin=${fin}`
+    }
+</script>
 <script src="{% static 'js/respuesta/delete.eje.js' %}" ></script>
 {% endblock script %}

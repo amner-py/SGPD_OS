@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-gt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+    <link  type="text/css" rel="shortcut icon" href="{% static '/img/logo_pnc.ico' %}">
+    <link  type="text/css" href="{% static '/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    
+    <title class="title-up">PDF EJE | PNC - SGPD</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+        
+    </style>
+</head>
+<body>
+    <table id="respuestas" class="table mt-3" style="font-size:10px">
+        <thead class="table-dark ">
+            <tr>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Delegacion
+                </th>
+                <th>
+                    Priorizado
+                </th>
+                <th>
+                    Especifico
+                </th>
+                <th>
+                    Plan/Orden
+                </th>
+                <th>
+                    Eje de Trabajo
+                </th>
+                <th>
+                    Producto
+                </th>
+                <th>
+                    Subproducto
+                </th>
+                <th>
+                    Observaciones
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if hay_respuestas %}
+            {% for respuesta in entity %}
+            <tr>
+                <td>
+                    {{respuesta.respondido}}
+                </td>
+                <td>
+                    {{respuesta.delegacion}}
+                </td>
+                <td>
+                    {{respuesta.asignado}}
+                </td>
+                <td>
+                    {{respuesta.lugar_especifico}}
+                </td>
+                <td>
+                    {{respuesta.plan}}
+                </td>
+                <td class="text-break wd-5">
+                    {{respuesta.eje}}
+                </td>
+                <td>
+                    {{respuesta.producto}}
+                </td>
+                <td>
+                    {{respuesta.subproducto}}
+                </td>
+                <td>
+                    {{respuesta.observaciones}}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table><br>
+</body>
