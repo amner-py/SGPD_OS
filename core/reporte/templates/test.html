@@ -3,10 +3,7 @@
 <html lang="es-gt">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-
-    <link  type="text/css" rel="shortcut icon" href="{% static '/img/logo_pnc.ico' %}">
-    <link  type="text/css" href="{% static '/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title class="title-up">PDF EJE | PNC - SGPD</title>
     <style>
@@ -18,8 +15,16 @@
     </style>
 </head>
 <body>
+    <div class="row">
+        <div class="col-md-2">
+            <img src="{% static 'img/logo_pnc.png' %}" class="" alt="logo" style="width: 1cm;">
+        </div>
+        <div class="col-md-10">
+            <h2 class="text-center">EJE DE PREVENCION INFORME</h2>
+        </div>
+    </div>
     <table id="respuestas" class="table mt-3" style="font-size:10px">
-        <thead class="table-dark ">
+        <thead class="table-primary">
             <tr>
                 <th>
                     Fecha
@@ -54,31 +59,31 @@
             {% if hay_respuestas %}
             {% for respuesta in entity %}
             <tr>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.respondido}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.delegacion}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.asignado}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.lugar_especifico}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.plan}}
                 </td>
-                <td class="text-break wd-5">
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.eje}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.producto}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.subproducto}}
                 </td>
-                <td>
+                <td style="width:5%" class="text-wrap">
                     {{respuesta.observaciones}}
                 </td>
             </tr>

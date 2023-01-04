@@ -102,16 +102,16 @@ class ReporteEjePDF(View):
             'fin':fecha_fin,
             'iniciob':iniciob,
             'finb':finb,
-            'logo':'{}{}'.format(settings.STATIC_URL,'logo_pnc.png')
+            'logo':'{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png')
         }
-
+        print('{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png'))
         try:
             template=get_template(self.template_name)
         except:
             pass
         html=template.render(data)
         css_url=os.path.join(settings.BASE_DIR,'static/bootstrap/css/bootstrap.min.css')
-        pdf=HTML(string=html).write_pdf(stylesheets=[CSS(css_url)])
+        pdf=HTML(string=html,base_url=request.build_absolute_uri()).write_pdf(stylesheets=[CSS(css_url)])
         
         return HttpResponse(pdf,content_type='application/pdf')
 
