@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from ..delegacion.models import Delegacion
-from .models import Asignacion,MetaMensualEP,MetaMensualAO
+from .models import LugarPriorizado,MetaMensualEP,MetaMensualAO
 from django.http.response import JsonResponse
 from django.views import View
 
@@ -8,7 +8,7 @@ from django.views import View
 class AsignacionView(View):
     
     def get(self,request):
-        asignaciones=list(Asignacion.objects.values())
+        asignaciones=list(LugarPriorizado.objects.values())
         if len(asignaciones)>0:
             datos={'message':'success','hay_asignacion':True,'asignaciones':asignaciones}
         else:

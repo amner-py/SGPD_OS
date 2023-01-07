@@ -24,13 +24,13 @@
                 </span>
                 Nuevo registro
             </a>
-            <!--
-            <a type="button" href="" class="btn btn-sm btn-outline-secondary">
+            
+            <a type="button" onclick="grafic()" class="btn btn-sm btn-outline-secondary">
                 <span class="material-symbols-outlined">
                     monitoring
                 </span>
-                Reporte
-            </a>-->
+                Graficas
+            </a>
             <a type="button" onclick="report()" class="btn btn-sm btn-outline-secondary">
                 <span class="material-symbols-outlined">
                     picture_as_pdf
@@ -64,7 +64,7 @@
             </button>
         </div>
         </form>
-        <div class="col-sm-12">
+        <div class="col-sm-12 overflow-auto">
             <table id="respuestas" class="table mt-3">
                 <thead class="table-dark ">
                     <tr>
@@ -75,10 +75,25 @@
                             Delegacion
                         </th>
                         <th>
+                            Priorizado
+                        </th>
+                        <th>
+                            No Priorizado
+                        </th>
+                        <th>
+                            Específico
+                        </th>
+                        <th>
                             Plan/Orden
                         </th>
                         <th>
                             Eje de Trabajo
+                        </th>
+                        <th>
+                            Producto
+                        </th>
+                        <th>
+                            Subproducto
                         </th>
                         <th>
                             Ubicación de Respuesta
@@ -99,10 +114,25 @@
                             {{respuesta.delegacion}}
                         </td>
                         <td style="width:5%" class="text-wrap">
+                            {{respuesta.lugar_priorizado}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.lugar_no_priorizado}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.lugar_especifico}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
                             {{respuesta.plan}}
                         </td>
                         <td style="width:5%" class="text-wrap">
                             {{respuesta.eje}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.producto}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.subproducto}}
                         </td>
                         <td style="width:5%" class="text-wrap">
                             <a class="btn btn-sm btn-outline-secondary" style="font-size:11px" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en maps</a>
@@ -150,10 +180,16 @@
 {% block script %}
 {% load static %}
 <script type="text/javascript" >
+    const grafic=()=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        window.open(`/reporte/reportes/graficas/eje_prevencion/?fecha_inicio=${inicio}&fecha_fin=${fin}`,'_blank').focus()
+        
+    }
     const report=()=>{
         const inicio=document.getElementById('fecha_inicio').value
         const fin=document.getElementById('fecha_fin').value
-        location.href=`/reporte/reportes/eje_prevencion/pdf/?fecha_inicio=${inicio}&fecha_fin=${fin}`
+        window.open(`/reporte/reportes/eje_prevencion/pdf/?fecha_inicio=${inicio}&fecha_fin=${fin}`,'_blank').focus()
         
     }
     const page=(pag)=>{

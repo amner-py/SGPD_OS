@@ -23,17 +23,23 @@
 <div class="container mt-3" id="informe">
     <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><h1>EJE DE PREVENCION</h1></div><div class="col-sm-4" style="float:right">{{respuesta.respondido}}</div></div><br>
     <div class="mb-3 row">
-        <label for="lugar_asignado" class="col-sm-2 col-form-label">Delegación</label>
+        <label for="delegacion" class="col-sm-2 col-form-label">Delegación</label>
         <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.delegacion.delegacion}}" disabled>
+            <input type="text" maxlength="350" class="form-control" id="delegacion" value="{{respuesta.delegacion.delegacion}}" disabled>
         </div>
     </div>
     <div class="mb-3 row">
-        <label for="lugar_asignado" class="col-sm-2 col-form-label">Lugar Asignado</label>
+        <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar priorizado</label>
         <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.asignado}}" disabled>
+            <input type="text" maxlength="350" class="form-control" id="lugar_priorizado" value="{{respuesta.lugar_priorizado}}" disabled>
         </div>
     </div>
+    <div class="mb-3 row">
+      <label for="lugar_no_priorizado" class="col-sm-2 col-form-label">Lugar no priorizado</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="lugar_no_priorizado" value="{{respuesta.lugar_no_priorizado}}" disabled>
+      </div>
+  </div>
     <div class="mb-3 row">
         <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar específico</label>
         <div class="col-sm-10" id="cont_lug_espe">
@@ -65,17 +71,23 @@
         </div>
     </div>
     <div class="mb-3 row">
+      <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="cantidad" value="{{respuesta.cantidad}}" disabled>
+      </div>
+  </div>
+    <div class="mb-3 row">
         <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
         <div class="col-sm-10">
             <textarea class="form-control" id="observaciones" rows="3" maxlength="450" disabled>{{respuesta.observaciones}}</textarea>
         </div>
     </div>
     <div class="mb-3 row">
-        <label for="lugar_asignado" class="col-sm-2 col-form-label">Cantidad de Personas</label>
+        <label for="cantidad_personas" class="col-sm-2 col-form-label">Total Personas</label>
         <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.cantidad_personas}}" disabled>
+            <input type="text" maxlength="350" class="form-control" id="cantidad_personas" value="{{respuesta.cantidad_personas}}" disabled>
         </div>
-    </div><br>
+    </div>
     <div class="row">
         <div class="col-sm-6" id="reportes">
             <div id="personas"></div>
@@ -100,118 +112,7 @@
         let informe=document.querySelector('#informe')
         print(informe)
     }
-    /*Highcharts.chart('personas', {
-        chart: {
-          plotBackgroundColor: null,
-          plotBorderWidth: null,
-          plotShadow: false,
-          type: 'pie'
-        },
-        title: {
-          text: 'Personas'
-        },
-        tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-          point: {
-            valueSuffix: ''
-          }
-        },
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-          }
-        },
-        series: [{
-          name: 'Total',
-          colorByPoint: true,
-          data: [{
-            name: 'Niños',
-            y: {{respuesta.ninios|safe}},
-            sliced: true,
-            selected: true
-          }, {
-            name: 'Adolecentes Masculinos',
-            y: {{respuesta.adolecentes_masculinos|safe}}
-          }, {
-            name: 'Adolecentes Femeninas',
-            y: {{respuesta.adolecentes_femeninos|safe}}
-          }, {
-            name: 'Jovenes Masculinos',
-            y: {{respuesta.jovenes_masculinos|safe}}
-          }, {
-            name: 'Jovenes Femeninas',
-            y: {{respuesta.jovenes_femeninos|safe}}
-          }, {
-            name: 'Adultos Masculinos',
-            y: {{respuesta.adultos_masculinos|safe}}
-          }, {
-            name: 'Adultos Femeninas',
-            y: {{respuesta.adultos_femeninos|safe}}
-          }, {
-            name: 'Adultos Mayores Masculinos',
-            y: {{respuesta.adultos_mayores_masculinos|safe}}
-          }, {
-            name: 'Adultos Mayores Femeninas',
-            y: {{respuesta.adultos_mayores_femeninos|safe}}
-          }]
-        }]
-    });*/
-    /*
-    Highcharts.chart('etnia', {
-        chart: {
-          plotBackgroundColor: null,
-          plotBorderWidth: null,
-          plotShadow: false,
-          type: 'pie'
-        },
-        title: {
-          text: 'Etnias'
-        },
-        tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-          point: {
-            valueSuffix: ''
-          }
-        },
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-          }
-        },
-        series: [{
-          name: 'Total',
-          colorByPoint: true,
-          data: [{
-            name: 'Xincas',
-            y: {{respuesta.xinca|safe}},
-            sliced: true,
-            selected: true
-          }, {
-            name: 'Garifunas',
-            y: {{respuesta.garifuna|safe}}
-          },  {
-            name: 'Mayas',
-            y: {{respuesta.maya|safe}}
-          }, {
-            name: 'Ladinos',
-            y: {{respuesta.ladino|safe}}
-          }]
-        }]
-      });*/
+    
     Highcharts.chart('personas', {
         chart: {
           type: 'column'

@@ -7,22 +7,22 @@ from ..notificacion.models import Notificacion
 from datetime import datetime
 
 
-class Asignacion(models.Model):
-    delegacion=models.OneToOneField(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
-    lugar=models.OneToOneField(Lugar,verbose_name='Lugar',db_column='LUGAR_ID',on_delete=models.CASCADE)
+class LugarPriorizado(models.Model):
+    delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
+    lugar=models.ForeignKey(Lugar,verbose_name='Lugar',db_column='LUGAR_ID',on_delete=models.CASCADE)
     fecha=models.DateField(db_column='FECHA',verbose_name='Fecha',blank=False,null=False,default=datetime.now,editable=False)
 
     class Meta:
-        db_table='ASIGNACION'
-        verbose_name='Asignación'
-        verbose_name_plural='Asignaciones'
+        db_table='LUGAR_PRIORIZADO'
+        verbose_name='Lugar Priorizado'
+        verbose_name_plural='Lugares Priorizados'
 
 
     def __str__(self):
         return f'{self.lugar}'
 
     def save(self,*args,**kwargs):
-        super(Asignacion,self).save(*args,**kwargs)
+        super(LugarPriorizado,self).save(*args,**kwargs)
         Notificacion.objects.create(motivo='NUEVA ASIGNACION',mensaje=f'Se le ha asignado a: {self.lugar.municipio} la fecha {self.fecha.day}/{self.fecha.month}/{self.fecha.year}',receptor=self.delegacion)
 
 
@@ -100,6 +100,7 @@ class MetaMensualAO(models.Model):
         ('s','Superado')
     ]
     _ACTUALIZAR=False
+    _NUEVO=False
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     meta=models.PositiveBigIntegerField(verbose_name='Meta mensual',db_column='META_MES')
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
@@ -132,25 +133,28 @@ class MetaMensualAO(models.Model):
                 if anterior.asignado.month == self.asignado.month:
                         if self.asignado.year == anterior.asignado.year:
                             if self.id == anterior.id:
-                                self._ACTUALIZAR=True
+                                if self.meta_alcanzada != anterior.meta_alcanzada:
+                                    self._NUEVO=True
+                                else:
+                                    self._ACTUALIZAR=True
                             else:
                                 raise ValidationError('No puede agregar una nueva meta a este mes, favor de esperar al siguiente mes.')
         except:
             raise ValidationError('Debe completar los campos requeridos.')
 
     def save(self,*args,**kwargs):
-        if self._ACTUALIZAR:
-            super(MetaMensualAO,self).save(*args,**kwargs)
-            Notificacion.objects.create(motivo='META DE AREA OPERATIVA MODIFICADA',mensaje=f'Se le ha actualizado la meta para el mes {self.asignado.month} de {self.meta}',receptor=self.delegacion)
+        diferencia=self.meta_alcanzada-self.meta
+        self.diferencia=diferencia
+        if self.diferencia>0:
+            self.estado='s'
+        elif self.diferencia==0:
+            self.estado='a'
         else:
-            diferencia=self.meta_alcanzada-self.meta
-            self.diferencia=diferencia
-            print(f'LA DIFERENCIA ES DE: {self.diferencia}')
-            if self.diferencia>0:
-                self.estado='s'
-            elif self.diferencia==0:
-                self.estado='a'
-            else:
-                self.estado='na'
-            super(MetaMensualAO,self).save(*args,**kwargs)
+            self.estado='na'
+        super(MetaMensualAO,self).save(*args,**kwargs)
+        if self._ACTUALIZAR:
+            Notificacion.objects.create(motivo='META DE AREA OPERATIVA MODIFICADA',mensaje=f'Se le ha actualizado la meta para el mes {self.asignado.month} de {self.meta}',receptor=self.delegacion)
+        elif self._NUEVO:
+            pass
+        else:
             Notificacion.objects.create(motivo='NUEVA META EN AREA OPERATIVA ASIGNADA',mensaje=f'Se le ha sido asignada una nueva meta de {self.meta} para el mes {self.asignado.month}.',receptor=self.delegacion)

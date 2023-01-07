@@ -1,0 +1,384 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-gt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link  type="text/css" href="{% static '/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <title>Graficas | PNC - SGPD</title>
+    
+    <style>
+        
+    #container {
+        height: 400px;
+      }
+      
+      .highcharts-figure,
+      .highcharts-data-table table {
+        min-width: 310px;
+        max-width: 800px;
+        margin: 1em auto;
+      }
+      
+      .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #ebebeb;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+      }
+      
+      .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+      }
+      
+      .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+      }
+      
+      .highcharts-data-table td,
+      .highcharts-data-table th,
+      .highcharts-data-table caption {
+        padding: 0.5em;
+      }
+      
+      .highcharts-data-table thead tr,
+      .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+      }
+      
+      .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+      }
+    </style>
+        
+        
+</head>
+<body>
+    <div class="container-fluid" id="contenedor">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="{% static 'img/logo_pnc.png' %}" class="" alt="logo" style="width: 1cm;">
+            </div>
+            <div class="col-md-9">
+                <h2 class="text-center">AREA OPERATIVA GRAFICAS</h2>
+            </div><br><br>
+            
+            <div class="col-sm-6" id="identificados"></div>
+        
+            <div class="col-sm-6" id="consignados"></div>
+        
+            <div class="col-sm-6" id="conducidos"></div>
+        
+            <div class="col-sm-6" id="solventes"></div>
+        
+            <div class="col-sm-6" id="recuperados"></div>
+        </div>
+        
+    </div>
+
+<script src="{% static 'highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static 'highcharts-8.1.2/modules/accessibility.js' %}"></script>
+    <script>
+        Highcharts.chart('identificados', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: 'Identificados'
+            },
+            subtitle: {
+              text: ''
+            },
+            xAxis: {
+              type: 'category',
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: 'Registros hechos: {{size_respuestas|safe}}'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            tooltip: {
+              pointFormat: '<b>{point.y}</b> de {{total_identificados|safe}}'
+            },
+            series: [{
+              name: 'Identificados',
+              data: [
+                ['Hombres', {{hombres_identificados|safe}}],
+                ['Mujeres', {{mujeres_identificadas|safe}}],//
+                ['Autos', {{autos_identificados|safe}}],
+                ['Motos', {{motos_identificadas|safe}}],
+                ['Armas', {{armas_identificadas|safe}}],
+              ],
+              dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            }]
+          });
+    
+          Highcharts.chart('consignados', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: 'Consignados'
+            },
+            subtitle: {
+              text: ''
+            },
+            xAxis: {
+              type: 'category',
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: 'Registros hechos: {{size_respuestas|safe}}'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            tooltip: {
+              pointFormat: '<b>{point.y}</b> de {{total_consignados|safe}}'
+            },
+            series: [{
+              name: 'Consignados',
+              data: [
+                ['Hombres', {{hombres_consignados|safe}}],
+                ['Mujeres', {{mujeres_consignadas|safe}}],//
+                ['Autos', {{autos_consignados|safe}}],
+                ['Motos', {{motos_consignadas|safe}}],
+                ['Armas', {{armas_consignadas|safe}}],
+              ],
+              dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            }]
+          });
+    
+          Highcharts.chart('conducidos', {
+            chart: {
+              type: 'pie'
+            },
+            title: {
+              text: 'Conducidos'
+            },
+            subtitle: {
+              text: ''
+            },
+          
+            accessibility: {
+              announceNewData: {
+                enabled: true
+              },
+              point: {
+                valueSuffix: '%'
+              }
+            },
+          
+            plotOptions: {
+              series: {
+                dataLabels: {
+                  enabled: true,
+                  format: '{point.name}: {point.y:.1f}%'
+                }
+              }
+            },
+          
+            tooltip: {
+              headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+              pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> de {{total_conducidos|safe}}<br/>'
+            },
+          
+            series: [
+              {
+                name: "Consignados",
+                colorByPoint: true,
+                data: [
+                  {
+                    name: "Mujeres",
+                    y: ({{mujeres_conducidas|safe}}/{{total_conducidos|safe}})*100,
+                    drilldown: "Mujeres"
+                  },
+                  {
+                    name: "Hombres",
+                    y: ({{hombres_conducidos|safe}}/{{total_conducidos|safe}})*100,
+                    drilldown: "Hombres"
+                  },
+                ]
+              }
+            ],
+            drilldown: {
+              series: [
+                {
+                    name: "Mujeres",
+                    y: ({{mujeres_conducidas|safe}}/{{total_conducidos|safe}})*100,
+                    drilldown: "Mujeres"
+                  },
+                  {
+                    name: "Hombres",
+                    y: ({{hombres_conducidos|safe}}/{{total_conducidos|safe}})*100,
+                    drilldown: "Hombres"
+                  },
+              ]
+            }
+          });
+    
+          Highcharts.chart('solventes', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: 'Solventes'
+            },
+            subtitle: {
+              text: ''
+            },
+            xAxis: {
+              type: 'category',
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: 'Registros hechos: {{size_respuestas|safe}}'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            tooltip: {
+              pointFormat: '<b>{point.y}</b> de {{total_solventes|safe}}'
+            },
+            series: [{
+              name: 'Solventes',
+              data: [
+                ['Hombres', {{hombres_solventes|safe}}],
+                ['Mujeres', {{mujeres_solventes|safe}}],//
+                ['Autos', {{autos_solventes|safe}}],
+                ['Motos', {{motos_solventes|safe}}],
+                ['Armas', {{armas_solventes|safe}}],
+              ],
+              dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            }]
+          });
+          Highcharts.chart('recuperados', {
+            chart: {
+              type: 'column'
+            },
+            title: {
+              text: 'Recuperados'
+            },
+            subtitle: {
+              text: ''
+            },
+            xAxis: {
+              type: 'category',
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: 'Registros hechos: {{size_respuestas|safe}}'
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            tooltip: {
+              pointFormat: '<b>{point.y}</b> de {{total_recuperados|safe}}'
+            },
+            series: [{
+              name: 'Recuperados',
+              data: [
+                ['Hombres', {{hombres_recuperados|safe}}],
+                ['Mujeres', {{mujeres_recuperadas|safe}}],
+                ['Menores', {{menores_recuperados|safe}}],
+                ['Autos', {{autos_recuperados|safe}}],
+                ['Motos', {{motos_recuperados|safe}}],
+                ['Armas', {{armas_recuperados|safe}}],
+              ],
+              dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                  fontSize: '13px',
+                  fontFamily: 'Verdana, sans-serif'
+                }
+              }
+            }]
+          });
+    </script>
+</body>
+</html>

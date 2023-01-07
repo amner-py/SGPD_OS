@@ -3,12 +3,11 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from core.inicio.views import InicioView
-from core.inicio.views import get_error_404
+from core.inicio.views import InicioView,page_not_found404
 from django.conf.urls import handler404
 
  
-handler404 = get_error_404
+handler404 = page_not_found404
 
 urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),

@@ -77,46 +77,25 @@ const validate=()=>{
                         parseInt(adolecentes_f.value|0)+parseInt(jovenes_m.value|0)+parseInt(jovenes_f.value|0)+
                         parseInt(adultos.value|0)+parseInt(adultas.value|0)+parseInt(adultos_mayores.value|0)+ parseInt(adultas_mayores.value|0)
     var total_etnias=parseInt(xincas.value|0)+parseInt(garifunas.value|0)+parseInt(mayas.value|0)+parseInt(ladinos.value|0)
-    const cantidad_etnias=(total_etnias==parseInt(cantidad_personas.value|0))
-    const cantidad_edades=(total_personas==parseInt(cantidad_personas.value|0))
-    const personas_mayor_cero=(parseInt(cantidad_personas.value|0))>0
-
-    var edades_confirm=false,etnias_confirm=false
-
-    if(!personas_mayor_cero){
-        aviso_personas.removeAttribute('hidden')
+    var total_iguales=total_personas===total_etnias
+    if(total_iguales){
+        guardar(total_personas)
     }else{
-        aviso_personas.setAttribute('hidden',true)
-    }
-    if(!cantidad_edades){
-        aviso_edades.removeAttribute('hidden')
-    }else{
-        aviso_edades.setAttribute('hidden',true)
-        edades_confirm=true
-    }
-    if(!cantidad_etnias){
-        aviso_etnias.removeAttribute('hidden')
-    }else{
-        aviso_etnias.setAttribute('hidden',true)
-        etnias_confirm=true
-    }
-
-    const especifico_campo=lugar_especifico.value
-    const especifico=(especifico_campo.trim().length==0)
-    var especifico_confirm
-    if(especifico){
-        aviso_especifico.removeAttribute('hidden')
-    }else{
-        aviso_especifico.setAttribute('hidden',true)
-        especifico_confirm=true
-    }
-
-
-    if(edades_confirm && edades_confirm && etnias_confirm && especifico_confirm && personas_mayor_cero){
-        guardar()
-    }else{
-        location.href="#inicio"
-        window.navigator.vibrate([1000]);
+        swal.fire({
+            title: 'Los datos de personas y etnias no coinciden',
+            icon:"warning",
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            }
+            
+        }).then((isConfirm)=>{
+                if(isConfirm){
+                    location.href="#inicio"
+                }
+            })
     }
     
 }
@@ -177,28 +156,31 @@ const show_message=(data)=>{
     }
 }
 
-const guardar=()=>{
-    let lugar_asignado=document.querySelector('#lugar_asignado').value
+const guardar=(total)=>{
+    let lugar_priorizado=document.querySelector('#lugar_priorizado').value
+    let lugar_no_priorizado=document.querySelector('#lugar_no_priorizado').value
     let plan=document.querySelector('#plan').value
     let eje=document.querySelector('#eje').value
     let producto=document.querySelector('#producto').value
     let subproducto=document.querySelector('#subproducto').value
     let observaciones=document.querySelector('#observaciones').value
-    let personas=cantidad_personas.value
+    let cantidad = document.querySelector('#cantidad')
     let especifico=lugar_especifico.value
 
     const jd={
         'id':parseInt(id_res),
         'latitud':latitud,
         'longitud':longitud,
-        'lugar_asignado':parseInt(lugar_asignado),
+        'lugar_priorizado':parseInt(lugar_priorizado|0),
+        'lugar_no_priorizado':lugar_no_priorizado.trim(),
         'lugar_especifico':especifico.trim(),
         'plan':parseInt(plan),
         'eje':parseInt(eje),
         'producto':parseInt(producto),
         'subproducto':parseInt(subproducto),
+        'cantidad':parseInt(cantidad.value|0),
         'observaciones':observaciones.trim(),
-        'cantidad_personas':parseInt(personas),
+        'cantidad_personas':parseInt(total|0),
         'ninios':parseInt(ninios.value|0),
         'ninias':parseInt(ninias.value|0),
         'adolecentes_masculinos':parseInt(adolecentes_m.value|0),

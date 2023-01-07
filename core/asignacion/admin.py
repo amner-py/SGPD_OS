@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Asignacion,MetaMensualEP, MetaMensualAO
+from .models import LugarPriorizado,MetaMensualEP, MetaMensualAO
 
 
-@admin.register(Asignacion)
-class AsignacionAdmin(admin.ModelAdmin):
+@admin.register(LugarPriorizado)
+class LugarPriorizadoAdmin(admin.ModelAdmin):
     list_display=['id','__str__','delegacion']
     list_filter=[]
     list_editable=[]

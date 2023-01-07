@@ -10,11 +10,11 @@
     
 
 {% block content %}
-<div class="container pt-3">
+<div class="container-fluid pt-3" style="font-size:12px">
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
-            <h1 style="width: 100%; marigin:auto">AREA OPERATIVA RESPUESTAS</h1>
+            <h1 style="width: 100%; marigin:auto" class="text-center">AREA OPERATIVA RESPUESTAS</h1>
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-4">
@@ -24,14 +24,13 @@
                 </span>
                 Nuevo registro
             </a>
-            <!--
-            <a type="button" href="" class="btn btn-sm btn-outline-secondary">
+            <a type="button" onclick="grafic()" class="btn btn-sm btn-outline-secondary">
                 <span class="material-symbols-outlined">
                     monitoring
                 </span>
-                Reporte
-            </a>-->
-            <a type="button" href="" class="btn btn-sm btn-outline-secondary">
+                Graficas
+            </a>
+            <a type="button" onclick="report()" class="btn btn-sm btn-outline-secondary">
                 <span class="material-symbols-outlined">
                     picture_as_pdf
                 </span>
@@ -64,12 +63,18 @@
                 </button>
             </div>
         </form>
-        <div class="col-sm-12">
+        <div class="col-sm-12 overflow-auto">
             <table id="respuestas" class="table mt-3">
                 <thead class="table-dark ">
                     <tr>
                         <th>
                             Fecha de Respuesta
+                        </th>
+                        <th>
+                            Delegación
+                        </th>
+                        <th>
+                            Priorizado
                         </th>
                         <th>
                             Plan/Orden
@@ -89,19 +94,25 @@
                     {% if hay_respuestas %}
                     {% for respuesta in entity %}
                     <tr>
-                        <td>
+                        <td style="width:5%" class="text-wrap">
                             {{respuesta.respondido}}
                         </td>
-                        <td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.delegacion}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
+                            {{respuesta.lugar_priorizado}}
+                        </td>
+                        <td style="width:5%" class="text-wrap">
                             {{respuesta.plan}}
                         </td>
-                        <td>
+                        <td style="width:5%" class="text-wrap">
                             {{respuesta.operativo}}
                         </td>
-                        <td>
+                        <td style="width:5%" class="text-wrap">
                             <a class="btn btn-sm btn-outline-secondary" href="https://www.google.com/maps/search/?api=1&query={{respuesta.latitud}},{{respuesta.longitud}}&zoom=20" target="_blank">Ver en google maps</a>
                         </td>
-                        <td>
+                        <td style="width:5%" class="text-wrap">
                             <div class="row">
                                 <div class="col-sm-3">
                                 <a href="{% url 'respuesta_operativo_inf' id=respuesta.id %}" class="text-info" style="text-decoration:none">
@@ -140,6 +151,18 @@
 {% block script %}
 {% load static %}
 <script type="text/javascript" >
+    const grafic=()=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        window.open(`/reporte/reportes/graficas/area_operativa/?fecha_inicio=${inicio}&fecha_fin=${fin}`,'_blank').focus()
+        
+    }
+    const report=()=>{
+        const inicio=document.getElementById('fecha_inicio').value
+        const fin=document.getElementById('fecha_fin').value
+        window.open(`/reporte/reportes/area_operativa/pdf/?fecha_inicio=${inicio}&fecha_fin=${fin}`,'_blank').focus()
+        
+    }
     const page=(pag)=>{
         const inicio=document.getElementById('fecha_inicio').value
         const fin=document.getElementById('fecha_fin').value

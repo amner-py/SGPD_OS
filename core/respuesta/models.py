@@ -3,7 +3,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from ..delegacion.models import Delegacion
-from ..asignacion.models import Asignacion,MetaMensualEP,MetaMensualAO
+from ..asignacion.models import LugarPriorizado,MetaMensualEP,MetaMensualAO
 from ..area_operativa.models import PlanArea,TipoOperativo
 from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
@@ -15,13 +15,15 @@ class EPRespuesta(models.Model):
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
     respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
-    asignado=models.ForeignKey(Asignacion,verbose_name='Lugar asignado',db_column='ASIGNADO_ID',on_delete=models.CASCADE)
+    lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)
+    lugar_no_priorizado=models.CharField(verbose_name='Lugar no priorizado',db_column='NO_PRIORIZADO',max_length=350)
     lugar_especifico=models.CharField(verbose_name='Lugar específico',db_column='LUGAR_ESPECIFICO',max_length=350)
     plan=models.ForeignKey(PlanEje,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
     eje=models.ForeignKey(EjeTrabajo,verbose_name='Eje de Trabajo',db_column='EJE_TRABAJO',on_delete=models.CASCADE)
     producto=models.ForeignKey(Producto,verbose_name='Producto',db_column='PRODUCTO',on_delete=models.CASCADE)
     subproducto=models.ForeignKey(Subproducto,verbose_name='Subproducto',db_column='SUBPRODUCTO',on_delete=models.CASCADE)
     observaciones=models.TextField(verbose_name='Observaciones',db_column='OBSERVACIONES',max_length=450,blank=True)
+    cantidad=models.PositiveBigIntegerField(verbose_name='Cantidad',db_column='CANTIDAD')
     cantidad_personas=models.PositiveBigIntegerField(verbose_name='Cantidad de personas',db_column='CANTIDAD_PERSONAS')
     ninios=models.PositiveBigIntegerField(verbose_name='Niños',db_column='NINIOS',default=0)
     ninias=models.PositiveBigIntegerField(verbose_name='Niñas',db_column='NINIAS',default=0)
@@ -51,6 +53,7 @@ class EPRespuesta(models.Model):
                 print(meta)
                 meta.meta_alcanzada-=1
                 meta.actualizado=datetime.now()
+                meta._NUEVO=True
                 meta.save()
                 self.meta=meta
             super(EPRespuesta,self).delete(*args,**kwargs)
@@ -70,6 +73,7 @@ class EPRespuesta(models.Model):
                 if meta:
                     meta.meta_alcanzada+=1
                     meta.actualizado=datetime.now()
+                    meta._NUEVO=True
                     meta.save()
                     self.meta=meta
                 else:
@@ -88,10 +92,12 @@ class AORespuesta(models.Model):
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
     respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
-    asignado=models.ForeignKey(Asignacion,verbose_name='Lugar asignado',db_column='ASIGNADO_ID',on_delete=models.CASCADE)
+    lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)
+    lugar_no_priorizado=models.CharField(verbose_name='Lugar no priorizado',db_column='NO_PRIORIZADO',max_length=350)
     lugar_apoyo=models.CharField(verbose_name='Lugar de apoyo',db_column='LUGAR_APOYO',max_length=350)
     plan=models.ForeignKey(PlanArea,verbose_name='Plan/Orden',db_column='PLAN',on_delete=models.CASCADE)
     operativo=models.ForeignKey(TipoOperativo,verbose_name='Tipo de Operativo',db_column='TIPO_OPERATIVO',on_delete=models.CASCADE)
+    cantidad=models.PositiveBigIntegerField(verbose_name='Cantidad',db_column='CANTIDAD')
     observaciones=models.TextField(verbose_name='Observaciones',db_column='OBSERVACIONES',max_length=450,blank=True)
     
     total_identificados=models.PositiveBigIntegerField(verbose_name='Total de identificados',db_column='TOTAL_IDENTIFICADOS',default=0)
@@ -141,6 +147,7 @@ class AORespuesta(models.Model):
                 print(meta)
                 meta.meta_alcanzada-=1
                 meta.actualizado=datetime.now()
+                meta._NUEVO=True
                 meta.save()
                 self.meta=meta
             super(AORespuesta,self).delete(*args,**kwargs)
@@ -160,6 +167,7 @@ class AORespuesta(models.Model):
                 if meta:
                     meta.meta_alcanzada+=1
                     meta.actualizado=datetime.now()
+                    meta._NUEVO=True
                     meta.save()
                     self.meta=meta
                 else:

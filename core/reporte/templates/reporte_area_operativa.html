@@ -20,7 +20,7 @@
             <img src="{% static 'img/logo_pnc.png' %}" class="" alt="logo" style="width: 1cm;">
         </div>
         <div class="col-md-10">
-            <h4 class="text-center">EJE DE PREVENCION INFORME</h4>
+            <h2 class="text-center">AREA OPERATIVA INFORME</h2>
         </div>
     </div>
     <table id="respuestas" class="table mt-3" style="font-size:10px">
@@ -39,19 +39,13 @@
                     No Priorizado
                 </th>
                 <th>
-                    Especifíco
+                    Apoyo
                 </th>
                 <th>
                     Plan/Orden
                 </th>
                 <th>
-                    Eje de Trabajo
-                </th>
-                <th>
-                    Producto
-                </th>
-                <th>
-                    Subproducto
+                    Tipo de Operativo
                 </th>
                 <th>
                     Cantidad
@@ -78,19 +72,13 @@
                     {{respuesta.lugar_no_priorizado}}
                 </td>
                 <td style="width:5%" class="text-wrap">
-                    {{respuesta.lugar_especifico}}
+                    {{respuesta.lugar_apoyo}}
                 </td>
                 <td style="width:5%" class="text-wrap">
                     {{respuesta.plan}}
                 </td>
                 <td style="width:5%" class="text-wrap">
-                    {{respuesta.eje}}
-                </td>
-                <td style="width:5%" class="text-wrap">
-                    {{respuesta.producto}}
-                </td>
-                <td style="width:5%" class="text-wrap">
-                    {{respuesta.subproducto}}
+                    {{respuesta.operativo}}
                 </td>
                 <td style="width:5%" class="text-wrap">
                     {{respuesta.cantidad}}

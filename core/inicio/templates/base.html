@@ -38,13 +38,13 @@
                     <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="/">INICIO</a>
                 </li>
                 {% if user.is_authenticated %}
-                
+                <!--
                 {% if perms.asignacion %}
                 <li class="nav-item">
                     <a class="nav-link txt-center nav-item" style="text-decoration: none;color: gray;" href="{% url 'departamentos' %}">ASIGNACIONES</a>
                 </li>
                 {% endif %}
-                
+                -->
                 
                 
                 {% if perms.respuesta  %}
@@ -120,7 +120,7 @@
 </header>
   {% block content %} {% endblock content %}
 
-<footer id="fin" class="text-dark container-fluid border-top border-dark mt-5">
+  <footer id="fin" class="text-dark container-fluid border-top border-dark mt-5">
     <div class="row align-items-center justify-content-between">
         <div class="col-sm-4">
             <p>&copy; 2022 - Sistema de Prevención de Delitos - PNC</p>

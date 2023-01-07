@@ -1,5 +1,6 @@
 import json
 from django.views import View
+from django.utils import timezone
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -10,7 +11,7 @@ from django.core.paginator import Paginator
 from django.http import Http404
 from datetime import datetime
 from .models import EPRespuesta,AORespuesta
-from ..asignacion.models import Asignacion,MetaMensualEP,MetaMensualAO
+from ..asignacion.models import LugarPriorizado,MetaMensualEP,MetaMensualAO
 from ..area_operativa.models import PlanArea,TipoOperativo
 from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
@@ -36,7 +37,6 @@ class RespuestasEPTemplateView(TemplateView):
         finb=False
 
         if fecha_inicio and fecha_fin:
-            print('ambos')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
@@ -44,7 +44,6 @@ class RespuestasEPTemplateView(TemplateView):
             iniciob=True
             finb=True
         elif fecha_inicio and not fecha_fin:
-            print('inicio')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
@@ -52,7 +51,6 @@ class RespuestasEPTemplateView(TemplateView):
             iniciob=True
             finb=False
         else:
-            print('ninguno')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.all()
             else:
@@ -68,7 +66,8 @@ class RespuestasEPTemplateView(TemplateView):
             paginator=Paginator(respuestas,5)
             respuestas= paginator.page(page)
         except:
-            print('error1')
+            print('Error linea 66 en respuesta/views.py')
+            print('error en paginacion')
         return render(request,self.template_name,{
             'hay_respuestas':hay_respuestas,
             'entity':respuestas,
@@ -89,7 +88,7 @@ class ActualizarEPTemplateView(TemplateView):
     
     def get(self,request,id=0):
         if id>0:
-            lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
+            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
             res=EPRespuesta.objects.get(pk=id)
             planes=PlanEje.objects.all()
             ejes=EjeTrabajo.objects.all()
@@ -99,7 +98,7 @@ class ActualizarEPTemplateView(TemplateView):
             'planes':planes,
             'ejes':ejes,
             'productos':productos,
-            'lugares_asignados':lugares_asignados
+            'lugares_priorizado':lugares_priorizado
         })
 
 class ResponderEPTemplateView(TemplateView):
@@ -110,17 +109,18 @@ class ResponderEPTemplateView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
+        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
         meta=MetaMensualEP.objects.filter(delegacion=self.request.user).last()
         hay_meta=False
         if meta:
-            hay_meta=True
+            if meta.asignado.month == datetime.now().month:
+                hay_meta=True
         planes=PlanEje.objects.all()
         ejes=EjeTrabajo.objects.all()
         productos=Producto.objects.all()
-        hay_datos=len(lugares_asignados)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
+        hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
         return render(request,self.template_name,{
-            'lugares_asignados':lugares_asignados,
+            'lugares_priorizado':lugares_priorizado,
             'planes':planes,
             'ejes':ejes,
             'productos':productos,
@@ -163,7 +163,9 @@ class RespuestasEPView(View):
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user
-        respuesta.asignado=Asignacion.objects.get(pk=jd['lugar_asignado'])
+        respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
+        respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
+        respuesta.cantidad=jd['cantidad']
         respuesta.lugar_especifico=jd['lugar_especifico']
         respuesta.plan=PlanEje.objects.get(pk=jd['plan'])
         respuesta.eje=EjeTrabajo.objects.get(pk=jd['eje'])
@@ -195,7 +197,9 @@ class RespuestasEPView(View):
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user
-        respuesta.asignado=Asignacion.objects.get(pk=jd['lugar_asignado'])
+        respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
+        respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
+        respuesta.cantidad=jd['cantidad']
         respuesta.lugar_especifico=jd['lugar_especifico']
         respuesta.plan=PlanEje.objects.get(pk=jd['plan'])
         respuesta.eje=EjeTrabajo.objects.get(pk=jd['eje'])
@@ -301,16 +305,17 @@ class ResponderAOTemplateView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
+        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
         meta=MetaMensualAO.objects.filter(delegacion=self.request.user).last()
         hay_meta=False
         if meta:
-            hay_meta=True
+            if meta.asignado.month == datetime.now().month:
+                hay_meta=True
         planes=PlanArea.objects.all()
         operativos=TipoOperativo.objects.all()
-        hay_datos=len(lugares_asignados)>0 and len(planes)>0 and len(operativos)>0 and hay_meta
+        hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(operativos)>0 and hay_meta
         return render(request,self.template_name,{
-            'lugares_asignados':lugares_asignados,
+            'lugares_priorizado':lugares_priorizado,
             'planes':planes,
             'operativos':operativos,
             'hay_datos':hay_datos
@@ -336,7 +341,9 @@ class RespuestasAOView(View):
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user
-        respuesta.asignado=Asignacion.objects.get(pk=jd['asignado'])
+        respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
+        respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
+        respuesta.cantidad=jd['cantidad']
         respuesta.lugar_apoyo=jd['lugar_apoyo']
         respuesta.plan=PlanArea.objects.get(pk=jd['plan'])
         respuesta.operativo=TipoOperativo.objects.get(pk=jd['operativo'])
@@ -379,7 +386,9 @@ class RespuestasAOView(View):
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user
-        respuesta.asignado=Asignacion.objects.get(pk=jd['asignado'])
+        respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
+        respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
+        respuesta.cantidad=jd['cantidad']
         respuesta.lugar_apoyo=jd['lugar_apoyo']
         respuesta.plan=PlanArea.objects.get(pk=jd['plan'])
         respuesta.operativo=TipoOperativo.objects.get(pk=jd['operativo'])
@@ -447,7 +456,7 @@ class ActualizarAOTemplateView(TemplateView):
     
     def get(self,request,id=0):
         if id>0:
-            lugares_asignados=Asignacion.objects.filter(delegacion=self.request.user)
+            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
             res=AORespuesta.objects.get(pk=id)
             planes=PlanArea.objects.all()
             operativos=TipoOperativo.objects.all()
@@ -455,5 +464,5 @@ class ActualizarAOTemplateView(TemplateView):
             'res':res,
             'planes':planes,
             'operativos':operativos,
-            'lugares_asignados':lugares_asignados
+            'lugares_priorizado':lugares_priorizado
         })
