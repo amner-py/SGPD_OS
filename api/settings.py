@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-il7je)+vi237wmn5+&+edf9iqk_1h(8c)c2dtp&4sg3*etq467'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.1', '*']
@@ -64,7 +64,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    #'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,8 +71,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_SECURE=True
-CSRF_TRUSTED_ORIGINS=['https://*.sgpdgt.com']
+#CSRF_COOKIE_SECURE=True
+#CSRF_TRUSTED_ORIGINS=['https://*.sgpdgt.com']
 
 ROOT_URLCONF = 'api.urls'
 
@@ -99,7 +98,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = DB.MySQL
+DATABASES = DB.MySQL1
 
 
 # Password validation

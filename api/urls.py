@@ -23,6 +23,7 @@ urlpatterns = [
     path('eje_prevencion/',include('core.eje_prevencion.urls')),
     path('respuesta/',include('core.respuesta.urls')),
     path('reporte/',include('core.reporte.urls')),
+    path('perfil/',include('core.inicio.urls')),
 ]
 
 
