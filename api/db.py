@@ -12,10 +12,10 @@ SQLITE = {
 MySQL = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sgpd',
-        'USER': 'devopy',
-        'PASSWORD': 'amnerpy1',
-        'HOST': '192.168.10.107',
+        'NAME': 'SGPD',
+        'USER': 'sgpdpnc',
+        'PASSWORD': 'sgpdPnC$]',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

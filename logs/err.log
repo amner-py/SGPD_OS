@@ -1,0 +1,62 @@
+Watching for file changes with StatReloader
+[09/Jan/2023 16:43:36] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 16:43:41] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 16:43:42] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 16:43:43] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 17:02:06] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 17:33:26] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 18:26:17] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 18:26:33] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 19:20:09] "GET / HTTP/1.1" 200 6094
+[09/Jan/2023 19:20:09] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 194901
+[09/Jan/2023 19:20:09] "GET /static/css/sgpd.style.css HTTP/1.1" 200 1923
+[09/Jan/2023 19:20:09] "GET /static/css/municipios.chiquimula.lugar.css HTTP/1.1" 200 462
+[09/Jan/2023 19:20:09] "GET /static/css/inicio.style.css HTTP/1.1" 200 700
+[09/Jan/2023 19:20:09] "GET /static/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1" 200 80496
+[09/Jan/2023 19:20:09] "GET /static/js/notificacion/notificacion.main.js HTTP/1.1" 200 2214
+[09/Jan/2023 19:20:11] "GET /static/img/logo_pnc.png HTTP/1.1" 200 36002
+[09/Jan/2023 19:20:19] "GET /static/img/logo_pnc.ico HTTP/1.1" 200 113211
+/home/sgpd/SGPD_OS/api/wsgi.py changed, reloading.
+Watching for file changes with StatReloader
+Traceback (most recent call last):
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/arbiter.py", line 224, in run
+    handler()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/arbiter.py", line 257, in handle_term
+    raise StopIteration
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/sgpd/SGPD_OS/bin/gunicorn", line 8, in <module>
+    sys.exit(run())
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/app/wsgiapp.py", line 67, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]").run()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/app/base.py", line 231, in run
+    super().run()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/app/base.py", line 72, in run
+    Arbiter(self).run()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/arbiter.py", line 227, in run
+    self.halt()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/arbiter.py", line 342, in halt
+    self.stop()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/arbiter.py", line 382, in stop
+    sock.close_sockets(self.LISTENERS, unlink)
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/gunicorn/sock.py", line 212, in close_sockets
+    os.unlink(sock_name)
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/gunicorn-sgpd.sock'
+Forbidden (Origin checking failed - https://sgpdgt.com does not match any trusted origins.): /accounts/login/
+Not Found: /favicon.ico
+Forbidden (Origin checking failed - https://sgpdgt.com does not match any trusted origins.): /accounts/login/
+Invalid HTTP_HOST header: 'www.flymartonline.com'. You may need to add 'www.flymartonline.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.flymartonline.com'. You may need to add 'www.flymartonline.com' to ALLOWED_HOSTS.
+Bad Request: /modules.php
