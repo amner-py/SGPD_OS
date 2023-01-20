@@ -1,0 +1,1 @@
+/home/sgpd/SGPD_OS/static/js/respuesta/delete.operativo.js

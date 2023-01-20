@@ -14,7 +14,7 @@ class DepartamentoAdmin(admin.ModelAdmin):
 @admin.register(Municipio)
 class MunicipioAdmin(admin.ModelAdmin):
     list_display=['__str__']
-    list_filter=[]
+    list_filter=['departamento']
     list_editable=[]
     list_per_page=15
     search_fields=[]
