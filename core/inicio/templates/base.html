@@ -69,7 +69,6 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
                         <li><a class="dropdown-item" href="{% url 'metas_eje_report_view' %}">Metas de Eje de Prevención</a></li>
-                        <li><a class="dropdown-item" href="{% url 'metas_operativa_report_view' %}">Metas de Área Operativa</a></li>
                     </ul>
                     </li>
                 </ul>
@@ -98,9 +97,10 @@
                 <div class="dropdown-menu">
                 {% if user.is_superuser or user.is_staff %}
                 <a class="dropdown-item" href="/panel_control/">Panel de control</a>
-                <div class="dropdown-divider"></div>
+                
                 {% endif %}
                 <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                 </div>
             </div>

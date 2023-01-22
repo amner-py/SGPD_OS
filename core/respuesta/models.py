@@ -2,8 +2,8 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 from django.core.exceptions import ValidationError
-from ..delegacion.models import Delegacion
-from ..asignacion.models import LugarPriorizado,MetaMensualEP,MetaMensualAO
+from ..delegacion.models import Delegacion,Usuario
+from ..asignacion.models import LugarPriorizado,MetaMensualEP
 from ..area_operativa.models import PlanArea,TipoOperativo
 from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
@@ -15,6 +15,7 @@ class EPRespuesta(models.Model):
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
     respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
+    usuario=models.ForeignKey(Usuario,verbose_name='Usuario',db_column='USUARIO_ID',on_delete=models.CASCADE)
     lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)
     lugar_no_priorizado=models.CharField(verbose_name='Lugar no priorizado',db_column='NO_PRIORIZADO',max_length=350)
     lugar_especifico=models.CharField(verbose_name='Lugar específico',db_column='LUGAR_ESPECIFICO',max_length=350)
@@ -87,11 +88,11 @@ class EPRespuesta(models.Model):
 class AORespuesta(models.Model):
     _ACTUALIZAR=False
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
-    meta=models.ForeignKey(MetaMensualAO,verbose_name='Meta mensual área operativa',db_column='META_EJE_PREVENCION',on_delete=models.SET_NULL,null=True,blank=True)
     latitud=models.CharField(verbose_name='Latitud',db_column='LATITUD',max_length=25,blank=False,null=False)
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
     respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
+    usuario=models.ForeignKey(Usuario,verbose_name='Usuario',db_column='USUARIO_ID',on_delete=models.CASCADE)
     lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)
     lugar_no_priorizado=models.CharField(verbose_name='Lugar no priorizado',db_column='NO_PRIORIZADO',max_length=350)
     lugar_apoyo=models.CharField(verbose_name='Lugar de apoyo',db_column='LUGAR_APOYO',max_length=350)
@@ -138,42 +139,7 @@ class AORespuesta(models.Model):
         db_table='AREA_OPERATIVA_RESPUESTA'
         verbose_name='Respuesta de Área Operativa'
         verbose_name_plural='Respuestas de Área Operativa'
-
-    def delete(self,*args,**kwargs):
-        eliminado=False
-        try:
-            meta=MetaMensualAO.objects.filter(delegacion=self.delegacion).last()
-            if meta:
-                print(meta)
-                meta.meta_alcanzada-=1
-                meta.actualizado=datetime.now()
-                meta._NUEVO=True
-                meta.save()
-                self.meta=meta
-            super(AORespuesta,self).delete(*args,**kwargs)
-            eliminado=True
-        except:
-            print('Algo ha salido mal')
-        return eliminado
-
+    
     def save(self,*args,**kwargs):
-        ingresado=False
-        try:
-            if self._ACTUALIZAR:
-                super(AORespuesta,self).save(*args,**kwargs)
-                ingresado=True
-            else:
-                meta=MetaMensualAO.objects.filter(delegacion=self.delegacion).last()
-                if meta:
-                    meta.meta_alcanzada+=1
-                    meta.actualizado=datetime.now()
-                    meta._NUEVO=True
-                    meta.save()
-                    self.meta=meta
-                else:
-                    raise ValidationError('No puede responder, aún no tiene una meta asignada')
-                super(AORespuesta,self).save(*args,**kwargs)
-                ingresado=True
-        except:
-            raise ValidationError('Debe completar los campos requeridos')
-        return ingresado 
+        super(AORespuesta,self).save(*args,**kwargs)
+        return True

@@ -21,6 +21,7 @@ class Municipio(models.Model):
     id=models.AutoField(verbose_name='Id',db_column='ID',primary_key=True)
     nombre=models.CharField(verbose_name='Nombre',db_column='NOMBRE',max_length=40,null=False,blank=False)
     departamento=models.ForeignKey(Departamento,verbose_name='Departamento',db_column='DEPARTAMENTO_ID',on_delete=models.CASCADE)
+    path=models.TextField(verbose_name='Path',db_column='PATH',max_length=30000,blank=True)
 
     class Meta:
         db_table='MUNICIPIO'

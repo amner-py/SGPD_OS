@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from json import JSONEncoder
 from django.urls import reverse_lazy
 from pathlib import Path
 import os
@@ -56,7 +55,6 @@ INSTALLED_APPS = [
     'core.asignacion',
     'core.inicio',
     'core.notificacion',
-    #'core.operacion',
     'core.reporte',
     'core.respuesta'
 ]
@@ -148,7 +146,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Default Auth_User Custom
-AUTH_USER_MODEL='delegacion.Delegacion'
+AUTH_USER_MODEL='delegacion.Usuario'
 
 
 LOGIN_REDIRECT_URL = '/'

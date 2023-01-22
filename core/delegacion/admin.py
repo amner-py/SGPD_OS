@@ -1,16 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Delegacion
-from .forms import DelegacionCreateForm,DelegacionChangeForm
+from .models import Usuario,Delegacion
+from .forms import UsuarioCreateForm,UsuarioChangeForm
 
 
-@admin.register(Delegacion)
-class DelegacionAdmin(UserAdmin):
-    form=DelegacionChangeForm
-    add_form=DelegacionCreateForm
+@admin.register(Usuario)
+class UsuarioAdmin(UserAdmin):
+    form=UsuarioChangeForm
+    add_form=UsuarioCreateForm
     fieldsets=UserAdmin.fieldsets + (
         (
-            'Delegación',{
+            'Información',{
                 'fields':(
                     'delegacion',
                     'fecha_nacimiento'
@@ -25,3 +25,10 @@ class DelegacionAdmin(UserAdmin):
     ]
     list_editable=['delegacion']
 
+@admin.register(Delegacion)
+class DelegacionAdmin(admin.ModelAdmin):
+    list_display=['nombre']
+    list_filter=[]
+    list_editable=[]
+    list_per_page=15
+    search_fields=['nombre']

@@ -3,8 +3,8 @@ from django.views.generic import TemplateView,UpdateView
 from django.http.response import JsonResponse
 from django.urls import reverse_lazy
 from .models import SeccionInicio,ImgInicio,RedSocial
-from ..delegacion.models import Delegacion
-from ..delegacion.forms import DelegacionChangeForm
+from ..delegacion.models import Usuario
+from ..delegacion.forms import UsuarioChangeForm
 
 
 def page_not_found404(request,exception):
@@ -12,13 +12,13 @@ def page_not_found404(request,exception):
 
 
 class PerfilView(UpdateView):
-    model=Delegacion
-    form_class=DelegacionChangeForm
+    model=Usuario
+    form_class=UsuarioChangeForm
     success_url=reverse_lazy('perfil')
     template_name='perfil.html'
     url_redirect=success_url
     
-    def dispatch(self, request, *args, **kwargs):
+    '''def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
 
@@ -41,7 +41,7 @@ class PerfilView(UpdateView):
         context['entity']='Delegacion'
         context['list_url']=self.success_url
         context['action']='edit'
-        return context
+        return context'''
 
 class InicioView(TemplateView):
     template_name='inicio.html'

@@ -11,9 +11,10 @@ from django.core.paginator import Paginator
 from django.http import Http404
 from datetime import datetime
 from .models import EPRespuesta,AORespuesta
-from ..asignacion.models import LugarPriorizado,MetaMensualEP,MetaMensualAO
+from ..asignacion.models import LugarPriorizado,MetaMensualEP
 from ..area_operativa.models import PlanArea,TipoOperativo
 from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
+from ..delegacion.models import Usuario,Delegacion
 
 
 class RespuestasEPTemplateView(TemplateView):
@@ -40,25 +41,25 @@ class RespuestasEPTemplateView(TemplateView):
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
             iniciob=True
             finb=True
         elif fecha_inicio and not fecha_fin:
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
             iniciob=True
             finb=False
         else:
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.all()
             else:
-                res= EPRespuesta.objects.filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(usuario=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
-        meta=MetaMensualEP.objects.filter(delegacion=self.request.user).last()
+        meta=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion).last()
         hay_meta=False
         if meta:
             hay_meta=True
@@ -88,7 +89,7 @@ class ActualizarEPTemplateView(TemplateView):
     
     def get(self,request,id=0):
         if id>0:
-            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
+            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
             res=EPRespuesta.objects.get(pk=id)
             planes=PlanEje.objects.all()
             ejes=EjeTrabajo.objects.all()
@@ -109,8 +110,8 @@ class ResponderEPTemplateView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
-        meta=MetaMensualEP.objects.filter(delegacion=self.request.user).last()
+        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
+        meta=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion).last()
         hay_meta=False
         if meta:
             if meta.asignado.month == datetime.now().month:
@@ -162,7 +163,8 @@ class RespuestasEPView(View):
         respuesta=EPRespuesta()
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
-        respuesta.delegacion=self.request.user
+        respuesta.delegacion=self.request.user.delegacion
+        respuesta.usuario=self.request.user
         respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
         respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
         respuesta.cantidad=jd['cantidad']
@@ -196,7 +198,8 @@ class RespuestasEPView(View):
         respuesta=EPRespuesta.objects.get(pk=jd['id'])
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
-        respuesta.delegacion=self.request.user
+        respuesta.delegacion=self.request.user.delegacion
+        respuesta.usuario=self.request.user
         respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
         respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
         respuesta.cantidad=jd['cantidad']
@@ -253,34 +256,27 @@ class RespuestasAOTemplateView(TemplateView):
         finb=False
 
         if fecha_inicio and fecha_fin:
-            print('ambos')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
             iniciob=True
             finb=True
         elif fecha_inicio and not fecha_fin:
-            print('inicio')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
             iniciob=True
             finb=False
         else:
-            print('ninguno')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.all()
             else:
-                res= AORespuesta.objects.filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(usuario=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
-        meta=MetaMensualAO.objects.filter(delegacion=self.request.user).last()
-        hay_meta=False
-        if meta:
-            hay_meta=True
         try:
             paginator=Paginator(respuestas,5)
             respuestas= paginator.page(page)
@@ -289,7 +285,6 @@ class RespuestasAOTemplateView(TemplateView):
         return render(request,self.template_name,{
             'hay_respuestas':hay_respuestas,
             'entity':respuestas,
-            'hay_meta':hay_meta,
             'paginator':paginator,
             'inicio':fecha_inicio,
             'fin':fecha_fin,
@@ -305,15 +300,10 @@ class ResponderAOTemplateView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
-        meta=MetaMensualAO.objects.filter(delegacion=self.request.user).last()
-        hay_meta=False
-        if meta:
-            if meta.asignado.month == datetime.now().month:
-                hay_meta=True
+        lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
         planes=PlanArea.objects.all()
         operativos=TipoOperativo.objects.all()
-        hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(operativos)>0 and hay_meta
+        hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(operativos)>0
         return render(request,self.template_name,{
             'lugares_priorizado':lugares_priorizado,
             'planes':planes,
@@ -336,11 +326,14 @@ class RespuestasAOView(View):
         return JsonResponse(datos)
 
     def post(self,request):
+        usuario=Usuario.objects.get(pk=self.request.user.pk)
+        delegacion=Delegacion.objects.get(pk=usuario.delegacion.pk)
         jd=json.loads(request.body)
         respuesta=AORespuesta()
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
-        respuesta.delegacion=self.request.user
+        respuesta.delegacion=delegacion
+        respuesta.usuario=usuario
         respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
         respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
         respuesta.cantidad=jd['cantidad']
@@ -385,7 +378,8 @@ class RespuestasAOView(View):
         respuesta=AORespuesta.objects.get(pk=jd['id'])
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
-        respuesta.delegacion=self.request.user
+        respuesta.delegacion=self.request.user.delegacion
+        respuesta.usuario=self.request.user
         respuesta.lugar_priorizado=LugarPriorizado.objects.get(pk=jd['lugar_priorizado'])
         respuesta.lugar_no_priorizado=jd['lugar_no_priorizado']
         respuesta.cantidad=jd['cantidad']
@@ -456,7 +450,7 @@ class ActualizarAOTemplateView(TemplateView):
     
     def get(self,request,id=0):
         if id>0:
-            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user)
+            lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
             res=AORespuesta.objects.get(pk=id)
             planes=PlanArea.objects.all()
             operativos=TipoOperativo.objects.all()

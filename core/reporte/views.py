@@ -7,12 +7,11 @@ from django.views.generic import TemplateView
 from django.views import View
 from django.http import HttpResponse
 from datetime import datetime
-from ..asignacion.models import MetaMensualEP,MetaMensualAO
+from ..asignacion.models import MetaMensualEP
 from ..respuesta.models import EPRespuesta,AORespuesta
 from django.template.loader import get_template
 from weasyprint import HTML,CSS
 from weasyprint.text.fonts import FontConfiguration
-#from .utils import render_to_pdf
 
 class ReporteTemplateView(TemplateView):
     template_name='reporte.html'
@@ -34,11 +33,11 @@ class ReporteMetaEPTemplateView(TemplateView):
         delegacion_name=[]
         anios=[]
         for meta in metas:
-            if meta.delegacion.delegacion not in delegacion_name:
-                delegacion_name.append(meta.delegacion.delegacion)
+            if meta.delegacion.nombre not in delegacion_name:
+                delegacion_name.append(meta.delegacion.nombre)
                 delegaciones.append({
                     'id':meta.delegacion.pk,
-                    'nombre':meta.delegacion.delegacion
+                    'nombre':meta.delegacion.nombre
                 })
             if meta.asignado.year not in anios:
                 anios.append(meta.asignado.year)
@@ -65,31 +64,28 @@ class ReporteEjePDF(View):
         finb=False
 
         if fecha_inicio and fecha_fin:
-            print('ambos')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
             iniciob=True
             finb=True
         elif fecha_inicio and not fecha_fin:
-            print('inicio')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
             iniciob=True
             finb=False
         else:
-            print('ninguno')
             if self.request.user.is_superuser:
                 res= EPRespuesta.objects.all()
             else:
-                res= EPRespuesta.objects.filter(delegacion=self.request.user)
+                res= EPRespuesta.objects.filter(usuario=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
-        meta=MetaMensualEP.objects.filter(delegacion=self.request.user).last()
+        meta=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion).last()
         hay_meta=False
         if meta:
             hay_meta=True
@@ -134,19 +130,19 @@ class ReporteGraficaEjePDF(TemplateView):
             if self.request.user.is_superuser:
                 respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
 
         elif fecha_inicio and not fecha_fin:
             if self.request.user.is_superuser:
                 respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
 
         else:
             if self.request.user.is_superuser:
                 respuestas= EPRespuesta.objects.all()
             else:
-                respuestas= EPRespuesta.objects.filter(delegacion=self.request.user)
+                respuestas= EPRespuesta.objects.filter(usuario=self.request.user)
    
         cantidad_personas=0
         ninios=0
@@ -202,29 +198,6 @@ class ReporteGraficaEjePDF(TemplateView):
 
 #--------------------------------------------------------------------------------------------
 
-class ReporteMetaAOTemplateView(TemplateView):
-    template_name='reporte_meta_operativa.html'
-    
-    @method_decorator(login_required)
-    def dispatch(self, request,*args,**kwargs):
-        return super().dispatch(request, *args, **kwargs)
-    
-    def get(self,request):
-        metas=MetaMensualAO.objects.all()
-        delegaciones=[]
-        delegacion_name=[]
-        anios=[]
-        for meta in metas:
-            if meta.delegacion.delegacion not in delegacion_name:
-                delegacion_name.append(meta.delegacion.delegacion)
-                delegaciones.append({
-                    'id':meta.delegacion.pk,
-                    'nombre':meta.delegacion.delegacion
-                })
-            if meta.asignado.year not in anios:
-                anios.append(meta.asignado.year)
-        return render(request,self.template_name,{'delegaciones':delegaciones,'anios':anios})
-
 class ReporteAreaPDF(View):
     template_name='reporte_area_operativa.html'
     
@@ -246,46 +219,37 @@ class ReporteAreaPDF(View):
         finb=False
 
         if fecha_inicio and fecha_fin:
-            print('ambos')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
             iniciob=True
             finb=True
         elif fecha_inicio and not fecha_fin:
-            print('inicio')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
             iniciob=True
             finb=False
         else:
-            print('ninguno')
             if self.request.user.is_superuser:
                 res= AORespuesta.objects.all()
             else:
-                res= AORespuesta.objects.filter(delegacion=self.request.user)
+                res= AORespuesta.objects.filter(usuario=self.request.user)
         for re in reversed(res):
             respuestas.append(re)
         hay_respuestas=len(respuestas)>0
-        meta=MetaMensualAO.objects.filter(delegacion=self.request.user).last()
-        hay_meta=False
-        if meta:
-            hay_meta=True
         
         data={
             'hay_respuestas':hay_respuestas,
             'entity':respuestas,
-            'hay_meta':hay_meta,
             'inicio':fecha_inicio,
             'fin':fecha_fin,
             'iniciob':iniciob,
             'finb':finb,
             'logo':'{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png')
         }
-        print('{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png'))
         try:
             template=get_template(self.template_name)
         except:
@@ -316,19 +280,19 @@ class ReporteGraficaAreaPDF(TemplateView):
             if self.request.user.is_superuser:
                 respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
             else:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(delegacion=self.request.user)
+                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
 
         elif fecha_inicio and not fecha_fin:
             if self.request.user.is_superuser:
                 respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
             else:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(delegacion=self.request.user)
+                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
 
         else:
             if self.request.user.is_superuser:
                 respuestas= AORespuesta.objects.all()
             else:
-                respuestas= AORespuesta.objects.filter(delegacion=self.request.user)
+                respuestas= AORespuesta.objects.filter(usuario=self.request.user)
    
         total_identificados=0
         hombres_identificados=0

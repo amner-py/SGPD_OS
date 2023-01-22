@@ -1,13 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
-from .models import Delegacion
+from .models import Usuario
 
-
-class DelegacionChangeForm(UserChangeForm):
+class UsuarioChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
-        model=Delegacion
+        model=Usuario
         
 
-class DelegacionCreateForm(UserCreationForm):
+class UsuarioCreateForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model=Delegacion
+        model=Usuario
