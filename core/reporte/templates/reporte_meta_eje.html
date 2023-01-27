@@ -13,7 +13,7 @@
                    <h1>METAS PARA EJE DE PREVENCION</h1>
                 </div>
                 <div class="col-sm-4"></div>
-            <p id="aviso" style="color:red;font-size:10.5px" hidden>*Debe seleccionar un año y delegacion.</p>
+            <p id="aviso" style="color:red;font-size:10.5px" hidden>*Debe seleccionar un año, delegacion y eje de trabajo.</p>
             <div class="col-sm-2 mt-3">
                 <select class="form-select" id="anio">
                     <option value="0">Elige un año</option>
@@ -27,6 +27,14 @@
                     <option value="0">Elige una delegacion</option>
                     {% for delegacion in delegaciones %}
                         <option value="{{delegacion.id}}">{{delegacion.nombre}}</option>
+                    {% endfor %} 
+                </select>
+            </div>
+            <div class="col-sm-3 mt-3">
+                <select class="form-select" id="eje">
+                    <option value="0">Elige un Eje de Trabajo</option>
+                    {% for eje in ejes %}
+                        <option value="{{eje.id}}">{{eje.nombre}}</option>
                     {% endfor %} 
                 </select>
             </div>

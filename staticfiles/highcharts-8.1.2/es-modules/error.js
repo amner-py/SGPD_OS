@@ -1,1 +1,1 @@
-/home/sgpd/SGPD_OS/static/highcharts-8.1.2/es-modules/error.js
+console.error('code.highcharts.local has moved to the /code folder'); // eslint-disable-line no-console

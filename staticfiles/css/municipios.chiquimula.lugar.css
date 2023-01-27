@@ -1,1 +1,41 @@
-/home/sgpd/SGPD_OS/static/css/municipios.chiquimula.lugar.css
+/* MUNICIPIOS CHIQUIMULA */
+
+#SanJoseLaArada{
+    fill: #fe5afb;
+}
+
+#SanJoseLaArada:hover {
+    fill: #993197;
+}
+
+#Esquipulas{
+    fill: #fbc370;
+}
+
+#Esquipulas:hover {
+    fill: #eccea1;
+}
+
+#SanJuanErmita{
+    fill: #5cd5f7;
+}
+
+#SanJuanErmita:hover {
+    fill: #2f859d;
+}
+
+#Olopa{
+    fill: #60f2ae;
+}
+
+#Olopa:hover {
+    fill: #3f8b67;
+}
+
+#Quezaltepeque{
+    fill: #effb00;
+}
+
+#Quezaltepeque:hover {
+    fill: #8f9523;
+}

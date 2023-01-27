@@ -14,109 +14,125 @@
         <div class="col-sm-2">
             <a href="{% url 'respuestas_operativo_view' %}" class="btn btn-sm btn-outline-secondary">Regresar</a>
         </div>
-        <!--
-        <div class="col-sm-2">
-            <a onclick="imprimir()" class="btn btn-sm btn-outline-secondary">Imprimir</a>
-        </div>-->
     </div>
 </div>
 <div class="container mt-3" id="informe">
-    <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><h1>AREA OPERATIVA</h1></div><div class="col-sm-4" style="float:right">{{respuesta.respondido}}</div></div><br>
+    <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><center><h1>AREA OPERATIVA</h1></center></div></div><br>
+    
+    {% if hay_dato %}
     <div class="mb-3 row">
-        <label for="lugar_asignado" class="col-sm-2 col-form-label">Delegación</label>
-        <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.delegacion.delegacion}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar Priorizado</label>
-        <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="lugar_priorizado" value="{{respuesta.lugar_priorizado}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="lugar_no_priorizado" class="col-sm-2 col-form-label">Lugar No Priorizado</label>
+      <label for="lugar_asignado" class="col-sm-2 col-form-label">Delegación</label>
       <div class="col-sm-10">
-          <input type="text" maxlength="350" class="form-control" id="lugar_no_priorizado" value="{{respuesta.lugar_no_priorizado}}" disabled>
-      </div>
-  </div>
-    <div class="mb-3 row">
-        <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar Apoyo</label>
-        <div class="col-sm-10" id="cont_lug_espe">
-            <input type="text" maxlength="350" class="form-control" id="lugar_apoyo" value="{{respuesta.lugar_apoyo}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
-        <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="plan" value="{{respuesta.plan}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="eje" class="col-sm-2 col-form-label">Tipo de Operativo</label>
-        <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="eje" value="{{respuesta.operativo}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
-      <div class="col-sm-10">
-          <input type="text" maxlength="350" class="form-control" id="cantidad" value="{{respuesta.cantidad}}" disabled>
-      </div>
-  </div>
-    <div class="mb-3 row">
-        <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
-        <div class="col-sm-10">
-            <textarea class="form-control" id="observaciones" rows="3" maxlength="450" disabled>{{respuesta.observaciones}}</textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="total_identificados" class="col-sm-2 col-form-label">Total Identificados</label>
-        <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="total_identificados" value="{{respuesta.total_identificados}}" disabled>
-        </div>
-    </div>
-    <div class="mb-3 row">
-      <label for="total_consignados" class="col-sm-2 col-form-label">Total Consignados</label>
-      <div class="col-sm-10">
-          <input type="text" maxlength="350" class="form-control" id="total_consignados" value="{{respuesta.total_consignados}}" disabled>
+          <input type="text" maxlength="350" class="form-control" id="lugar_asignado" value="{{respuesta.delegacion.nombre}}" disabled>
       </div>
   </div>
   <div class="mb-3 row">
-    <label for="total_conducidos" class="col-sm-2 col-form-label">Total Conducidos</label>
-    <div class="col-sm-10">
-        <input type="text" maxlength="350" class="form-control" id="total_conducidos" value="{{respuesta.total_conducidos}}" disabled>
-    </div>
+      <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar Priorizado</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="lugar_priorizado" value="{{respuesta.lugar_priorizado}}" disabled>
+      </div>
   </div>
   <div class="mb-3 row">
-    <label for="total_solventes" class="col-sm-2 col-form-label">Total Solventes</label>
+    <label for="lugar_no_priorizado" class="col-sm-2 col-form-label">Lugar No Priorizado</label>
     <div class="col-sm-10">
-        <input type="text" maxlength="350" class="form-control" id="total_solventes" value="{{respuesta.total_solventes}}" disabled>
+        <input type="text" maxlength="350" class="form-control" id="lugar_no_priorizado" value="{{respuesta.lugar_no_priorizado}}" disabled>
     </div>
+</div>
+  <div class="mb-3 row">
+      <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar Apoyo</label>
+      <div class="col-sm-10" id="cont_lug_espe">
+          <input type="text" maxlength="350" class="form-control" id="lugar_apoyo" value="{{respuesta.lugar_apoyo}}" disabled>
+      </div>
   </div>
   <div class="mb-3 row">
-    <label for="total_recuperados" class="col-sm-2 col-form-label">Total Recuperados</label>
-    <div class="col-sm-10">
-        <input type="text" maxlength="350" class="form-control" id="total_recuperados" value="{{respuesta.total_recuperados}}" disabled>
-    </div>
+      <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="plan" value="{{respuesta.plan}}" disabled>
+      </div>
   </div>
-    <div class="row">
-        <div class="col-sm-6" id="reportes">
-            <div id="identificados"></div>
-        </div>
-        <div class="col-sm-6" id="reportes">
-            <div id="consignados"></div>
-        </div>
-        <div class="col-sm-6" id="reportes">
-            <div id="conducidos"></div>
-        </div>
-        <div class="col-sm-6" id="reportes">
-            <div id="solventes"></div>
-        </div>
-        <div class="col-sm-12" id="reportes">
-            <div id="recuperados"></div>
-        </div>
+  <div class="mb-3 row">
+      <label for="eje" class="col-sm-2 col-form-label">Tipo de Operativo</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="eje" value="{{respuesta.operativo}}" disabled>
+      </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
+    <div class="col-sm-10">
+        <input type="text" maxlength="350" class="form-control" id="cantidad" value="{{respuesta.cantidad}}" disabled>
     </div>
+</div>
+  <div class="mb-3 row">
+      <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
+      <div class="col-sm-10">
+          <textarea class="form-control" id="observaciones" rows="3" maxlength="450" disabled>{{respuesta.observaciones}}</textarea>
+      </div>
+  </div>
+  <div class="mb-3 row">
+      <label for="total_identificados" class="col-sm-2 col-form-label">Total Identificados</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="total_identificados" value="{{respuesta.total_identificados}}" disabled>
+      </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="total_consignados" class="col-sm-2 col-form-label">Total Consignados</label>
+    <div class="col-sm-10">
+        <input type="text" maxlength="350" class="form-control" id="total_consignados" value="{{respuesta.total_consignados}}" disabled>
+    </div>
+</div>
+<div class="mb-3 row">
+  <label for="total_conducidos" class="col-sm-2 col-form-label">Total Conducidos</label>
+  <div class="col-sm-10">
+      <input type="text" maxlength="350" class="form-control" id="total_conducidos" value="{{respuesta.total_conducidos}}" disabled>
+  </div>
+</div>
+<div class="mb-3 row">
+  <label for="total_solventes" class="col-sm-2 col-form-label">Total Solventes</label>
+  <div class="col-sm-10">
+      <input type="text" maxlength="350" class="form-control" id="total_solventes" value="{{respuesta.total_solventes}}" disabled>
+  </div>
+</div>
+<div class="mb-3 row">
+  <label for="total_recuperados" class="col-sm-2 col-form-label">Total Recuperados</label>
+  <div class="col-sm-10">
+      <input type="text" maxlength="350" class="form-control" id="total_recuperados" value="{{respuesta.total_recuperados}}" disabled>
+  </div>
+</div>
+  <div class="row">
+      <div class="col-sm-6" id="reportes">
+          <div id="identificados"></div>
+      </div>
+      <div class="col-sm-6" id="reportes">
+          <div id="consignados"></div>
+      </div>
+      <div class="col-sm-6" id="reportes">
+          <div id="conducidos"></div>
+      </div>
+      <div class="col-sm-6" id="reportes">
+          <div id="solventes"></div>
+      </div>
+      <div class="col-sm-12" id="reportes">
+          <div id="recuperados"></div>
+      </div>
+  </div>
+  {% else %}
+    <center>
+        <div class="card shadow p-3 mt-5 mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                <img src="{% static 'img/logo_pnc.png' %}" class="img-fluid rounded-start" alt="LOGO-PNC">
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">ADVERTENCIA</h5>
+                    <p class="card-text">El registro que intenta ver no existe o no pertenece a su usuario.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </center>
+    {% endif %}
+      
 </div>
 
 {% endblock content %}

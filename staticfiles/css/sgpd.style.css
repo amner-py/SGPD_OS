@@ -1,1 +1,164 @@
-/home/sgpd/SGPD_OS/static/css/sgpd.style.css
+#mapa-container{
+    width: 10%;
+    height: 10%;
+}
+
+path{
+    stroke: black;
+    stroke-width: 1px;
+}
+
+#SanMarcos{
+    fill: #e8c0f3;
+}
+#SanMarcos:hover {
+    fill: #ce50df;
+}
+
+#Sacatepequez{
+    fill: #4ab659;
+}
+#Sacatepequez:hover {
+    fill: #30cb59;
+}
+
+#Chiquimula{
+    fill: #ad2565;
+}
+#Chiquimula:hover {
+    fill: #e74490;
+}
+
+#Zacapa{
+    fill: #6d5633;
+}
+#Zacapa:hover {
+    fill: #cfaa71;
+}
+
+#AltaVerapaz{
+    fill: #3d8faa;
+}
+#AltaVerapaz:hover {
+    fill: #62c0df;
+}
+
+#ElProgreso{
+    fill: #e0d55c;
+}
+#ElProgreso:hover {
+    fill: #e9e5b7;
+}
+
+#BajaVerapaz{
+    fill: #54ac7d;
+}
+#BajaVerapaz:hover {
+    fill: #7fdfac;
+}
+
+#Chimaltenango{
+    fill: #5f2b8a;
+}
+#Chimaltenango:hover {
+    fill: #a373ca;
+}
+
+#Escuintla{
+    fill: #451552;
+}
+#Escuintla:hover {
+    fill: #a958c0;
+}
+
+#Guatemala{
+    fill: #5d69e3;
+}
+#Guatemala:hover {
+    fill: #9196ce;
+}
+
+#Huehuetenango{
+    fill: #6fb8b2;
+}
+#Huehuetenango:hover {
+    fill: #3df5e6;
+}
+
+#Izabal{
+    fill: #3f288a;
+}
+#Izabal:hover {
+    fill: #8e76dc;
+}
+
+#Jalapa{
+    fill: #837d3f;
+}
+#Jalapa:hover {
+    fill: #ddd78e;
+}
+
+#Jutiapa{
+    fill: #b37a54;
+}
+#Jutiapa:hover {
+    fill: #fbcaaa;
+}
+/* Aun no*/
+#Peten{
+    fill: #3d6658;
+}
+#Peten:hover {
+    fill: #2ec590;
+}
+
+#Quetzaltenango{
+    fill: #abaf48;
+}
+#Quetzaltenango:hover {
+    fill: #d7da8a;
+}
+
+#Quiche{
+    fill: #198a71;
+}
+#Quiche:hover {
+    fill: #2eb597;
+}
+
+#Retalhuleu{
+    fill: #f5f97e;
+}
+#Retalhuleu:hover {
+    fill: #f3f5bf;
+}
+
+#SantaRosa{
+    fill: #db7d17;
+}
+#SantaRosa:hover {
+    fill: #f1be86;
+}
+
+#Solola{
+    fill: #d17de9;
+}
+#Solola:hover {
+    fill: #d2b2db;
+}
+
+#Suchitepequez{
+    fill: #4ab659;
+}
+#Suchitepequez:hover {
+    fill: #a4dfab;
+}
+
+#Totonicapan{
+    fill: #58a2e0;
+}
+#Totonicapan:hover {
+    fill: #9ccaf0;
+}
+

@@ -1,13 +1,10 @@
-
-
 let btn_noti=document.getElementById("notificaciones")
 let lista_noti=document.getElementById("menu-notificacion")
-let username=document.getElementById("usuario").value
 let bday=document.getElementById('fnacimiento').value
 let bday_container=document.getElementById('bday')
 const fecha = new Date();
 
-const fecha_actual=`${fecha.getFullYear()}-${fecha.getMonth()+1}-${fecha.getDate()}`
+const fecha_actual=`${fecha.getFullYear()}-0${fecha.getMonth()+1}-${fecha.getDate()}`
 const fecha_actual_f=`${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`
 
 const get_bday=()=>{
@@ -19,7 +16,7 @@ const get_bday=()=>{
 
 
 const get_bday_msn=()=>{
-    const nombre=document.getElementById('usuario-name').value
+    const nombre=document.getElementById('name_person').value
     swal.fire({
         title: '¡FELIZ CUMPLEAÑOS!',
         html:`${nombre}<br><span>&#127881;</span>El día de hoy ${fecha_actual_f}<br>¡Te deseamos felicidades!<span>&#127881;</span><br><span>&#127874;</span><span>&#129395;</span><span>&#128110;</span>`,
@@ -34,8 +31,6 @@ const get_bday_msn=()=>{
 
 get_bday()
 
-console.log(fecha_actual)
-console.log(bday)
 const get_notificaciones= () => {
     const options={
         method:'GET'
@@ -44,21 +39,13 @@ const get_notificaciones= () => {
     fetch('/notificacion/api/notificaciones',options)
         .then(response => response.json())
         .then(data =>{
-                set_notificacion(data,username)
+            set_notificacion(data)
         })
 }
 
-const set_notificacion=(data,user)=>{
-    const notificaciones = new Array(data.notificaciones)
-    console.log(notificaciones[0])
-    let no_leidos=0
-    notificaciones[0].forEach(notificacion=>{
-        if(notificacion.leido==false && notificacion.receptor_id==user){
-            no_leidos++
-        }
-    })
+const set_notificacion=(data)=>{
+    const no_leidos = parseInt(data.no_leidos)
     
-    console.log(no_leidos)
     if(no_leidos>0){
         const signal=document.createElement('span')
         signal.classList="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"

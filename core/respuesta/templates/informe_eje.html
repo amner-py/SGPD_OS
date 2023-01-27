@@ -14,18 +14,21 @@
         <div class="col-sm-2">
             <a href="{% url 'respuestas_eje_view' %}" class="btn btn-sm btn-outline-secondary">Regresar</a>
         </div>
-        <!--
-        <div class="col-sm-2">
-            <a onclick="imprimir()" class="btn btn-sm btn-outline-secondary">Imprimir</a>
-        </div>-->
     </div>
 </div>
 <div class="container mt-3" id="informe">
-    <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><h1>EJE DE PREVENCION</h1></div><div class="col-sm-4" style="float:right">{{respuesta.respondido}}</div></div><br>
+    <div class="row"><div class="col-sm-3">{% load static %}<img src="{% static 'img/logo_pnc.png' %}"></div><div class="col-sm-5"><center><h1>EJE DE PREVENCION</h1></center></div></div><br>
+    {% if hay_dato %}
+    <div class="mb-3 row">
+      <label for="fecha" class="col-sm-2 col-form-label">Fecha de respuesta</label>
+      <div class="col-sm-10">
+          <input type="text" maxlength="350" class="form-control" id="fecha" value="{{respuesta.respondido}}" disabled>
+      </div>
+    </div>
     <div class="mb-3 row">
         <label for="delegacion" class="col-sm-2 col-form-label">Delegación</label>
         <div class="col-sm-10">
-            <input type="text" maxlength="350" class="form-control" id="delegacion" value="{{respuesta.delegacion.delegacion}}" disabled>
+            <input type="text" maxlength="350" class="form-control" id="delegacion" value="{{respuesta.delegacion.nombre}}" disabled>
         </div>
     </div>
     <div class="mb-3 row">
@@ -96,6 +99,24 @@
             <div id="etnias"></div>
         </div>
     </div>
+    {% else %}
+    <center>
+        <div class="card shadow p-3 mt-5 mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                <img src="{% static 'img/logo_pnc.png' %}" class="img-fluid rounded-start" alt="LOGO-PNC">
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">ADVERTENCIA</h5>
+                    <p class="card-text">El registro que intenta ver no existe o no pertenece a su usuario.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </center>
+    {% endif %}
+      
 </div>
 
 {% endblock content %}

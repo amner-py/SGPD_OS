@@ -28,8 +28,6 @@ const positioned=(geolocationPosition)=>{
     let coords= geolocationPosition.coords
     latitud=coords.latitude
     longitud=coords.longitude
-    console.log(latitud+'  '+longitud)
-    
 }
 
 const get_position=()=>{
@@ -108,9 +106,9 @@ const insert_respuesta=async(detalles)=>{
         body:JSON.stringify(detalles),
     }
     try {
+        console.log(detalles)
         const response = await fetch('/respuesta/api/respuestas/eje_prevencion/',options)
         response.json().then(data=>{
-            console.log(data.ingresado)
             show_message(data)
         })
     } catch (error) {
@@ -195,7 +193,20 @@ const guardar=(total)=>{
         'mayas':parseInt(mayas.value|0),
         'ladinos':parseInt(ladinos.value|0),
     }
-    insert_respuesta(jd)
+    Swal.fire({
+        title: `¿Estás seguro de guardar el registro?`,
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#51D23A',
+        cancelButtonColor: '#F61B1B',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            insert_respuesta(jd)
+        }
+      })
 }
 
 producto.addEventListener('change',list_sub)

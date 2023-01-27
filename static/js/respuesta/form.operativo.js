@@ -41,8 +41,6 @@ const positioned=(geolocationPosition)=>{
     let coords= geolocationPosition.coords
     latitud=coords.latitude
     longitud=coords.longitude
-    console.log(latitud+'  '+longitud)
-    
 }
 
 const get_position=()=>{
@@ -55,7 +53,6 @@ get_position()
 
 
 const registrar=async(jd)=>{
-    console.log(jd)
     const options={
         method:'POST',
         headers:{
@@ -66,7 +63,6 @@ const registrar=async(jd)=>{
     try {
         const response = await fetch('/respuesta/api/respuestas/area_operativa/',options)
         response.json().then(data=>{
-            console.log(data.ingresado)
             show_message(data)
         })
     } catch (error) {
@@ -177,6 +173,6 @@ const validation=()=>{
         if (result.isConfirmed) {
             registrar(jd)
         }
-      }) 
+      })
     
 }

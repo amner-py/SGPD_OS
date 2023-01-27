@@ -1,1 +1,47 @@
-/home/sgpd/SGPD_OS/static/css/inicio.style.css
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#btn-inicio{
+    visibility: collapse;
+}
+
+#lista-secciones{
+    visibility: visible;
+}
+
+.red{
+    width: 50px;
+    height: 50px;
+}
+
+.redes{
+    float: right;
+}
+
+
+@media  (max-width:645px){
+    #btn-inicio{
+        visibility: visible;
+        position:sticky;
+        bottom: 0;
+    }
+
+    #lista-secciones{
+        display: none;
+    }
+
+    .red{
+        width: 30px;
+        height: 30px;
+    }
+    .redes{
+        float: none;
+        margin: 0 auto;      
+    }
+}

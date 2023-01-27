@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'tinymce',
     #'login_example',
     #Custom Apps
@@ -68,9 +69,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-#CSRF_COOKIE_SECURE=True
-#CSRF_TRUSTED_ORIGINS=['https://*.sgpdgt.com']
 
 ROOT_URLCONF = 'api.urls'
 

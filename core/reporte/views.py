@@ -6,12 +6,120 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views import View
 from django.http import HttpResponse
-from datetime import datetime
-from ..asignacion.models import MetaMensualEP
-from ..respuesta.models import EPRespuesta,AORespuesta
 from django.template.loader import get_template
 from weasyprint import HTML,CSS
 from weasyprint.text.fonts import FontConfiguration
+from openpyxl import Workbook
+#from django.http.response import HttpResponse
+from datetime import datetime
+from ..asignacion.models import MetaMensualEP
+from ..respuesta.models import EPRespuesta,AORespuesta
+from ..respuesta.filters import RespuestasEjeFilter,RespuestasAreaFilter
+from ..eje_prevencion.models import EjeTrabajo
+
+
+class ReportEjeExcel(View):
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_superuser:
+            ep_respuestas=EPRespuesta.objects.all()
+        else:
+            ep_respuestas=EPRespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasEjeFilter(request.GET,queryset=ep_respuestas)
+        respuestas=filtro.qs
+        size=4
+        wb=Workbook()
+        ws=wb.active
+        ws['B2']='REPORTE DE RESPUESTAS EJE DE PREVENCION'
+        ws.merge_cells('B2:G2')
+        ws['B4']='Información General'
+        ws.merge_cells('B4:M4')
+        ws['N4']='Personas'
+        ws.merge_cells('N4:W4')
+        ws['X4']='Etnias'
+        ws.merge_cells('X4:AA4')
+        ws['B5']='Fecha de respuesta'
+        ws['C5']='Delegación'
+        ws['D5']='Priorizado'
+        ws['E5']='No Priorizado'
+        ws['F5']='Lugar Específico'
+        ws['G5']='Plan/Orden'
+        ws['H5']='Eje de Trabajo'
+        ws['I5']='Producto'
+        ws['J5']='Subproducto'
+        ws['K5']='Observaciones'
+        ws['L5']='Cantidad'
+        ws['M5']='Total Personas'
+        ws['N5']='Niños'
+        ws['O5']='Niñas'
+        ws['P5']='Adolecentes Masculinos'
+        ws['Q5']='Adolecentes Femeninas'
+        ws['R5']='Jovenes Masculinos'
+        ws['S5']='Jovenes Femeninas'
+        ws['T5']='Adultos Masculinos'
+        ws['U5']='Adultas Femeninas'
+        ws['V5']='Adultos Mayores Masculinos'
+        ws['W5']='Adultas Mayores Femeninas'
+        ws['X5']='Xincas'
+        ws['Y5']='Garifunas'
+        ws['Z5']='Mayas'
+        ws['AA5']='Ladinos'
+        cont=6
+        for respuesta in respuestas:
+            ws.cell(row=cont,column=2).value = respuesta.respondido
+            ws.cell(row=cont,column=3).value = respuesta.delegacion.__str__()
+            ws.cell(row=cont,column=4).value = respuesta.lugar_priorizado.__str__()
+            ws.cell(row=cont,column=5).value = respuesta.lugar_no_priorizado.__str__()
+            ws.cell(row=cont,column=6).value = respuesta.lugar_especifico.__str__()
+            ws.cell(row=cont,column=7).value = respuesta.plan.__str__()
+            ws.cell(row=cont,column=8).value = respuesta.eje.__str__()
+            ws.cell(row=cont,column=9).value = respuesta.producto.__str__()
+            ws.cell(row=cont,column=10).value = respuesta.subproducto.__str__()
+            ws.cell(row=cont,column=11).value = respuesta.observaciones
+            ws.cell(row=cont,column=12).value = respuesta.cantidad
+            ws.cell(row=cont,column=13).value = respuesta.cantidad_personas
+            ws.cell(row=cont,column=14).value = respuesta.ninios
+            ws.cell(row=cont,column=15).value = respuesta.ninias
+            ws.cell(row=cont,column=16).value = respuesta.adolecentes_masculinos
+            ws.cell(row=cont,column=17).value = respuesta.adolecentes_femeninos
+            ws.cell(row=cont,column=18).value = respuesta.jovenes_masculinos
+            ws.cell(row=cont,column=19).value = respuesta.jovenes_femeninos
+            ws.cell(row=cont,column=20).value = respuesta.adultos_masculinos
+            ws.cell(row=cont,column=21).value = respuesta.adultos_femeninos
+            ws.cell(row=cont,column=22).value = respuesta.adultos_mayores_masculinos
+            ws.cell(row=cont,column=23).value = respuesta.adultos_mayores_femeninos
+            ws.cell(row=cont,column=24).value = respuesta.xinca
+            ws.cell(row=cont,column=25).value = respuesta.garifuna
+            ws.cell(row=cont,column=26).value = respuesta.maya
+            ws.cell(row=cont,column=27).value = respuesta.ladino
+            cont+=1
+        
+        
+        ws[f'B{cont}']='Totales'
+        ws.merge_cells(f'B{cont}:K{cont}')
+        ws.cell(row=cont,column=12).value = f'=SUM(L6:L{cont-1})'
+        ws.cell(row=cont,column=13).value = f'=SUM(M6:M{cont-1})'
+        ws.cell(row=cont,column=14).value = f'=SUM(N6:N{cont-1})'
+        ws.cell(row=cont,column=15).value = f'=SUM(O6:O{cont-1})'
+        ws.cell(row=cont,column=16).value = f'=SUM(P6:P{cont-1})'
+        ws.cell(row=cont,column=17).value = f'=SUM(Q6:Q{cont-1})'
+        ws.cell(row=cont,column=18).value = f'=SUM(R6:R{cont-1})'
+        ws.cell(row=cont,column=19).value = f'=SUM(S6:S{cont-1})'
+        ws.cell(row=cont,column=20).value = f'=SUM(T6:T{cont-1})'
+        ws.cell(row=cont,column=21).value = f'=SUM(U6:U{cont-1})'
+        ws.cell(row=cont,column=22).value = f'=SUM(V6:V{cont-1})'
+        ws.cell(row=cont,column=23).value = f'=SUM(W6:W{cont-1})'
+        ws.cell(row=cont,column=24).value = f'=SUM(X6:X{cont-1})'
+        ws.cell(row=cont,column=25).value = f'=SUM(Y6:Y{cont-1})'
+        ws.cell(row=cont,column=26).value = f'=SUM(Z6:Z{cont-1})'
+        ws.cell(row=cont,column=27).value = f'=SUM(AA6:AA{cont-1})'
+        filename='Reporte_Eje_de_Prevencion.xlsx'
+        response=HttpResponse(content_type='application/ms-excel')
+        content=f'attachment; filename = {filename}'
+        response['Content-Disposition']=content
+        wb.save(response)
+        return response
+
 
 class ReporteTemplateView(TemplateView):
     template_name='reporte.html'
@@ -29,6 +137,7 @@ class ReporteMetaEPTemplateView(TemplateView):
 
     def get(self,request):
         metas=MetaMensualEP.objects.all()
+        ejes=EjeTrabajo.objects.all()
         delegaciones=[]
         delegacion_name=[]
         anios=[]
@@ -41,7 +150,7 @@ class ReporteMetaEPTemplateView(TemplateView):
                 })
             if meta.asignado.year not in anios:
                 anios.append(meta.asignado.year)
-        return render(request,self.template_name,{'delegaciones':delegaciones,'anios':anios})
+        return render(request,self.template_name,{'delegaciones':delegaciones,'anios':anios,'ejes':ejes})
 
 class ReporteEjePDF(View):
     template_name='reporte_eje_prevencion.html'
@@ -51,56 +160,19 @@ class ReporteEjePDF(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self,request):
-        fecha_inicio=request.GET.get('fecha_inicio')
-        fecha_fin=request.GET.get('fecha_fin')
-        page=request.GET.get('page',1)
-        respuestas=[]
-
-        try:
-            es_fecha=datetime.strptime(fecha_inicio,'%Y-%m-%d').date()
-        except:
-            fecha_inicio=False
-        iniciob=False
-        finb=False
-
-        if fecha_inicio and fecha_fin:
-            if self.request.user.is_superuser:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
-            else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
-            iniciob=True
-            finb=True
-        elif fecha_inicio and not fecha_fin:
-            if self.request.user.is_superuser:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
-            else:
-                res= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
-            iniciob=True
-            finb=False
+        if self.request.user.is_superuser:
+            ep_respuestas=EPRespuesta.objects.all()
         else:
-            if self.request.user.is_superuser:
-                res= EPRespuesta.objects.all()
-            else:
-                res= EPRespuesta.objects.filter(usuario=self.request.user)
-        for re in reversed(res):
-            respuestas.append(re)
-        hay_respuestas=len(respuestas)>0
-        meta=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion).last()
-        hay_meta=False
-        if meta:
-            hay_meta=True
-        
+            ep_respuestas=EPRespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasEjeFilter(request.GET,queryset=ep_respuestas)
+        respuestas=[]
+        for respuesta in reversed(filtro.qs):
+            respuestas.append(respuesta)
         data={
-            'hay_respuestas':hay_respuestas,
             'entity':respuestas,
-            'hay_meta':hay_meta,
-            'inicio':fecha_inicio,
-            'fin':fecha_fin,
-            'iniciob':iniciob,
-            'finb':finb,
             'logo':'{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png')
         }
-        print('{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png'))
         try:
             template=get_template(self.template_name)
         except:
@@ -119,30 +191,13 @@ class ReporteGraficaEjePDF(TemplateView):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self,request):
-        fecha_inicio=request.GET.get('fecha_inicio')
-        fecha_fin=request.GET.get('fecha_fin')
-
-        try:
-            es_fecha=datetime.strptime(fecha_inicio,'%Y-%m-%d').date()
-        except:
-            fecha_inicio=False
-        if fecha_inicio and fecha_fin:
-            if self.request.user.is_superuser:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
-            else:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
-
-        elif fecha_inicio and not fecha_fin:
-            if self.request.user.is_superuser:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
-            else:
-                respuestas= EPRespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
-
+        if self.request.user.is_superuser:
+            ep_respuestas=EPRespuesta.objects.all()
         else:
-            if self.request.user.is_superuser:
-                respuestas= EPRespuesta.objects.all()
-            else:
-                respuestas= EPRespuesta.objects.filter(usuario=self.request.user)
+            ep_respuestas=EPRespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasEjeFilter(request.GET,queryset=ep_respuestas)
+        respuestas=filtro.qs
    
         cantidad_personas=0
         ninios=0
@@ -206,48 +261,18 @@ class ReporteAreaPDF(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self,request):
-        fecha_inicio=request.GET.get('fecha_inicio')
-        fecha_fin=request.GET.get('fecha_fin')
-        page=request.GET.get('page',1)
-        respuestas=[]
-
-        try:
-            es_fecha=datetime.strptime(fecha_inicio,'%Y-%m-%d').date()
-        except:
-            fecha_inicio=False
-        iniciob=False
-        finb=False
-
-        if fecha_inicio and fecha_fin:
-            if self.request.user.is_superuser:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
-            else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
-            iniciob=True
-            finb=True
-        elif fecha_inicio and not fecha_fin:
-            if self.request.user.is_superuser:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
-            else:
-                res= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
-            iniciob=True
-            finb=False
+        if self.request.user.is_superuser:
+            ao_respuestas=AORespuesta.objects.all()
         else:
-            if self.request.user.is_superuser:
-                res= AORespuesta.objects.all()
-            else:
-                res= AORespuesta.objects.filter(usuario=self.request.user)
-        for re in reversed(res):
-            respuestas.append(re)
-        hay_respuestas=len(respuestas)>0
+            ao_respuestas=AORespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasAreaFilter(request.GET,queryset=ao_respuestas)
+        respuestas=[]
+        for respuesta in reversed(filtro.qs):
+            respuestas.append(respuesta)
         
         data={
-            'hay_respuestas':hay_respuestas,
             'entity':respuestas,
-            'inicio':fecha_inicio,
-            'fin':fecha_fin,
-            'iniciob':iniciob,
-            'finb':finb,
             'logo':'{}{}'.format(settings.STATIC_URL,'img/logo_pnc.png')
         }
         try:
@@ -269,30 +294,15 @@ class ReporteGraficaAreaPDF(TemplateView):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self,request):
-        fecha_inicio=request.GET.get('fecha_inicio')
-        fecha_fin=request.GET.get('fecha_fin')
-
-        try:
-            es_fecha=datetime.strptime(fecha_inicio,'%Y-%m-%d').date()
-        except:
-            fecha_inicio=False
-        if fecha_inicio and fecha_fin:
-            if self.request.user.is_superuser:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)])
-            else:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_fin)]).filter(usuario=self.request.user)
-
-        elif fecha_inicio and not fecha_fin:
-            if self.request.user.is_superuser:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)])
-            else:
-                respuestas= AORespuesta.objects.filter(respondido__range=[str(fecha_inicio),str(fecha_inicio)]).filter(usuario=self.request.user)
-
+        if self.request.user.is_superuser:
+            ao_respuestas=AORespuesta.objects.all()
         else:
-            if self.request.user.is_superuser:
-                respuestas= AORespuesta.objects.all()
-            else:
-                respuestas= AORespuesta.objects.filter(usuario=self.request.user)
+            ao_respuestas=AORespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasAreaFilter(request.GET,queryset=ao_respuestas)
+        respuestas=[]
+        for respuesta in reversed(filtro.qs):
+            respuestas.append(respuesta)
    
         total_identificados=0
         hombres_identificados=0
@@ -384,3 +394,152 @@ class ReporteGraficaAreaPDF(TemplateView):
             'menores_recuperados':menores_recuperados,
             'size_respuestas':size_respuestas
         })
+
+
+class ReportAreaExcel(View):
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_superuser:
+            ep_respuestas=AORespuesta.objects.all()
+        else:
+            ep_respuestas=AORespuesta.objects.filter(usuario=self.request.user)
+
+        filtro=RespuestasAreaFilter(request.GET,queryset=ep_respuestas)
+        respuestas=filtro.qs
+        size=len(respuestas)+4
+        celda_total=f'B{size}'
+        wb=Workbook()
+        ws=wb.active
+        ws['B2']='REPORTE DE RESPUESTAS AREA OPERATIVA'
+        ws.merge_cells('B2:E2')
+        ws[celda_total]='Totales'
+        ws.merge_cells(f'B{celda_total}:I{celda_total}')
+        ws['B4']='Información General'
+        ws.merge_cells(f'B4:J4')
+        ws['K4']='Identificados'
+        ws.merge_cells(f'K4:P4')
+        ws['Q4']='Consignados'
+        ws.merge_cells(f'Q4:V4')
+        ws['W4']='Conducidos'
+        ws.merge_cells(f'W4:Y4')
+        ws['Z4']='Solventes'
+        ws.merge_cells(f'Z4:AE4')
+        ws['AF4']='Recuperados'
+        ws.merge_cells(f'AF4:AL4')
+        ws['B5']='Fecha de respuesta'
+        ws['C5']='Delegación'
+        ws['D5']='Priorizado'
+        ws['E5']='No Priorizado'
+        ws['F5']='Lugar de Apoyo'
+        ws['G5']='Plan/Orden'
+        ws['H5']='Tipo de Operativo'
+        ws['I5']='Observaciones'
+        ws['J5']='Cantidad'
+        ws['K5']='Hombres'
+        ws['L5']='Mujeres'
+        ws['M5']='Autos'
+        ws['N5']='Motos'
+        ws['O5']='Armas'
+        ws['P5']='Total'
+        ws['Q5']='Hombres'
+        ws['R5']='Mujeres'
+        ws['S5']='Autos'
+        ws['T5']='Motos'
+        ws['U5']='Armas'
+        ws['V5']='Total'
+        ws['W5']='Hombres'
+        ws['X5']='Mujeres'
+        ws['Y5']='Total'
+        ws['Z5']='Hombres'
+        ws['AA5']='Mujeres'
+        ws['AB5']='Autos'
+        ws['AC5']='Motos'
+        ws['AD5']='Armas'
+        ws['AE5']='Total'
+        ws['AF5']='Hombres'
+        ws['AG5']='Mujeres'
+        ws['AH5']='Menores'
+        ws['AI5']='Autos'
+        ws['AJ5']='Motos'
+        ws['AK5']='Armas'
+        ws['AL5']='Total'
+        
+        cont=6
+        
+        for respuesta in respuestas:
+            ws.cell(row=cont,column=2).value = respuesta.respondido
+            ws.cell(row=cont,column=3).value = respuesta.delegacion.__str__()
+            ws.cell(row=cont,column=4).value = respuesta.lugar_priorizado.__str__()
+            ws.cell(row=cont,column=5).value = respuesta.lugar_no_priorizado.__str__()
+            ws.cell(row=cont,column=6).value = respuesta.lugar_apoyo.__str__()
+            ws.cell(row=cont,column=7).value = respuesta.plan.__str__()
+            ws.cell(row=cont,column=8).value = respuesta.operativo.__str__()
+            ws.cell(row=cont,column=9).value = respuesta.observaciones
+            ws.cell(row=cont,column=10).value = respuesta.cantidad
+            ws.cell(row=cont,column=11).value = respuesta.hombres_identificados
+            ws.cell(row=cont,column=12).value = respuesta.mujeres_identificadas
+            ws.cell(row=cont,column=13).value = respuesta.autos_identificados
+            ws.cell(row=cont,column=14).value = respuesta.motos_identificadas
+            ws.cell(row=cont,column=15).value = respuesta.armas_identificadas
+            ws.cell(row=cont,column=16).value = respuesta.total_identificados
+            ws.cell(row=cont,column=17).value = respuesta.hombres_consignados
+            ws.cell(row=cont,column=18).value = respuesta.mujeres_consignadas
+            ws.cell(row=cont,column=19).value = respuesta.autos_consignados
+            ws.cell(row=cont,column=20).value = respuesta.motos_consignadas
+            ws.cell(row=cont,column=21).value = respuesta.armas_consignadas
+            ws.cell(row=cont,column=22).value = respuesta.total_consignados
+            ws.cell(row=cont,column=23).value = respuesta.hombres_conducidos
+            ws.cell(row=cont,column=24).value = respuesta.mujeres_conducidas
+            ws.cell(row=cont,column=25).value = respuesta.total_conducidos
+            ws.cell(row=cont,column=26).value = respuesta.hombres_solventes
+            ws.cell(row=cont,column=27).value = respuesta.mujeres_solventes
+            ws.cell(row=cont,column=28).value = respuesta.autos_solventes
+            ws.cell(row=cont,column=29).value = respuesta.motos_solventes
+            ws.cell(row=cont,column=30).value = respuesta.armas_solventes
+            ws.cell(row=cont,column=31).value = respuesta.total_solventes
+            ws.cell(row=cont,column=32).value = respuesta.hombres_recuperados
+            ws.cell(row=cont,column=33).value = respuesta.mujeres_recuperadas
+            ws.cell(row=cont,column=34).value = respuesta.menores_recuperados
+            ws.cell(row=cont,column=35).value = respuesta.autos_recuperados
+            ws.cell(row=cont,column=36).value = respuesta.motos_recuperados
+            ws.cell(row=cont,column=37).value = respuesta.armas_recuperados
+            ws.cell(row=cont,column=38).value = respuesta.total_recuperados
+            cont+=1
+
+        ws[f'B{cont}']='Totales'
+        ws.merge_cells(f'B{cont}:I{cont}')
+        ws.cell(row=cont,column=10).value = f'=SUM(J6:J{cont-1})'
+        ws.cell(row=cont,column=11).value = f'=SUM(K6:K{cont-1})'
+        ws.cell(row=cont,column=12).value = f'=SUM(L6:L{cont-1})'
+        ws.cell(row=cont,column=13).value = f'=SUM(M6:M{cont-1})'
+        ws.cell(row=cont,column=14).value = f'=SUM(N6:N{cont-1})'
+        ws.cell(row=cont,column=15).value = f'=SUM(O6:O{cont-1})'
+        ws.cell(row=cont,column=16).value = f'=SUM(P6:P{cont-1})'
+        ws.cell(row=cont,column=17).value = f'=SUM(Q6:Q{cont-1})'
+        ws.cell(row=cont,column=18).value = f'=SUM(R6:R{cont-1})'
+        ws.cell(row=cont,column=19).value = f'=SUM(S6:S{cont-1})'
+        ws.cell(row=cont,column=20).value = f'=SUM(T6:T{cont-1})'
+        ws.cell(row=cont,column=21).value = f'=SUM(U6:U{cont-1})'
+        ws.cell(row=cont,column=22).value = f'=SUM(V6:V{cont-1})'
+        ws.cell(row=cont,column=23).value = f'=SUM(W6:W{cont-1})'
+        ws.cell(row=cont,column=24).value = f'=SUM(X6:X{cont-1})'
+        ws.cell(row=cont,column=25).value = f'=SUM(Y6:Y{cont-1})'
+        ws.cell(row=cont,column=26).value = f'=SUM(Z6:Z{cont-1})'
+        ws.cell(row=cont,column=27).value = f'=SUM(AA6:AA{cont-1})'
+        ws.cell(row=cont,column=28).value = f'=SUM(AB6:AB{cont-1})'
+        ws.cell(row=cont,column=29).value = f'=SUM(AC6:AC{cont-1})'
+        ws.cell(row=cont,column=30).value = f'=SUM(AD6:AD{cont-1})'
+        ws.cell(row=cont,column=31).value = f'=SUM(AE6:AE{cont-1})'
+        ws.cell(row=cont,column=32).value = f'=SUM(AF6:AF{cont-1})'
+        ws.cell(row=cont,column=33).value = f'=SUM(AG6:AG{cont-1})'
+        ws.cell(row=cont,column=34).value = f'=SUM(AH6:AH{cont-1})'
+        ws.cell(row=cont,column=35).value = f'=SUM(AI6:AI{cont-1})'
+        ws.cell(row=cont,column=36).value = f'=SUM(AJ6:AJ{cont-1})'
+        ws.cell(row=cont,column=37).value = f'=SUM(AK6:AK{cont-1})'
+        ws.cell(row=cont,column=38).value = f'=SUM(AL6:AL{cont-1})'
+
+        filename='Reporte_Area_Operativa.xlsx'
+        response=HttpResponse(content_type='application/ms-excel')
+        content=f'attachment; filename = {filename}'
+        response['Content-Disposition']=content
+        wb.save(response)
+        return response

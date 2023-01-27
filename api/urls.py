@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from core.inicio.views import InicioView,PerfilView,page_not_found404
+from core.inicio.views import InicioView,page_not_found404
 from django.conf.urls import handler404
 
  
@@ -23,7 +23,7 @@ urlpatterns = [
     path('eje_prevencion/',include('core.eje_prevencion.urls')),
     path('respuesta/',include('core.respuesta.urls')),
     path('reporte/',include('core.reporte.urls')),
-    path('perfil/',PerfilView.as_view(),name='perfil'),
+    path('delegacion/',include('core.delegacion.urls')),
 ]
 
 

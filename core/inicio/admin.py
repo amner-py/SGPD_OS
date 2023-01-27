@@ -8,13 +8,13 @@ class SeccionAdmin(admin.ModelAdmin):
     list_filter=[]
     list_editable=[]
     list_per_page=15
-    search_fields=[]
+    search_fields=['titulo','informacion']
 
 
 @admin.register(ImgInicio)
 class ImgAdmin(admin.ModelAdmin):
     list_display=['__str__']
-    list_filter=[]
+    list_filter=['seccion']
     list_editable=[]
     list_per_page=15
     search_fields=[]

@@ -31,7 +31,18 @@ class ImgInicio(models.Model):
 
     def __str__(self):
         return f'{self.src}'
+    
+    def delete(self):
+        self.src.delete(save=False)
+        return super().delete()
 
+    def save(self, *args, **kwargs):
+     try:
+      previous = ImgInicio.objects.get(id=self.id)
+      if previous.src != self.src:
+       previous.src.delete(save=False)
+     except: pass
+     super(ImgInicio, self).save(*args, **kwargs)
 
 class RedSocial(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
@@ -47,3 +58,15 @@ class RedSocial(models.Model):
 
     def __str__(self):
         return f'{self.nombre}: {self.url}'
+    
+    def delete(self):
+        self.icono.delete(save=False)
+        return super().delete()
+
+    def save(self, *args, **kwargs):
+     try:
+      previous = RedSocial.objects.get(id=self.id)
+      if previous.icono != self.icono:
+       previous.icono.delete(save=False)
+     except: pass
+     super(RedSocial, self).save(*args, **kwargs)

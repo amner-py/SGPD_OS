@@ -75,7 +75,6 @@ const get_metas=({anio,delegacion})=>{
     fetch(`/asignacion/api/metas_operativa/anio/${anio}/dele/${delegacion}`,options)
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
             set_metas(data)
         })
 }

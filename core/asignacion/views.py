@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from ..delegacion.models import Delegacion
-from .models import LugarPriorizado,MetaMensualEP
 from django.http.response import JsonResponse
 from django.views import View
+from ..delegacion.models import Delegacion
+from .models import LugarPriorizado,MetaMensualEP
+from ..eje_prevencion.models import EjeTrabajo
 
 
 class AsignacionView(View):
@@ -18,12 +19,14 @@ class AsignacionView(View):
 
 class MetaMensualEPView(View):
     
-    def get(self,request,dele=0,anio=0):
-        if dele>0 and anio>0:
-            metas=MetaMensualEP.objects.filter(asignado__year=f'{anio}',delegacion=dele)
+    def get(self,request,dele=0,anio=0,eje=0):
+        delegaciones={}
+        if dele>0 and anio>0 and eje>0:
+            metas=MetaMensualEP.objects.filter(asignado__year=f'{anio}',delegacion=dele,eje=eje)
             metas_mes=[0,0,0,0,0,0,0,0,0,0,0,0]
             metas_alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
             delegacion=Delegacion.objects.get(pk=dele)
+            eje_trabajo=EjeTrabajo.objects.get(pk=eje)
             for meta in metas:
                 metas_mes[meta.asignado.month-1]=meta.meta
                 metas_alcanzadas[meta.asignado.month-1]=meta.meta_alcanzada
@@ -32,6 +35,7 @@ class MetaMensualEPView(View):
                 'delegacion':delegacion.nombre,
                 'metas':metas_mes,
                 'alcanzadas':metas_alcanzadas,
-                'anio':anio
+                'anio':anio,
+                'eje':eje_trabajo.nombre
             }
         return JsonResponse(delegaciones)

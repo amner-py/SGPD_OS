@@ -23,6 +23,7 @@ class UsuarioAdmin(UserAdmin):
         'first_name',
         'delegacion'
     ]
+    list_filter=['delegacion','is_superuser']
     list_editable=['delegacion']
 
 @admin.register(Delegacion)

@@ -13,9 +13,9 @@ MySQL1 = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sgpd',
-        'USER': 'devopy',
-        'PASSWORD': 'amnerpy1',
-        'HOST': '192.168.10.107',
+        'USER': 'admin',
+        'PASSWORD': 'admin123',
+        'HOST': '192.168.10.109',
         'PORT': '3306',
     }
 }

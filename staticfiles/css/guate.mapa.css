@@ -1,1 +1,9 @@
-/home/sgpd/SGPD_OS/static/css/guate.mapa.css
+.etiqueta{
+    text-decoration:none !important;
+    cursor:pointer !important;
+    color:black;
+}
+
+.etiqueta:hover{
+    color:blue;
+}

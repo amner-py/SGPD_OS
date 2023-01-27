@@ -1,1 +1,13 @@
-/home/sgpd/SGPD_OS/static/highcharts-8.1.2/es-modules/masters/modules/coloraxis.src.js
+/**
+ * @license Highcharts JS v8.1.2 (2020-06-16)
+ * @module highcharts/modules/color-axis
+ * @requires highcharts
+ *
+ * ColorAxis module
+ *
+ * (c) 2012-2019 Pawel Potaczek
+ *
+ * License: www.highcharts.com/license
+ */
+'use strict';
+import '../../parts-map/ColorAxis.js';

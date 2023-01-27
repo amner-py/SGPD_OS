@@ -1,1 +1,9 @@
-/home/sgpd/SGPD_OS/static/css/respuestas.css
+#respuestas{
+    font-size:16px !important;
+}
+
+@media  (max-width:645px){
+    #respuestas{
+        font-size:10px !important;
+    }
+}

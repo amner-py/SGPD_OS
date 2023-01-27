@@ -23,7 +23,7 @@
             <h4 class="text-center">EJE DE PREVENCION INFORME</h4>
         </div>
     </div>
-    <table id="respuestas" class="table mt-3" style="font-size:10px">
+    <table id="respuestas" class="table mt-5" style="font-size:10px">
         <thead class="table-primary">
             <tr>
                 <th>
@@ -62,7 +62,6 @@
             </tr>
         </thead>
         <tbody>
-            {% if hay_respuestas %}
             {% for respuesta in entity %}
             <tr>
                 <td style="width:5%" class="text-wrap">
@@ -100,7 +99,6 @@
                 </td>
             </tr>
             {% endfor %}
-            {% endif %}
         </tbody>
     </table><br>
 </body>

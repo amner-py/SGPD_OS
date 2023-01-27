@@ -1,1 +1,15 @@
-/home/sgpd/SGPD_OS/static/highcharts-8.1.2/es-modules/masters/modules/funnel3d.src.js
+/**
+ * @license Highcharts JS v8.1.2 (2020-06-16)
+ * @module highcharts/modules/funnel3d
+ * @requires highcharts
+ * @requires highcharts/highcharts-3d
+ * @requires highcharts/modules/cylinder
+ *
+ * Highcharts funnel module
+ *
+ * (c) 2010-2019 Kacper Madej
+ *
+ * License: www.highcharts.com/license
+ */
+'use strict';
+import '../../modules/funnel3d.src.js';

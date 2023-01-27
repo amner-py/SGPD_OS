@@ -9,7 +9,6 @@ const positioned=(geolocationPosition)=>{
     let coords= geolocationPosition.coords
     latitud=coords.latitude
     longitud=coords.longitude
-    console.log(latitud+'  '+longitud)
     
 }
 
@@ -29,8 +28,7 @@ const insert_respuesta=async(detalles)=>{
         'formulario':parseInt(formulario),
         'respuestas':detalles
     }
-    // debugger
-    console.log('PRIMERO')
+
     const options={
         method:'POST',
         headers:{
@@ -52,7 +50,6 @@ const get_preguntas=() => {
     fetch(`/formulario/api/preguntas/${formulario}`,options)
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
             set_respuesta(data)
         })
 }
@@ -60,7 +57,6 @@ const get_preguntas=() => {
 const set_respuesta=async(data)=>{
     var detalles=[]
     const preguntas = new Array(data.preguntas)
-    console.log(preguntas[0])
     if(data.hay_pregunta){
         preguntas[0].forEach(pregunta=>{
             const respuestas_ch=document.getElementsByName(`ch${pregunta.id}`)
@@ -82,21 +78,16 @@ const set_respuesta=async(data)=>{
                     res_size--
                     }
                 }
-                console.log(valor)
             })
             if(respuesta_n!=null){
-                //console.log(respuesta)
                 valor=respuesta_n.value
-                console.log(respuesta_n.value)
             }
-            console.log(respuesta_id)
             const jd={
                 'detalle':valor,
                 'respuesta':parseInt(respuesta_id),
                 'pregunta':parseInt(pregunta.id)
             }
             detalles.push(jd)
-            console.log(detalles)
         })
     }
     insert_respuesta(detalles)

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Actualizar Registro | PNC - SGPD{% endblock title %}
 {% block content %}
 
@@ -12,92 +12,99 @@
                 <a href="{% url 'respuestas_eje_view' %}" class="btn btn-outline-secondary">Regresar</a>
             </div>
         </div><div class="col-sm-4"><h1>EJE DE PREVENCION</h1></div><div class="col-sm-4"></div></div><br>
-    <div class="mb-3 row">
-        <input type="number" id="id-res" value="{{res.id}}" hidden>
-        <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar Priorizado</label>
-        <div class="col-sm-10">
-          <select class="form-control" id="lugar_priorizado" required>
-            {% for lugar in lugares_priorizado %}
-                {% if res.asignado.id == lugar.id %}
-                    <option selected value="{{lugar.id}}">{{lugar.lugar}}</option>
-                {% else %}
-                    <option value="{{lugar.id}}">{{lugar.lugar}}</option>
-                {% endif %}
-            {% endfor %} 
-          </select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="lugar_no_priorizado" class="col-sm-2 col-form-label">Lugar No Priorizado</label>
-        <div class="col-sm-10" id="cont_lug_espe">
-            <input type="text" maxlength="350" class="form-control" id="lugar_no_priorizado" value="{{res.lugar_no_priorizado}}">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar Específico</label>
-        <div class="col-sm-10" id="cont_lug_espe">
-            <input type="text" maxlength="350" class="form-control" id="lugar_especifico" value="{{res.lugar_especifico}}">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
-        <div class="col-sm-10">
-          <select class="form-control" id="plan" required>
-            {% for plan in planes %}
-                
-                {% if res.plan.id == plan.id %}
-                <option selected value="{{plan.id}}">{{plan.nombre}}</option>
-                {% else %}
-                <option value="{{plan.id}}">{{plan.nombre}}</option>
-                {% endif %}
-            {% endfor %} 
-          </select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="eje" class="col-sm-2 col-form-label">Eje de Trabajo</label>
-        <div class="col-sm-10">
-          <select class="form-control" id="eje" required>
-            {% for eje in ejes %}
-                {% if res.eje.id == eje.id %}
-                    <option selected value="{{eje.id}}">{{eje.nombre}}</option>
-                {% else %}
-                    <option value="{{eje.id}}">{{eje.nombre}}</option>
-                {% endif %}
-            {% endfor %} 
-          </select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="producto" class="col-sm-2 col-form-label">Productos</label>
-        <div class="col-sm-10">
-          <select class="form-control" id="producto" required>
-            {% for producto in productos %}
-                {% if res.producto.id == producto.id %}
-                    <option selected value="{{producto.id}}">{{producto.nombre}}</option>
-                {% else %}
-                    <option value="{{producto.id}}">{{producto.nombre}}</option>
-                {% endif %}    
-            {% endfor %} 
-          </select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="subproducto" class="col-sm-2 col-form-label">Subroductos</label>
-        <div class="col-sm-10">
-          <select class="form-control" id="subproducto" required></select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
-        <div class="col-sm-10">
-            <input type="number" value="{{res.cantidad}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="cantidad" required>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
-        <div class="col-sm-10">
-            <textarea class="form-control" id="observaciones" rows="3" maxlength="450">{{res.observaciones}}</textarea>
+    
+    {% if hay_registro %}
+    <div class="card mb-3 rounded shadow">
+        <h4 class="card-header">INFORMACION GENERAL</h4>
+        <div class="card-body">
+            <div class="mb-3 row">
+                <input type="number" id="id-res" value="{{res.id}}" hidden>
+                <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar Priorizado</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="lugar_priorizado" required>
+                    {% for lugar in lugares_priorizado %}
+                        {% if res.asignado.id == lugar.id %}
+                            <option selected value="{{lugar.id}}">{{lugar.lugar}}</option>
+                        {% else %}
+                            <option value="{{lugar.id}}">{{lugar.lugar}}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="lugar_no_priorizado" class="col-sm-2 col-form-label">Lugar No Priorizado</label>
+                <div class="col-sm-10" id="cont_lug_espe">
+                    <input type="text" maxlength="350" class="form-control" id="lugar_no_priorizado" value="{{res.lugar_no_priorizado}}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="lugar_especifico" class="col-sm-2 col-form-label">Lugar Específico</label>
+                <div class="col-sm-10" id="cont_lug_espe">
+                    <input type="text" maxlength="350" class="form-control" id="lugar_especifico" value="{{res.lugar_especifico}}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="plan" class="col-sm-2 col-form-label">Plan/Orden</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="plan" required>
+                    {% for plan in planes %}
+                        
+                        {% if res.plan.id == plan.id %}
+                        <option selected value="{{plan.id}}">{{plan.nombre}}</option>
+                        {% else %}
+                        <option value="{{plan.id}}">{{plan.nombre}}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="eje" class="col-sm-2 col-form-label">Eje de Trabajo</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="eje" required>
+                    {% for eje in ejes %}
+                        {% if res.eje.id == eje.id %}
+                            <option selected value="{{eje.id}}">{{eje.nombre}}</option>
+                        {% else %}
+                            <option value="{{eje.id}}">{{eje.nombre}}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="producto" class="col-sm-2 col-form-label">Productos</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="producto" required>
+                    {% for producto in productos %}
+                        {% if res.producto.id == producto.id %}
+                            <option selected value="{{producto.id}}">{{producto.nombre}}</option>
+                        {% else %}
+                            <option value="{{producto.id}}">{{producto.nombre}}</option>
+                        {% endif %}    
+                    {% endfor %} 
+                </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="subproducto" class="col-sm-2 col-form-label">Subroductos</label>
+                <div class="col-sm-10">
+                <select class="form-control" id="subproducto" required></select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
+                <div class="col-sm-10">
+                    <input type="number" value="{{res.cantidad}}" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control" id="cantidad" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="observaciones" rows="3" maxlength="450">{{res.observaciones}}</textarea>
+                </div>
+            </div>
         </div>
     </div><br>
     <div class="row">
@@ -206,6 +213,24 @@
                 <button type="button" onclick="validate()" class="btn btn-outline-success col-sm-12 mb-3">Guardar</button>
             </div>
         </div>
+    </div>
+    {% else %}
+    <center>
+        <div class="card p-3 shadow mt-5 mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                <img src="{% static 'img/logo_pnc.png' %}" class="img-fluid rounded-start" alt="LOGO-PNC">
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">ADVERTENCIA</h5>
+                    <p class="card-text">El registro que intenta editar no existe o no pertenece a su usuario.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </center>
+    {% endif %}
     </div>
 </div>
 

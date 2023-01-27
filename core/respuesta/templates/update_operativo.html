@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Nuevo Registro | PNC - SGPD{% endblock title %}
 {% block content %}
 
@@ -10,6 +10,7 @@
             <a href="{% url 'respuestas_operativo_view' %}" class="btn btn-outline-secondary">Regresar</a>
         </div>
     </div><div class="col-sm-4"><h1>AREA OPERATIVA</h1></div><div class="col-sm-4"></div></div><br>
+    {% if hay_registro %}
     <div class="card mb-3 rounded shadow">
         <h4 class="card-header">INFORMACION GENERAL</h4>
         <div class="card-body">
@@ -263,6 +264,24 @@
         </div>
     </div>   
 </div>
+{% else %}
+    <center>
+        <div class="card p-3 shadow mt-5 mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                <img src="{% static 'img/logo_pnc.png' %}" class="img-fluid rounded-start" alt="LOGO-PNC">
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">ADVERTENCIA</h5>
+                    <p class="card-text">El registro que intenta editar no existe o no pertenece a su usuario.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </center>
+    {% endif %}
+    </div>
 
 {% endblock content %}
 

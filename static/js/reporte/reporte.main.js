@@ -17,26 +17,21 @@ const get_reporte=()=>{
 const set_reporte = (data) => {
     const respuestas = new Array(data.detalles)
     const detalles=[]
-    console.log(respuestas)
     respuestas[0].forEach(respuesta => {
         if(respuesta.pregunta_id==19)
         detalles.push(respuesta.detalle)
     })
-    console.log(detalles)
     const detalles_n = detalles.reduce((det,item)=>{
         if(!det.includes(item)){
             det.push(item)
         }
         return det
     },[])
-    console.log(detalles_n)
-    //grafica.data['labels']=detalles_n
-    //console.log(grafica.data['labels'])
+
     var cantidades = []
     detalles_n.forEach(det => {
         var cantidad = 0
         respuestas[0].forEach(re => {
-            console.log(det)
             if(re.detalle==det)
             cantidad+=1
         })

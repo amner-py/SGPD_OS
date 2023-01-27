@@ -1,1 +1,13 @@
-/home/sgpd/SGPD_OS/static/highcharts-8.1.2/es-modules/masters/modules/data.src.js
+/**
+ * @license Highcharts JS v8.1.2 (2020-06-16)
+ * @module highcharts/modules/data
+ * @requires highcharts
+ *
+ * Data module
+ *
+ * (c) 2012-2019 Torstein Honsi
+ *
+ * License: www.highcharts.com/license
+ */
+'use strict';
+import '../../modules/data.src.js';

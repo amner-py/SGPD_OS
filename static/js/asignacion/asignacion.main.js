@@ -6,8 +6,7 @@ const ver_asignados= () => {
     
     fetch('/asignacion/api/asignaciones',options)
         .then(response => response.json())
-        .then(response => console.log(response))
-        .then(err => console.error(err));
+        .catch(err => console.error(err));
 }
 
 ver_asignados()

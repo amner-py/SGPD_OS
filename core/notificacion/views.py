@@ -28,8 +28,8 @@ class NotificacionesTemplateView(TemplateView):
         try:
             paginator=Paginator(notificaciones,5)
             notificaciones= paginator.page(page)
-        except:
-            print('error1')
+        except Exception as e:
+            print(e)
         return render(request,self.template_name,{
             'hay_notificacion':hay_notificacion,
             'entity':notificaciones,
@@ -45,14 +45,12 @@ class NotificacionView(View):
 
     def get(self,request):
         notis=Notificacion.objects.values()
-        notificaciones=[]
-        for noti in reversed(notis):
-            notificaciones.append(noti)
-        #notificaciones=list(Notificacion.objects.values())
-        if len(notificaciones)>0:
-            datos={'message':'success','hay_notificacion':True,'notificaciones':notificaciones}
-        else:
-            datos={'message':'wrong','hay_notificacion':False}
+        no_leidos=0
+        for noti in notis:
+            if noti['receptor_id'] == self.request.user.pk:
+                if noti['leido'] == False:
+                    no_leidos+=1
+            datos={'message':'wrong','hay_notificacion':False,'no_leidos':no_leidos}
         return JsonResponse(datos)
 
     

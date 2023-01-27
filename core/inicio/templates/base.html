@@ -12,6 +12,9 @@
     <link  type="text/css" href="{% static '/css/sgpd.style.css' %}" rel="stylesheet">
     <link  type="text/css" href="{% static '/css/municipios.chiquimula.lugar.css' %}" rel="stylesheet">
     <link  type="text/css" href="{% static '/css/inicio.style.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     {% block stylesheet  %} {% endblock stylesheet %}
     <title class="title-up">{% block title %} {% endblock title %} </title>
 
@@ -76,8 +79,7 @@
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}
-            <input id="usuario" type="number" value="{{user.id}}" hidden>
-            <input id="usuario-name" type="text" value="{{user.first_name}} {{user.last_name}}" hidden>
+            <input id="name_person" type="text" value="{{user.first_name}} {{user.last_name}}" hidden>
             <input id="fnacimiento" type="date" value="{{user.fecha_nacimiento|date:'Y-m-d'}}" hidden>
             <div id="bday" style="color:pink;padding-right:20px;cursor:pointer"></div>
             <div style="padding-right:40px;">
@@ -99,7 +101,7 @@
                 <a class="dropdown-item" href="/panel_control/">Panel de control</a>
                 
                 {% endif %}
-                <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
+                <a class="dropdown-item" href="{% url 'editar_perfil' %}">Perfil</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                 </div>
@@ -119,9 +121,10 @@
 </nav>
 
 </header>
-  {% block content %} {% endblock content %}
 
-  <footer id="fin" class="text-dark container-fluid border-top border-dark mt-5">
+{% block content %} {% endblock content %}
+
+<footer id="fin" class="text-dark container-fluid border-top border-dark mt-5">
     <div class="row align-items-center justify-content-between">
         <div class="col-sm-4">
             <p>&copy; 2022 - Sistema de Prevención de Delitos - PNC</p>
@@ -145,6 +148,9 @@
     
     {% block script %}{% endblock script %}
     {% load static %}
+    <script>
+
+    </script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <script src="{% static 'js/notificacion/notificacion.main.js' %}"></script>

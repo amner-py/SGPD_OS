@@ -8,12 +8,13 @@ from ..area_operativa.models import PlanArea,TipoOperativo
 from ..eje_prevencion.models import PlanEje,EjeTrabajo,Producto,Subproducto
 
 class EPRespuesta(models.Model):
+    _EJE=''
     _ACTUALIZAR=False
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     meta=models.ForeignKey(MetaMensualEP,verbose_name='Meta mensual eje de prevención',db_column='META_EJE_PREVENCION',on_delete=models.SET_NULL,null=True,blank=True)
     latitud=models.CharField(verbose_name='Latitud',db_column='LATITUD',max_length=25,blank=False,null=False)
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
-    respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
+    respondido=models.DateField(verbose_name='Fecha de respuesta',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
     usuario=models.ForeignKey(Usuario,verbose_name='Usuario',db_column='USUARIO_ID',on_delete=models.CASCADE)
     lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)
@@ -46,12 +47,50 @@ class EPRespuesta(models.Model):
         verbose_name='Respuesta de Eje de Prevención'
         verbose_name_plural='Respuestas de Ejes de Prevención'
 
+    def suma_personas(respuestas_model):
+        data={
+            'cantidad':0,
+            'cantidad_personas':0,
+            'ninios':0,
+            'ninias':0,
+            'adolecentes_masculinos':0,
+            'adolecentes_femeninos':0,
+            'jovenes_masculinos':0,
+            'jovenes_femeninos':0,
+            'adultos_masculinos':0,
+            'adultos_femeninos':0,
+            'adultos_mayores_masculinos':0,
+            'adultos_mayores_femeninos':0,
+            'xincas':0,
+            'mayas':0,
+            'garifunas':0,
+            'ladinos':0,
+        }
+        for respuesta in respuestas_model:
+            data['cantidad']+=respuesta.cantidad
+            data['cantidad_personas']+=respuesta.cantidad_personas
+            data['ninios']+=respuesta.ninios
+            data['ninias']+=respuesta.ninias
+            data['adolecentes_masculinos']+=respuesta.adolecentes_masculinos
+            data['adolecentes_femeninos']+=respuesta.adolecentes_femeninos
+            data['jovenes_masculinos']+=respuesta.jovenes_masculinos
+            data['jovenes_femeninos']+=respuesta.jovenes_femeninos
+            data['adultos_masculinos']+=respuesta.adultos_masculinos
+            data['adultos_femeninos']+=respuesta.adultos_femeninos
+            data['adultos_mayores_masculinos']+=respuesta.adultos_mayores_masculinos
+            data['adultos_mayores_femeninos']+=respuesta.adultos_mayores_femeninos
+            data['xincas']+=respuesta.xinca
+            data['mayas']+=respuesta.maya
+            data['garifunas']+=respuesta.garifuna
+            data['ladinos']+=respuesta.ladino
+
+        return data
+
     def delete(self,*args,**kwargs):
         eliminado=False
         try:
-            meta=MetaMensualEP.objects.filter(delegacion=self.delegacion).last()
+            meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
             if meta:
-                print(meta)
                 meta.meta_alcanzada-=1
                 meta.actualizado=datetime.now()
                 meta._NUEVO=True
@@ -59,28 +98,52 @@ class EPRespuesta(models.Model):
                 self.meta=meta
             super(EPRespuesta,self).delete(*args,**kwargs)
             eliminado=True
-        except:
-            print('Algo ha salido mal')
+        except Exception as e:
+            print(e)
         return eliminado
 
     def save(self,*args,**kwargs):
         ingresado=False
         try:
             if self._ACTUALIZAR:
-                super(EPRespuesta,self).save(*args,**kwargs)
-                ingresado=True
+                if self._EJE!='':
+                    if self.eje != self._EJE:
+                        meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self._EJE).last()
+                        if meta:
+                            meta.meta_alcanzada-=1
+                            meta.actualizado=datetime.now()
+                            meta._NUEVO=True
+                            print('RESTADO')
+                            print(meta.eje)
+                            meta.save()
+                            self.meta=meta
+                            meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
+                        if meta:
+                            meta.meta_alcanzada+=1
+                            meta.actualizado=datetime.now()
+                            meta._NUEVO=True
+                            print('AGREGADO')
+                            print(meta.eje)
+                            meta.save()
+                        self.meta=meta
+                        super(EPRespuesta,self).save(*args,**kwargs)
+                        ingresado=True
+                    else:
+                        meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
+                        if meta:
+                            meta.meta_alcanzada+=1
+                            meta.actualizado=datetime.now()
+                            meta._NUEVO=True
+                            print('NUEVO')
+                            print(meta.eje)
+                            meta.save()
+                            self.meta=meta
+                        else:
+                            raise ValidationError('No puede responder, aún no tiene una meta asignada')
+                        super(EPRespuesta,self).save(*args,**kwargs)
+                        ingresado=True
             else:
-                meta=MetaMensualEP.objects.filter(delegacion=self.delegacion).last()
-                if meta:
-                    meta.meta_alcanzada+=1
-                    meta.actualizado=datetime.now()
-                    meta._NUEVO=True
-                    meta.save()
-                    self.meta=meta
-                else:
-                    raise ValidationError('No puede responder, aún no tiene una meta asignada')
-                super(EPRespuesta,self).save(*args,**kwargs)
-                ingresado=True
+                ingresado=False
         except:
             raise ValidationError('Debe completar los campos requeridos')
         return ingresado    
@@ -90,7 +153,7 @@ class AORespuesta(models.Model):
     id=models.BigAutoField(verbose_name='ID',db_column='ID',primary_key=True)
     latitud=models.CharField(verbose_name='Latitud',db_column='LATITUD',max_length=25,blank=False,null=False)
     longitud=models.CharField(verbose_name='Longitud',db_column='LONGITUD',max_length=25,blank=False,null=False)
-    respondido=models.DateField(verbose_name='Fecha respondido',db_column='FECHA_CREADO',default=timezone.now)
+    respondido=models.DateField(verbose_name='Fecha de respuesta',db_column='FECHA_CREADO',default=timezone.now)
     delegacion=models.ForeignKey(Delegacion,verbose_name='Delegación',db_column='DELEGACION_ID',on_delete=models.CASCADE)
     usuario=models.ForeignKey(Usuario,verbose_name='Usuario',db_column='USUARIO_ID',on_delete=models.CASCADE)
     lugar_priorizado=models.ForeignKey(LugarPriorizado,verbose_name='Lugar priorizado',db_column='PRIORIZADO_ID',on_delete=models.CASCADE)

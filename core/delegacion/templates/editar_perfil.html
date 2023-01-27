@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="card mt-5">
+    <div class="card-header">
+      <h3>EDITAR PERFIL DE {{user.username|upper}}</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">{% csrf_token %}
+        {{form.as_p}}
+        <div class="row">
+          <div class="col-sm-12">
+              <button type="submit" class="btn btn-outline-success col-sm-12 mb-3">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+    

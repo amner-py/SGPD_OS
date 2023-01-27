@@ -1,7 +1,7 @@
 let contenedor_notificaciones=document.getElementById("notificaciones-contenedor")
 let uname=document.getElementById("usuario").value
 
-console.log(uname)
+
 const view_notificaciones= async() => {
     const options={
         method:'GET'
@@ -15,7 +15,6 @@ const view_notificaciones= async() => {
 const mostrar_notificacion=(data,user)=>{
     let count=0
     const notificaciones = new Array(data.notificaciones)
-    console.log(notificaciones[0])
     notificaciones[0].forEach(notificacion=>{
         if(notificacion.receptor_id==user){
             const notificacion_card=document.createElement('div')
@@ -63,9 +62,6 @@ const mostrar_notificacion=(data,user)=>{
                 body.appendChild(mensaje)
 
                 notificacion_card.appendChild(body)
-                console.log(count++)
-                console.log(notificacion.id)
-                console.log(notificacion.motivo)
             }else{
                 const header=document.createElement('div')
                 header.classList="card-header bg-warning text-white hstack"
@@ -108,9 +104,6 @@ const mostrar_notificacion=(data,user)=>{
                 body.appendChild(mensaje)
 
                 notificacion_card.appendChild(body)
-                console.log(count++)
-                console.log(notificacion.id)
-                console.log(notificacion.motivo)
             }
 
             
@@ -124,7 +117,6 @@ const actualizar=async(id)=>{
     if(id.checked){
         leido=id.checked
     }
-    console.log('leido: '+leido)
     const data={
         'leido':leido
     }

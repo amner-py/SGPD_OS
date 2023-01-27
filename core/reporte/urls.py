@@ -1,9 +1,11 @@
 from django.urls import path
-from .views import ReporteTemplateView,ReporteMetaEPTemplateView,ReporteEjePDF,ReporteAreaPDF,ReporteGraficaEjePDF,ReporteGraficaAreaPDF
+from .views import ReporteTemplateView,ReporteMetaEPTemplateView,ReporteEjePDF,ReporteAreaPDF,ReporteGraficaEjePDF,ReporteGraficaAreaPDF,ReportEjeExcel,ReportAreaExcel
 
 
 urlpatterns = [
     path('reportes/',ReporteTemplateView.as_view(),name='reports_view'),
+    path('reportes/eje_prevencion/excel/',ReportEjeExcel.as_view(),name='reporte_eje_excel_view'),
+    path('reportes/area_operativa/excel/',ReportAreaExcel.as_view(),name='reporte_area_excel_view'),
     path('reportes/eje_prevencion/pdf/',ReporteEjePDF.as_view(),name='reporte_eje_view'),
     path('reportes/area_operativa/pdf/',ReporteAreaPDF.as_view(),name='reporte_area_view'),
     path('reportes/graficas/eje_prevencion/',ReporteGraficaEjePDF.as_view(),name='reporte_grafica_eje_view'),

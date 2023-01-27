@@ -29,7 +29,6 @@ const eliminar=async(id)=>{
     try {
         const response = await fetch('/respuesta/api/respuestas/area_operativa/',options)
         response.json().then(data=>{
-            console.log(data.eliminado)
             show_message(data)
         })
     } catch (error) {
