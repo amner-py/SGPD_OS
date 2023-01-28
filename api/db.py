@@ -23,7 +23,7 @@ MySQL1 = {
 MySQL = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'SGPDBD',
+        'NAME': 'SGPD',
         'USER': 'sgpdpnc',
         'PASSWORD': 'sgpdPnC$]',
         'HOST': 'localhost',

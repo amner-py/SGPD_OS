@@ -60,3 +60,19 @@ Traceback (most recent call last):
     raise DisallowedHost(msg)
 django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.flymartonline.com'. You may need to add 'www.flymartonline.com' to ALLOWED_HOSTS.
 Bad Request: /modules.php
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField Notificacion.fechahora received a naive datetime (2023-01-20 12:02:14.930454) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField Notificacion.fechahora received a naive datetime (2023-01-20 12:11:11.291708) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-20 12:21:04.438483) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-20 12:21:04.449565) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-20 12:21:04.457043) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-21 11:32:21.260758) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-21 11:32:27.213540) while time zone support is active.
+  warnings.warn(
+/home/sgpd/SGPD_OS/lib/python3.9/site-packages/django/db/models/fields/__init__.py:1564: RuntimeWarning: DateTimeField MetaMensualEP.actualizado received a naive datetime (2023-01-21 11:32:34.466055) while time zone support is active.
+  warnings.warn(
