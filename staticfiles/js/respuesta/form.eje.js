@@ -106,6 +106,7 @@ const insert_respuesta=async(detalles)=>{
         body:JSON.stringify(detalles),
     }
     try {
+        console.log(detalles)
         const response = await fetch('/respuesta/api/respuestas/eje_prevencion/',options)
         response.json().then(data=>{
             show_message(data)
