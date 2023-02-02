@@ -119,8 +119,9 @@ const validation=()=>{
     solventes=parseInt(hombres_solventes.value|0)+parseInt(mujeres_solventes.value|0)+parseInt(autos_solventes.value|0)+parseInt(motos_solventes.value|0)+parseInt(armas_solventes.value|0)
 
     recuperados=parseInt(hombres_recuperados.value|0)+parseInt(mujeres_recuperadas.value|0)+parseInt(autos_recuperados.value|0)+parseInt(motos_recuperadas.value|0)+parseInt(armas_recuperadas.value|0)+parseInt(menores_recuperados.value|0)
-
+    var fecha = document.getElementById('respondido').value
     jd={
+        'respondido':fecha,
         'latitud':latitud,
         'longitud':longitud,
         'lugar_priorizado':parseInt(lugar_priorizado.value|0),
@@ -160,19 +161,38 @@ const validation=()=>{
         'menores_recuperados':menores_recuperados.value|0
     }
 
-    Swal.fire({
-        title: `¿Estás seguro de guardar el registro?`,
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#51D23A',
-        cancelButtonColor: '#F61B1B',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Confirmar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            registrar(jd)
-        }
-      })
-    
+    var fecha = document.getElementById('respondido').value
+
+    if(fecha!=''){
+        Swal.fire({
+            title: `¿Estás seguro de guardar el registro?`,
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#51D23A',
+            cancelButtonColor: '#F61B1B',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                registrar(jd)
+            }
+        })
+    }else{
+        swal.fire({
+            title: 'La fecha es incorrecta',
+            icon:"warning",
+            showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+            }
+            
+        }).then((isConfirm)=>{
+                if(isConfirm){
+                    location.href="#inicio"
+                }
+            })
+    }
 }
