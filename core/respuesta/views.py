@@ -94,7 +94,8 @@ class ResponderEPTemplateView(TemplateView):
         planes=PlanEje.objects.all()
         ejes=EjeTrabajo.objects.all()
         productos=Producto.objects.all()
-        hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
+        hay_datos=len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
+        hay_datos=True
         return render(request,self.template_name,{
             'lugares_priorizado':lugares_priorizado,
             'planes':planes,
