@@ -35,7 +35,7 @@ class MetaMensualEPView(View):
             eje_trabajo=EjeTrabajo.objects.get(pk=eje)
             for meta in metas:
                 metas_mes[meta.asignado.month-1]=meta.meta
-                metas_mes_beneficiarios[meta.asignado-1]=meta.meta_beneficiarios
+                metas_mes_beneficiarios[meta.asignado.month-1]=meta.meta_beneficiarios
                 metas_alcanzadas[meta.asignado.month-1]=meta.meta_alcanzada
                 metas_alcanzadas_beneficiarios[meta.asignado.month-1]=meta.meta_alcanzada_beneficicarios
             delegaciones={
@@ -64,6 +64,7 @@ class AsignarMetaDelegaciones(TemplateView):
         meta_bene=request.GET.get('meta_bene')
         eje_pk=request.GET.get('eje')
         fecha=request.GET.get('asignado')
+        
         ingresado=False
         if eje_pk != None:
             asignado=now.strptime(fecha,'%Y-%m-%d')
