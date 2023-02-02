@@ -12,8 +12,8 @@ class LugarPriorizadoAdmin(admin.ModelAdmin):
 
 @admin.register(MetaMensualEP)
 class MetaMensualEPAdmin(admin.ModelAdmin):
-    list_display=['__str__','delegacion']
-    list_filter=['asignado','delegacion','estado']
+    list_display=['__str__','eventos','beneficiarios','delegacion']
+    list_filter=['asignado','delegacion','estado','estado_beneficiarios']
     list_editable=[]
     list_per_page=15
     search_fields=[]
