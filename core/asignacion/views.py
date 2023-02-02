@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from datetime import datetime as now
 from ..delegacion.models import Delegacion
 from .models import LugarPriorizado,MetaMensualEP
 from ..eje_prevencion.models import EjeTrabajo
@@ -27,17 +28,23 @@ class MetaMensualEPView(View):
         if dele>0 and anio>0 and eje>0:
             metas=MetaMensualEP.objects.filter(asignado__year=f'{anio}',delegacion=dele,eje=eje)
             metas_mes=[0,0,0,0,0,0,0,0,0,0,0,0]
+            metas_mes_beneficiarios=[0,0,0,0,0,0,0,0,0,0,0,0]
             metas_alcanzadas=[0,0,0,0,0,0,0,0,0,0,0,0]
+            metas_alcanzadas_beneficiarios=[0,0,0,0,0,0,0,0,0,0,0,0]
             delegacion=Delegacion.objects.get(pk=dele)
             eje_trabajo=EjeTrabajo.objects.get(pk=eje)
             for meta in metas:
                 metas_mes[meta.asignado.month-1]=meta.meta
+                metas_mes_beneficiarios[meta.asignado-1]=meta.meta_beneficiarios
                 metas_alcanzadas[meta.asignado.month-1]=meta.meta_alcanzada
+                metas_alcanzadas_beneficiarios[meta.asignado.month-1]=meta.meta_alcanzada_beneficicarios
             delegaciones={
                 'id':dele,
                 'delegacion':delegacion.nombre,
                 'metas':metas_mes,
+                'metas_bene':metas_mes_beneficiarios,
                 'alcanzadas':metas_alcanzadas,
+                'alcanzadas_bene':metas_alcanzadas_beneficiarios,
                 'anio':anio,
                 'eje':eje_trabajo.nombre
             }
@@ -56,8 +63,10 @@ class AsignarMetaDelegaciones(TemplateView):
         meta_e=request.GET.get('meta')
         meta_bene=request.GET.get('meta_bene')
         eje_pk=request.GET.get('eje')
+        fecha=request.GET.get('asignado')
         ingresado=False
         if eje_pk != None:
+            asignado=now.strptime(fecha,'%Y-%m-%d')
             eje=EjeTrabajo.objects.get(pk=int(eje_pk))
             delegaciones=Delegacion.objects.all()
             for delegacion in delegaciones:
@@ -66,6 +75,7 @@ class AsignarMetaDelegaciones(TemplateView):
                 meta.meta_beneficiarios=int(meta_bene)
                 meta.eje=eje
                 meta.delegacion=delegacion
+                meta.asignado=asignado
                 meta.save()
             ingresado=True
         return render(request,self.template_name,{'ejes':ejes,'ingresado':ingresado,'hay_eje':hay_eje})

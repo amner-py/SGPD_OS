@@ -47,49 +47,11 @@ class EPRespuesta(models.Model):
         verbose_name='Respuesta de Eje de Prevención'
         verbose_name_plural='Respuestas de Ejes de Prevención'
 
-    def suma_personas(respuestas_model):
-        data={
-            'cantidad':0,
-            'cantidad_personas':0,
-            'ninios':0,
-            'ninias':0,
-            'adolecentes_masculinos':0,
-            'adolecentes_femeninos':0,
-            'jovenes_masculinos':0,
-            'jovenes_femeninos':0,
-            'adultos_masculinos':0,
-            'adultos_femeninos':0,
-            'adultos_mayores_masculinos':0,
-            'adultos_mayores_femeninos':0,
-            'xincas':0,
-            'mayas':0,
-            'garifunas':0,
-            'ladinos':0,
-        }
-        for respuesta in respuestas_model:
-            data['cantidad']+=respuesta.cantidad
-            data['cantidad_personas']+=respuesta.cantidad_personas
-            data['ninios']+=respuesta.ninios
-            data['ninias']+=respuesta.ninias
-            data['adolecentes_masculinos']+=respuesta.adolecentes_masculinos
-            data['adolecentes_femeninos']+=respuesta.adolecentes_femeninos
-            data['jovenes_masculinos']+=respuesta.jovenes_masculinos
-            data['jovenes_femeninos']+=respuesta.jovenes_femeninos
-            data['adultos_masculinos']+=respuesta.adultos_masculinos
-            data['adultos_femeninos']+=respuesta.adultos_femeninos
-            data['adultos_mayores_masculinos']+=respuesta.adultos_mayores_masculinos
-            data['adultos_mayores_femeninos']+=respuesta.adultos_mayores_femeninos
-            data['xincas']+=respuesta.xinca
-            data['mayas']+=respuesta.maya
-            data['garifunas']+=respuesta.garifuna
-            data['ladinos']+=respuesta.ladino
-
-        return data
 
     def delete(self,*args,**kwargs):
         eliminado=False
         try:
-            meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
+            meta=MetaMensualEP.objects.get(pk=self.meta.pk)
             if meta:
                 meta.meta_alcanzada-=1
                 meta.meta_alcanzada_beneficicarios-=self.cantidad_personas
@@ -109,37 +71,43 @@ class EPRespuesta(models.Model):
             if self._ACTUALIZAR:
                 if self._EJE!='':
                     if self.eje != self._EJE:
-                        meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self._EJE).last()
-                        if meta:
-                            meta.meta_alcanzada_beneficicarios-=self.cantidad_personas
-                            meta.meta_alcanzada-=1
-                            meta.actualizado=datetime.now()
-                            meta._NUEVO=True
-                            meta.save()
-                            self.meta=meta
-                            meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
-                        if meta:
-                            meta.meta_alcanzada+=1
-                            meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
-                            meta.actualizado=datetime.now()
-                            meta._NUEVO=True
-                            meta.save()
-                        self.meta=meta
+                        metas=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self._EJE)
+                        for meta in metas:
+                            if meta.asignado.month == self.respondido.month and self.respondido.year == meta.asignado.year:
+                                if meta:
+                                    meta.meta_alcanzada_beneficicarios-=self.cantidad_personas
+                                    meta.meta_alcanzada-=1
+                                    meta.actualizado=datetime.now()
+                                    meta._NUEVO=True
+                                    meta.save()
+                                    self.meta=meta
+                        metas=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje)
+                        for meta in metas:
+                            if meta.asignado.month == self.respondido.month and self.respondido.year == meta.asignado.year:
+                                if meta:
+                                    meta.meta_alcanzada+=1
+                                    meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
+                                    meta.actualizado=datetime.now()
+                                    meta._NUEVO=True
+                                    meta.save()
+                                    self.meta=meta
                         super(EPRespuesta,self).save(*args,**kwargs)
                         ingresado=True
                     else:
-                        meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
-                        if meta:
-                            meta.meta_alcanzada+=1
-                            meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
-                            meta.actualizado=datetime.now()
-                            meta._NUEVO=True
-                            meta.save()
-                            self.meta=meta
-                        else:
-                            raise ValidationError('No puede responder, aún no tiene una meta asignada')
-                        super(EPRespuesta,self).save(*args,**kwargs)
-                        ingresado=True
+                        metas=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje)
+                        for meta in metas:
+                            if meta.asignado.month == self.respondido.month and self.respondido.year == meta.asignado.year:
+                                if meta:
+                                    meta.meta_alcanzada+=1
+                                    meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
+                                    meta.actualizado=datetime.now()
+                                    meta._NUEVO=True
+                                    meta.save()
+                                    self.meta=meta
+                                else:
+                                    raise ValidationError('No puede responder, aún no tiene una meta asignada')
+                                super(EPRespuesta,self).save(*args,**kwargs)
+                                ingresado=True
             else:
                 ingresado=False
         except:

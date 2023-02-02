@@ -73,19 +73,37 @@ const validate=()=>{
                         parseInt(adolecentes_f.value|0)+parseInt(jovenes_m.value|0)+parseInt(jovenes_f.value|0)+
                         parseInt(adultos.value|0)+parseInt(adultas.value|0)+parseInt(adultos_mayores.value|0)+ parseInt(adultas_mayores.value|0)
     var total_etnias=parseInt(xincas.value|0)+parseInt(garifunas.value|0)+parseInt(mayas.value|0)+parseInt(ladinos.value|0)
-    
+    var fecha = document.getElementById('respondido').value
     var total_iguales=total_personas===total_etnias
-    if(total_iguales){
-        guardar(total_personas)
+    if(fecha!=''){
+        if(total_iguales){
+            guardar(total_personas)
+        }else{
+            swal.fire({
+                title: 'Los datos de personas y etnias no coinciden',
+                icon:"warning",
+                showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+                }
+                
+            }).then((isConfirm)=>{
+                    if(isConfirm){
+                        location.href="#inicio"
+                    }
+                })
+        }
     }else{
         swal.fire({
-            title: 'Los datos de personas y etnias no coinciden',
+            title: 'La fecha es incorrecta',
             icon:"warning",
             showClass: {
-              popup: 'animate__animated animate__fadeInDown'
+            popup: 'animate__animated animate__fadeInDown'
             },
             hideClass: {
-              popup: 'animate__animated animate__fadeOutUp'
+            popup: 'animate__animated animate__fadeOutUp'
             }
             
         }).then((isConfirm)=>{
@@ -164,6 +182,7 @@ const guardar=(total)=>{
     let observaciones=document.querySelector('#observaciones').value
     let cantidad = document.querySelector('#cantidad')
     let especifico=lugar_especifico.value
+    let respondido=document.querySelector('#respondido').value
 
     const jd={
         'latitud':latitud,
@@ -192,6 +211,7 @@ const guardar=(total)=>{
         'garifunas':parseInt(garifunas.value|0),
         'mayas':parseInt(mayas.value|0),
         'ladinos':parseInt(ladinos.value|0),
+        'respondido':respondido,
     }
     Swal.fire({
         title: `¿Estás seguro de guardar el registro?`,
@@ -204,6 +224,7 @@ const guardar=(total)=>{
         confirmButtonText: 'Confirmar'
       }).then((result) => {
         if (result.isConfirmed) {
+            console.log(respondido)
             insert_respuesta(jd)
         }
       })
