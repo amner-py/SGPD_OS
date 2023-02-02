@@ -92,6 +92,7 @@ class EPRespuesta(models.Model):
             meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
             if meta:
                 meta.meta_alcanzada-=1
+                meta.meta_alcanzada_beneficicarios-=self.cantidad_personas
                 meta.actualizado=datetime.now()
                 meta._NUEVO=True
                 meta.save()
@@ -110,20 +111,18 @@ class EPRespuesta(models.Model):
                     if self.eje != self._EJE:
                         meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self._EJE).last()
                         if meta:
+                            meta.meta_alcanzada_beneficicarios-=self.cantidad_personas
                             meta.meta_alcanzada-=1
                             meta.actualizado=datetime.now()
                             meta._NUEVO=True
-                            print('RESTADO')
-                            print(meta.eje)
                             meta.save()
                             self.meta=meta
                             meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
                         if meta:
                             meta.meta_alcanzada+=1
+                            meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
                             meta.actualizado=datetime.now()
                             meta._NUEVO=True
-                            print('AGREGADO')
-                            print(meta.eje)
                             meta.save()
                         self.meta=meta
                         super(EPRespuesta,self).save(*args,**kwargs)
@@ -132,10 +131,9 @@ class EPRespuesta(models.Model):
                         meta=MetaMensualEP.objects.filter(delegacion=self.delegacion,eje=self.eje).last()
                         if meta:
                             meta.meta_alcanzada+=1
+                            meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
                             meta.actualizado=datetime.now()
                             meta._NUEVO=True
-                            print('NUEVO')
-                            print(meta.eje)
                             meta.save()
                             self.meta=meta
                         else:
