@@ -25,7 +25,7 @@ class LugarPriorizado(models.Model):
         super(LugarPriorizado,self).save(*args,**kwargs)
         usuarios=Usuario.objects.filter(delegacion=self.delegacion)
         for usuario in usuarios:
-            Notificacion.objects.create(motivo=f'NUEVA ASIGNACION EN {self.__str__}'.upper,mensaje=f'Se le ha asignado a: {self.lugar.municipio} la fecha {self.fecha.day}/{self.fecha.month}/{self.fecha.year}',receptor=usuario)
+            Notificacion.objects.create(motivo=f'NUEVA ASIGNACION EN {self.lugar}',mensaje=f'Se le ha asignado a: {self.lugar.municipio} la fecha {self.fecha.day}/{self.fecha.month}/{self.fecha.year}',receptor=usuario)
 
 
 class MetaMensualEP(models.Model):
