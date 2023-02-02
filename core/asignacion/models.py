@@ -93,7 +93,9 @@ class MetaMensualEP(models.Model):
 
     def save(self,*args,**kwargs):
             diferencia=self.meta_alcanzada-self.meta
+            diferencia_beneficiarios=self.meta_alcanzada_beneficicarios-self.meta_beneficiarios
             self.diferencia=diferencia
+            self.diferencia_beneficiarios=diferencia_beneficiarios
             if self.diferencia>0:
                 self.estado='s'
             elif self.diferencia==0:

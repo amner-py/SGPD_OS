@@ -9,7 +9,7 @@ from django.views.generic import TemplateView,ListView
 from django.http.response import JsonResponse
 from django.core.paginator import Paginator
 from django.http import Http404
-from datetime import datetime
+from datetime import datetime as now
 from .models import EPRespuesta,AORespuesta
 from ..asignacion.models import LugarPriorizado,MetaMensualEP
 from ..area_operativa.models import PlanArea,TipoOperativo
@@ -95,6 +95,7 @@ class ResponderEPTemplateView(TemplateView):
         ejes=EjeTrabajo.objects.all()
         productos=Producto.objects.all()
         hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
+        hay_datos=True
         return render(request,self.template_name,{
             'lugares_priorizado':lugares_priorizado,
             'planes':planes,
@@ -144,8 +145,8 @@ class RespuestasEPView(View):
     
     def post(self,request):
         jd=json.loads(request.body)
-        print(jd)
         respuesta=EPRespuesta()
+        respuesta.respondido=now.strptime(jd['respondido'],'%Y-%m-%d')
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user.delegacion
@@ -178,7 +179,6 @@ class RespuestasEPView(View):
         respuesta._ACTUALIZAR=True
         respuesta._EJE=eje
         ingresado=respuesta.save()
-        print(ingresado)
         datos={'ingresado':ingresado}
         return JsonResponse(datos)
 
