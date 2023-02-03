@@ -290,7 +290,6 @@ class RespuestasAOView(View):
     def post(self,request):
         jd=json.loads(request.body)
         respuesta=AORespuesta()
-        respuesta.respondido=now.strptime(jd['respondido'],'%Y-%m-%d')
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user.delegacion

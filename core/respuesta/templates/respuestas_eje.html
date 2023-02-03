@@ -156,6 +156,7 @@
                                     </span>
                                 </a>
                                 </div>
+                                {% if user.is_superuser %}
                                 <div class="col-sm-3">
                                 <a href="{% url 'actualizar_eje' id=respuesta.id %}" class="text-warning" style="text-decoration:none">
                                     <span class="material-symbols-outlined">
@@ -164,7 +165,7 @@
                                 </a>
                                 </div>
                                 
-                                {% if user.is_superuser %}
+                                
                                     
                                 <div class="col-sm-3">
                                 <a onclick="confirm_eliminar({{respuesta.id|safe}})" class="text-danger" style="text-decoration:none;cursor:pointer">
