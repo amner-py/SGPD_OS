@@ -85,6 +85,7 @@ class EPRespuesta(models.Model):
                         for meta in metas:
                             if meta.asignado.month == self.respondido.month and self.respondido.year == meta.asignado.year:
                                 if meta:
+                                    print('ACA2 XD')
                                     meta.meta_alcanzada+=1
                                     meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
                                     meta.actualizado=datetime.now()
@@ -98,6 +99,7 @@ class EPRespuesta(models.Model):
                         for meta in metas:
                             if meta.asignado.month == self.respondido.month and self.respondido.year == meta.asignado.year:
                                 if meta:
+                                    print('ACA XD')
                                     meta.meta_alcanzada+=1
                                     meta.meta_alcanzada_beneficicarios+=self.cantidad_personas
                                     meta.actualizado=datetime.now()

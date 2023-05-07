@@ -7,6 +7,39 @@ const fecha = new Date();
 const fecha_actual=`${fecha.getFullYear()}-0${fecha.getMonth()+1}-${fecha.getDate()}`
 const fecha_actual_f=`${fecha.getDate()}-${fecha.getMonth()+1}-${fecha.getFullYear()}`
 
+const get_meta=()=>{
+    
+    const options={
+        method:'GET'
+    }
+    
+    fetch('/asignacion/notificar/metas_eje/',options)
+        .then(response => response.json())
+        .then(data =>{
+            get_meta_msn(data)
+        })
+}
+
+const meta=()=>{
+    const mensaje_meta=`<span onclick="get_meta()">🏅</span>`
+    var btn_meta = document.querySelector("#meta")
+    btn_meta.innerHTML=mensaje_meta
+}
+
+const get_meta_msn=(data)=>{
+    var mensaje=data.mensaje
+    swal.fire({
+    title: 'META',
+    html:`${mensaje}`,
+    showClass: {
+      popup: 'animate__animated animate__fadeInDown'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutUp'
+    }
+  })
+}
+meta()
 const get_bday=()=>{
     if(bday==fecha_actual){
         const mensaje_bday='<span onclick="get_bday_msn()">&#127874;</span>'

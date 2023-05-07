@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = DB.MySQL
+DATABASES = DB.MySQL1
 
 
 # Password validation

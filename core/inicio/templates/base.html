@@ -84,6 +84,7 @@
             {% if user.is_authenticated %}
             <input id="name_person" type="text" value="{{user.first_name}} {{user.last_name}}" hidden>
             <input id="fnacimiento" type="date" value="{{user.fecha_nacimiento|date:'Y-m-d'}}" hidden>
+            <!--<div id="meta" style="color:pink;padding-right:20px;cursor:pointer"></div>-->
             <div id="bday" style="color:pink;padding-right:20px;cursor:pointer"></div>
             <div style="padding-right:40px;">
                 <a id="notificaciones" class="position-relative" href="{% url 'notificaciones' %}" style="cursor:pointer">
@@ -152,7 +153,7 @@
     {% block script %}{% endblock script %}
     {% load static %}
     <script>
-
+        
     </script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 

@@ -73,7 +73,7 @@ const validate=()=>{
                         parseInt(adolecentes_f.value|0)+parseInt(jovenes_m.value|0)+parseInt(jovenes_f.value|0)+
                         parseInt(adultos.value|0)+parseInt(adultas.value|0)+parseInt(adultos_mayores.value|0)+ parseInt(adultas_mayores.value|0)
     var total_etnias=parseInt(xincas.value|0)+parseInt(garifunas.value|0)+parseInt(mayas.value|0)+parseInt(ladinos.value|0)
-    var fecha = document.getElementById('respondido').value
+    var fecha = 's'
     var total_iguales=total_personas===total_etnias
     if(fecha!=''){
         if(total_iguales){
@@ -182,7 +182,7 @@ const guardar=(total)=>{
     let observaciones=document.querySelector('#observaciones').value
     let cantidad = document.querySelector('#cantidad')
     let especifico=lugar_especifico.value
-    let respondido=document.querySelector('#respondido').value
+    //let respondido=document.querySelector('#respondido').value
 
     const jd={
         'latitud':latitud,
@@ -211,7 +211,7 @@ const guardar=(total)=>{
         'garifunas':parseInt(garifunas.value|0),
         'mayas':parseInt(mayas.value|0),
         'ladinos':parseInt(ladinos.value|0),
-        'respondido':respondido,
+        //'respondido':respondido,
     }
     Swal.fire({
         title: `¿Estás seguro de guardar el registro?`,
@@ -224,7 +224,7 @@ const guardar=(total)=>{
         confirmButtonText: 'Confirmar'
       }).then((result) => {
         if (result.isConfirmed) {
-            console.log(respondido)
+            //console.log(respondido)
             insert_respuesta(jd)
         }
       })

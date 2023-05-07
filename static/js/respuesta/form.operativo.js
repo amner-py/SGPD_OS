@@ -119,9 +119,9 @@ const validation=()=>{
     solventes=parseInt(hombres_solventes.value|0)+parseInt(mujeres_solventes.value|0)+parseInt(autos_solventes.value|0)+parseInt(motos_solventes.value|0)+parseInt(armas_solventes.value|0)
 
     recuperados=parseInt(hombres_recuperados.value|0)+parseInt(mujeres_recuperadas.value|0)+parseInt(autos_recuperados.value|0)+parseInt(motos_recuperadas.value|0)+parseInt(armas_recuperadas.value|0)+parseInt(menores_recuperados.value|0)
-    var fecha = document.getElementById('respondido').value
+    //var fecha = document.getElementById('respondido').value
     jd={
-        'respondido':fecha,
+        //'respondido':fecha,
         'latitud':latitud,
         'longitud':longitud,
         'lugar_priorizado':parseInt(lugar_priorizado.value|0),
@@ -161,7 +161,7 @@ const validation=()=>{
         'menores_recuperados':menores_recuperados.value|0
     }
 
-    var fecha = document.getElementById('respondido').value
+    //var fecha = document.getElementById('respondido').value
 
     if(fecha!=''){
         Swal.fire({

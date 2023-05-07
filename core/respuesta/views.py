@@ -62,7 +62,7 @@ class ActualizarEPTemplateView(TemplateView):
                 res=EPRespuesta.objects.get(pk=id)
                 if res.usuario==self.request.user or self.request.user.is_superuser:
                     hay_registro=True
-                    lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
+                    lugares_priorizado=LugarPriorizado.objects.filter(delegacion=res.delegacion)
                     planes=PlanEje.objects.all()
                     ejes=EjeTrabajo.objects.all()
                     productos=Producto.objects.all()
@@ -89,19 +89,21 @@ class ResponderEPTemplateView(TemplateView):
         meta=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion).last()
         hay_meta=False
         if meta:
-            #if meta.asignado.month == datetime.now().month:
             hay_meta=True
         planes=PlanEje.objects.all()
         ejes=EjeTrabajo.objects.all()
         productos=Producto.objects.all()
-        hay_datos=len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
+        
         hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(ejes)>0 and len(productos)>0 and hay_meta
-        hay_datos=True
+        hora=int(now.now().hour)
+        hora_laboral=((hora >= 6 and hora < 18) or self.request.user.is_superuser)
+        
         return render(request,self.template_name,{
             'lugares_priorizado':lugares_priorizado,
             'planes':planes,
             'ejes':ejes,
             'productos':productos,
+            'hora_laboral':hora_laboral,
             'hay_datos':hay_datos
         })
 
@@ -147,7 +149,7 @@ class RespuestasEPView(View):
     def post(self,request):
         jd=json.loads(request.body)
         respuesta=EPRespuesta()
-        respuesta.respondido=now.strptime(jd['respondido'],'%Y-%m-%d')
+        #respuesta.respondido=now.strptime(jd['respondido'],'%Y-%m-%d')
         respuesta.latitud=jd['latitud']
         respuesta.longitud=jd['longitud']
         respuesta.delegacion=self.request.user.delegacion
@@ -266,10 +268,14 @@ class ResponderAOTemplateView(TemplateView):
         planes=PlanArea.objects.all()
         operativos=TipoOperativo.objects.all()
         hay_datos=len(lugares_priorizado)>0 and len(planes)>0 and len(operativos)>0
+        hora=int(now.now().hour)
+        hora_laboral=((hora >= 6 and hora < 18) or self.request.user.is_superuser)
+        
         return render(request,self.template_name,{
             'lugares_priorizado':lugares_priorizado,
             'planes':planes,
             'operativos':operativos,
+            'hora_laboral':hora_laboral,
             'hay_datos':hay_datos
         })
 
@@ -426,7 +432,7 @@ class ActualizarAOTemplateView(TemplateView):
                 res=AORespuesta.objects.get(pk=id)
                 if res.usuario==self.request.user or self.request.user.is_superuser:
                     hay_registro=True
-                    lugares_priorizado=LugarPriorizado.objects.filter(delegacion=self.request.user.delegacion)
+                    lugares_priorizado=LugarPriorizado.objects.filter(delegacion=res.delegacion)
                     planes=PlanArea.objects.all()
                     operativos=TipoOperativo.objects.all()
             except:

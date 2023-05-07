@@ -50,6 +50,21 @@ class MetaMensualEPView(View):
             }
         return JsonResponse(delegaciones)
 
+class NotificarMeta(View):
+    def get(self,request):
+        
+        metas=MetaMensualEP.objects.filter(delegacion=self.request.user.delegacion)
+        fecha=f'{now.now().month}/{now.now().year}'
+        mensaje=f'Delegacion: {self.request.user.delegacion}<br>Fecha: {fecha}<br>------------------------------<br>'
+        for meta in metas:
+            fecha_meta=f'{meta.asignado.month}/{meta.asignado.year}'
+            if fecha==fecha_meta:
+                mensaje+=f'Eje de Prevención: {meta.eje}<br>Estado Eventos: {meta.eventos()}<br>Estado Beneficiarios: {meta.beneficiarios()}<br>------------------------------<br>'
+        data={
+            'mensaje':mensaje
+        }
+        return JsonResponse(data)
+
 class AsignarMetaDelegaciones(TemplateView):
     template_name='asignar_meta_general.html'
 

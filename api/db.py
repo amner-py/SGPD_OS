@@ -15,7 +15,7 @@ MySQL1 = {
         'NAME': 'sgpd',
         'USER': 'admin',
         'PASSWORD': 'admin123',
-        'HOST': '192.168.10.109',
+        'HOST': '192.168.58.113',
         'PORT': '3306',
     }
 }

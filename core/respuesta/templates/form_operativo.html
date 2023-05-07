@@ -6,6 +6,7 @@
 <div class="container mt-3">
     
     {% if hay_datos %}
+    {% if hora_laboral %}
     <div class="row"><div class="col-sm-4">
         <div class="col-sm-2">
             <a href="{% url 'respuestas_operativo_view' %}" class="btn btn-outline-secondary">Regresar</a>
@@ -14,12 +15,12 @@
     <div class="card mb-3 rounded shadow">
         <h4 class="card-header">INFORMACION GENERAL</h4>
         <div class="card-body">
-            <div class="mb-3 row">
+            <!--<div class="mb-3 row">
                 <label for="respondido" class="col-sm-2 col-form-label">Fecha de respuesta</label>
                 <div class="col-sm-10">
                     <input type="date" class="form-control" id="respondido" required>
                 </div>
-            </div>
+            </div>-->
             <div class="mb-3 row">
                 <label for="lugar_priorizado" class="col-sm-2 col-form-label">Lugar Priorizado</label>
                 <div class="col-sm-10">
@@ -247,6 +248,27 @@
             <button type="button" onclick="validation()" class="btn btn-outline-success col-sm-12 mb-3">Guardar</button>
         </div>
     </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-4"><a href="{% url 'respuestas_eje_view' %}" class="btn btn-outline-secondary">Regresar</a></div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="{% static 'img/logo_pnc.png' %}" class="img-fluid rounded-start" alt="LOGO-PNC">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">No se puede ingresar</h5>
+                      <p class="card-text">El horario de labor es de 1 a.m. hasta las 6 p.m.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {% endif %}
     {% else %}
     <div class="row">
         <div class="col-md-4"><a href="{% url 'respuestas_operativo_view' %}" class="btn btn-outline-secondary">Regresar</a></div>
